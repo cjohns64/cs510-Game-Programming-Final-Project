@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 490aca0634e2f3af287bdf0b534457f5, type: 3}
+  m_Name: Item9 Tier0 Engine
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8046985397569532212, guid: 8a1515f3c54d33bc285f1aa9f8986f5d, type: 3}
+  type: 8
+  item_value: 0
+  item_name: Solar Sails
+  description: 
+  engine_speed: 1
