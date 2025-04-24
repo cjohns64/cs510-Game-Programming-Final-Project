@@ -6,6 +6,7 @@ using UnityEngine;
 public class InventoryObject : ScriptableObject
 {
     public List<InventorySlot> container = new List<InventorySlot>();
+    public int credits;
 
     public void AddItem(ItemObject _item, int _amount)
     {

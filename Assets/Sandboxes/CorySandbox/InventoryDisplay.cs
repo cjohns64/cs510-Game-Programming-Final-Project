@@ -6,11 +6,7 @@ using TMPro;
 public class InventoryDisplay : MonoBehaviour
 {
     public InventoryObject inventory;
-    public int x_start;
-    public int y_start;
-    public int x_padding;
-    public int y_padding;
-    public int columns;
+    public bool show_price = false;
     Dictionary<InventorySlot, GameObject> itemsDisplayed = new Dictionary<InventorySlot, GameObject>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,7 +15,7 @@ public class InventoryDisplay : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         UpdateDisplay();
     }
@@ -31,14 +27,11 @@ public class InventoryDisplay : MonoBehaviour
         {
             if (itemsDisplayed.ContainsKey(slot))
             {
-                UpdateItemText(itemsDisplayed[slot], slot.amount, slot.item.item_name);
+                UpdateItemText(itemsDisplayed[slot], slot);
             }
             else
             {
-                var obj = Instantiate(slot.item.prefab, Vector3.zero, Quaternion.identity, transform);
-                obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
-                UpdateItemText(obj, slot.amount, slot.item.item_name);
-                itemsDisplayed.Add(slot, obj);
+                AddItemUI(slot);
             }
             i++;
         }
@@ -49,20 +42,19 @@ public class InventoryDisplay : MonoBehaviour
         int i=0;
         foreach (InventorySlot slot in inventory.container)
         {
-            var obj = Instantiate(slot.item.prefab, Vector3.zero, Quaternion.identity, transform);
-            obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
-            UpdateItemText(obj, slot.amount, slot.item.item_name);
-            itemsDisplayed.Add(slot, obj);
+            AddItemUI(slot);
             i++;
         }
     }
 
-    public Vector3 GetPosition(int i)
+    public void AddItemUI(InventorySlot _slot)
     {
-        return new Vector3(x_start + (x_padding * (i % columns)), y_start + (-y_padding * (i / columns)), 0.0f);
+        var obj = Instantiate(_slot.item.prefab, transform);
+        UpdateItemText(obj, _slot);
+        itemsDisplayed.Add(_slot, obj);
     }
 
-    public void UpdateItemText(GameObject _item, int _amount, string _name)
+    public void UpdateItemText(GameObject _item, InventorySlot _slot)
     {
         // get all child Components of type TextMeshProUGUI, these are the elements that will be updated
         TextMeshProUGUI[] components_list = _item.GetComponentsInChildren<TextMeshProUGUI>();
@@ -73,12 +65,17 @@ public class InventoryDisplay : MonoBehaviour
             // set the amount element
             if (ugui.name == "ItemAmountText")
             {
-                ugui.text = _amount.ToString("n0");
+                ugui.text = _slot.amount.ToString("n0");
             }
             // set the name element
             else if (ugui.name == "ItemNameText")
             {
-                ugui.text = _name;
+                ugui.text = _slot.item.item_name;
+            }
+            // set the price element
+            else if (show_price && ugui.name == "ItemPriceText")
+            {
+                ugui.text = _slot.item.item_value.ToString("C2");
             }
         }
     }

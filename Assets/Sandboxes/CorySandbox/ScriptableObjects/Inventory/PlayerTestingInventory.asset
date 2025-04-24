@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2c4d6d2ab54fa3a9a917530cd397a85, type: 3}
-  m_Name: PlayerInventory
+  m_Name: PlayerTestingInventory
   m_EditorClassIdentifier: 
   container:
   - item: {fileID: 11400000, guid: eb4779b0511bb3bd3913ef5eee877438, type: 2}
@@ -43,3 +43,4 @@ MonoBehaviour:
     amount: 1
   - item: {fileID: 11400000, guid: bfbc2cc3c8a816d418169db34244aeff, type: 2}
     amount: 1
+  credits: 6000000
