@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item18 Tier2 Engine
   m_EditorClassIdentifier: 
   prefab: {fileID: 8046985397569532212, guid: 8c963bd3a8899b904b37f6cd8becab1e, type: 3}
-  type: 42
+  type: 17
   item_value: 5000
   item_name: Ion Engine
   description: 

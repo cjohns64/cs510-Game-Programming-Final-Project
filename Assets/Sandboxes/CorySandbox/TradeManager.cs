@@ -18,7 +18,7 @@ public class TradeManager : MonoBehaviour
     public GameObject stationTradeArea;
     public TextMeshProUGUI playerCreditsText;
     public TextMeshProUGUI stationCreditsText;
-    public TextMeshProUGUI quantitiyValueText;
+    public TMP_InputField quantityValueText;
 
     private int currentStation = 0;
 
@@ -49,7 +49,7 @@ public class TradeManager : MonoBehaviour
         if (item_clicked)
         {
             // get the amount
-            int quantitiy = int.Parse(quantitiyValueText.text);
+            int quantitiy = int.Parse(quantityValueText.text);
             // determine the other inventory
             if (_inventory_containing == playerInventory)
             {
@@ -73,18 +73,19 @@ public class TradeManager : MonoBehaviour
     public void TradeItems(ItemObject _item_from, InventoryObject _inventory_from, InventoryObject _inventory_to, int amount)
     {
         float credits_buyer = _inventory_to.credits;
-        float item_cost = amount * GetItemCost(_item_from);
+        float unit_cost = GetItemCost(_item_from);
+        float full_cost = amount * unit_cost;
         // allow transaction if full cost can be paid for
-        if (item_cost <= _inventory_to.credits)
+        if (full_cost <= _inventory_to.credits)
         {
             // remove items from seller inventory
             int sold_quantity = _inventory_from.RemoveItem(_item_from, amount);
             // add item to buyer inventory
             _inventory_to.AddItem(_item_from, sold_quantity);
             // add credits to seller inventory
-            _inventory_from.credits += sold_quantity * item_cost;
+            _inventory_from.credits += (sold_quantity * unit_cost);
             // remove credits form buyer inventory
-            _inventory_to.credits -= sold_quantity * item_cost;
+            _inventory_to.credits -= (sold_quantity * unit_cost);
             // update ui
             // update player credits text
             playerCreditsText.text = playerInventory.credits.ToString("c2");
