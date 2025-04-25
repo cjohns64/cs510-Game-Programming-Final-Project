@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8046985397569532212, guid: 8a1515f3c54d33bc285f1aa9f8986f5d, type: 3}
   type: 8
-  item_value: 0
+  item_value: 1750
   item_name: Solar Sails
   description: 
   engine_speed: 1

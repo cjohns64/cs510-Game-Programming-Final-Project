@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5585535146403936100, guid: 12a02855ff1d81a16bec6b47e8634f96, type: 3}
   type: 9
-  item_value: 0
+  item_value: 50
   item_name: Conductors
   description: 

@@ -5,8 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName="New Inventory", menuName="Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject
 {
-    public List<InventorySlot> container = new List<InventorySlot>();
-    public int credits;
+    // ItemType.Default is the last element
+    public InventorySlot[] container = new InventorySlot[(int) ItemType.GetNames(typeof(ItemType)).Length];
+    public float credits = 0.0f;
 
     public void AddItem(ItemObject _item, int _amount)
     {
@@ -19,11 +20,10 @@ public class InventoryObject : ScriptableObject
             }
         }
         // item is not in inventory
-        container.Add(new InventorySlot(_item, _amount));
+        container[(int) _item.type] = new InventorySlot(_item, _amount);
     }
 
     /**
-     * TODO check amount on return
      * RemoveItem returns the amount that was removed from the inventory, 0 if the item was not in the inventory.
      */
     public int RemoveItem(ItemObject _item, int _amount)
@@ -50,6 +50,23 @@ public class InventoryObject : ScriptableObject
         }
         // item was not in Inventory
         return 0;
+    }
+
+    public ItemObject FindByType(ItemType item_type)
+    {
+        foreach (InventorySlot slot in container)
+        {
+            if (slot.item != null)
+            {
+                if (slot.item.type == item_type)
+                {
+                    // fount item return the ItemObject
+                    return slot.item;
+                }
+            }
+        }
+        // did not find item
+        return null;
     }
 
 }

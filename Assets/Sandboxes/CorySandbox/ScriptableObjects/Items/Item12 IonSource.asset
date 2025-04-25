@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5585535146403936100, guid: 6671448fccf411e8a973f5105d710ca0, type: 3}
   type: 11
-  item_value: 0
+  item_value: 50
   item_name: Ion Source
   description: 

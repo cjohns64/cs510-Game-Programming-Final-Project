@@ -49,33 +49,49 @@ public class InventoryDisplay : MonoBehaviour
 
     public void AddItemUI(InventorySlot _slot)
     {
-        var obj = Instantiate(_slot.item.prefab, transform);
-        UpdateItemText(obj, _slot);
-        itemsDisplayed.Add(_slot, obj);
+        // skip null slots, items, and prefabs
+        if (_slot.item != null)
+        {
+            var obj = Instantiate(_slot.item.prefab, transform);
+            UpdateItemText(obj, _slot);
+            itemsDisplayed.Add(_slot, obj);
+        }
     }
 
     public void UpdateItemText(GameObject _item, InventorySlot _slot)
     {
-        // get all child Components of type TextMeshProUGUI, these are the elements that will be updated
-        TextMeshProUGUI[] components_list = _item.GetComponentsInChildren<TextMeshProUGUI>();
-
-        // check each result, update the amount text and the item name
-        foreach (TextMeshProUGUI ugui in components_list)
+        if (_slot.amount == 0) {
+            // don't display this slot
+            _item.SetActive(false);
+        }
+        else if (!_item.activeSelf)
         {
-            // set the amount element
-            if (ugui.name == "ItemAmountText")
+            // turn item back on if amount isn't 0
+            _item.SetActive(true);
+        }
+        else
+        {
+            // get all child Components of type TextMeshProUGUI, these are the elements that will be updated
+            TextMeshProUGUI[] components_list = _item.GetComponentsInChildren<TextMeshProUGUI>();
+
+            // check each result, update the amount text and the item name
+            foreach (TextMeshProUGUI ugui in components_list)
             {
-                ugui.text = _slot.amount.ToString("n0");
-            }
-            // set the name element
-            else if (ugui.name == "ItemNameText")
-            {
-                ugui.text = _slot.item.item_name;
-            }
-            // set the price element
-            else if (show_price && ugui.name == "ItemPriceText")
-            {
-                ugui.text = _slot.item.item_value.ToString("C2");
+                // set the amount element
+                if (ugui.name == "ItemAmountText")
+                {
+                    ugui.text = _slot.amount.ToString("n0");
+                }
+                // set the name element
+                else if (ugui.name == "ItemNameText")
+                {
+                    ugui.text = _slot.item.item_name;
+                }
+                // set the price element
+                else if (show_price && ugui.name == "ItemPriceText")
+                {
+                    ugui.text = _slot.item.item_value.ToString("C2");
+                }
             }
         }
     }

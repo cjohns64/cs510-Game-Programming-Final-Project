@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5585535146403936100, guid: 0a10283997f49b411b9c9dc107747273, type: 3}
   type: 1
-  item_value: 0
+  item_value: 150
   item_name: Shielding Upgrade
   description: 
   hull_bonus: 0

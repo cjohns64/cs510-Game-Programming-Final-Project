@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5585535146403936100, guid: 95c79d59bc0e4d3c298417acfce403f3, type: 3}
   type: 0
-  item_value: 0
+  item_value: 150
   item_name: Armor Upgrade
   description: 
   hull_bonus: 100

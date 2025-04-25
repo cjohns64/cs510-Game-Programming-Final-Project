@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5585535146403936100, guid: e2cc824e20ec1eed7af72f5e8e8f1970, type: 3}
   type: 4
-  item_value: 0
+  item_value: 5
   item_name: Ions
   description: 

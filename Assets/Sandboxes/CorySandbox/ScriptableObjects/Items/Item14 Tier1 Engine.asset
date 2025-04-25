@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8046985397569532212, guid: 6c38891972b70ba8aa9a3414e2ebcb49, type: 3}
   type: 13
-  item_value: 0
+  item_value: 2500
   item_name: Chemical Engine
   description: 
   engine_speed: 2

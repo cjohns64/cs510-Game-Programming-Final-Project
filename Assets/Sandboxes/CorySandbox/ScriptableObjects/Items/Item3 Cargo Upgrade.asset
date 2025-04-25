@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5585535146403936100, guid: bfc0e9df9026544418da2e4b1e5b0334, type: 3}
   type: 2
-  item_value: 0
+  item_value: 150
   item_name: Cargo Upgrade
   description: 
   hull_bonus: 0
