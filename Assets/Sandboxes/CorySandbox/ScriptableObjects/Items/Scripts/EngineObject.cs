@@ -4,9 +4,4 @@ using UnityEngine;
 public class EngineObject : ItemObject
 {
     public float engine_speed = 1.0f;
-
-    public void Awake()
-    {
-        type = ItemType.Default;
-    }
 }
