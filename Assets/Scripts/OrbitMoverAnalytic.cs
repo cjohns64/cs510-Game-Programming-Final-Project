@@ -22,7 +22,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
     public float ElapsedTime { get; private set; }
 
     //---------------------- Private State ---------------------------------
-    private Mass centralBodyMass;
+    private CelestialBody centralCelestialBody;
     private float mu;
     private float aCubed;
 
@@ -31,7 +31,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
     {
         ElapsedTime = 0f;
 
-        if (CentralBody == null || !CentralBody.TryGetComponent(out centralBodyMass))
+        if (CentralBody == null || !CentralBody.TryGetComponent(out centralCelestialBody))
         {
             Debug.LogError("Central body configuration error!");
             enabled = false;
@@ -48,7 +48,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
         if (Eccentricity < 1f)
             UpdateEllipticalOrbit();
         else
-            Debug.LogWarning("[OrbitMoverAnalytic] Non-elliptical orbit  (e >= 1). TODO: implement elliptical orbits");
+            UpdateHyperbolicOrbit();
     }
 
     //---------------------- Public API ---------------------------------------
@@ -68,7 +68,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
     void InitializeOrbitParameters(Vector3 velocity)
     {
         Vector3 rVec = transform.position - CentralBody.position;
-        mu = GravitationalConstants.G * centralBodyMass.mass;
+        mu = GravitationalConstants.G * centralCelestialBody.Mass;
 
         AngularMomentumVec = Vector3.Cross(rVec, velocity);
 
@@ -99,6 +99,23 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
         float distance = SemiMajorAxis * (1f - Eccentricity * Eccentricity) /
                         (1 + Eccentricity * Mathf.Cos(trueAnomaly));
+
+        UpdatePositionAndVelocity(trueAnomaly, distance);
+    }
+
+    //---------------------- Hyperbolic Propagation ---------------------------
+    void UpdateHyperbolicOrbit()
+    {
+        float meanMotion = Mathf.Sqrt(-mu / (SemiMajorAxis * SemiMajorAxis * SemiMajorAxis));
+        float meanAnomaly = meanMotion * ElapsedTime;
+
+        float hyperbolicAnomaly = SolveKeplerHyperbolicAnomaly(meanAnomaly, Eccentricity);
+        float trueAnomaly = 2f * Mathf.Atan(
+            Mathf.Sqrt((Eccentricity + 1) / (Eccentricity - 1)) *
+            Tanh(hyperbolicAnomaly / 2f)
+        );
+
+        float distance = SemiMajorAxis * (Eccentricity * Eccentricity - 1) / (1 + Eccentricity * Mathf.Cos(trueAnomaly));
 
         UpdatePositionAndVelocity(trueAnomaly, distance);
     }
@@ -133,7 +150,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
     {
         Vector3 rVec = transform.position - CentralBody.position;
         Vector3 localPos = Quaternion.Inverse(OrbitalPlaneRotation) * rVec;
-        localPos.y = 0f; // Project onto the orbital plane
+        localPos.y = 0f; // Project onto orbital plane
 
         if (localPos.magnitude < 1e-6f)
         {
@@ -143,29 +160,46 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
         float theta = Mathf.Atan2(localPos.x, localPos.z);
         float e = Eccentricity;
-        if (e >= 1f)
+
+        // Elliptical orbit (e < 1)
+        if (e < 1f)
         {
-            ElapsedTime = 0f;
-            return;
+            float cosTheta = Mathf.Cos(theta);
+            float denominator = 1f + e * cosTheta;
+
+            if (Mathf.Abs(denominator) < 1e-6f)
+            {
+                ElapsedTime = 0f;
+                return;
+            }
+
+            float cosE = (e + cosTheta) / denominator;
+            float sinE = Mathf.Sqrt(1f - e * e) * Mathf.Sin(theta) / denominator;
+            float E = Mathf.Atan2(sinE, cosE);
+
+            float M = E - e * Mathf.Sin(E);
+            float n = Mathf.Sqrt(mu / Mathf.Abs(SemiMajorAxis * SemiMajorAxis * SemiMajorAxis));
+            ElapsedTime = M / n;
         }
-
-        float cosTheta = Mathf.Cos(theta);
-        float sinTheta = Mathf.Sin(theta);
-        float denominator = 1f + e * cosTheta;
-
-        if (Mathf.Abs(denominator) < 1e-6f)
+        // Hyperbolic orbit (e >= 1)
+        else
         {
-            ElapsedTime = 0f;
-            return;
+            float cosTheta = Mathf.Cos(theta);
+            float denominator = 1f + e * cosTheta;
+
+            if (Mathf.Abs(denominator) < 1e-6f)
+            {
+                ElapsedTime = 0f;
+                return;
+            }
+
+            float coshH = (e + cosTheta) / denominator;
+            float H = Mathf.Log(coshH + Mathf.Sqrt(coshH * coshH - 1f));
+
+            float M = e * Sinh(H) - H;
+            float n = Mathf.Sqrt(-mu / (SemiMajorAxis * SemiMajorAxis * SemiMajorAxis));
+            ElapsedTime = M / n;
         }
-
-        float cosE = (e + cosTheta) / denominator;
-        float sinE = (Mathf.Sqrt(1f - e * e) * sinTheta) / denominator;
-        float E = Mathf.Atan2(sinE, cosE);
-
-        float M = E - e * Mathf.Sin(E);
-        float n = Mathf.Sqrt(mu / aCubed);
-        ElapsedTime = M / n;
     }
 
     //---------------------- Kepler Solver ------------------------------------
@@ -190,5 +224,54 @@ public class OrbitMoverAnalytic : MonoBehaviour
         } while (Mathf.Abs(delta) > tolerance && iterations < maxIterations);
 
         return E;
+    }
+
+    float SolveKeplerHyperbolicAnomaly(float M, float e, float tolerance = 1e-6f)
+    {
+        float H = M;
+        float delta;
+        int iterations = 0;
+        const int maxIterations = 100;
+
+        do
+        {
+            if (float.IsNaN(H) || float.IsInfinity(H)) return M;
+
+            float sh = Sinh(H);
+            float ch = Cosh(H);
+
+            float f = e * sh - H - M;
+            float df = e * ch - 1;
+
+            if (Mathf.Abs(df) < 1e-9f) break;
+
+            delta = f / (df + Epsilon); // Epsilon prevents division by zero
+            H -= delta * 0.5f; // Dampening for stability
+
+            iterations++;
+        } while (Mathf.Abs(delta) > tolerance && iterations < maxIterations);
+
+        return H;
+    }
+
+
+    //---------------------- Math Utilities -----------------------------------
+    const float Epsilon = 1e-6f;
+
+    float Sinh(float x)
+    {
+        return (Mathf.Exp(x) - Mathf.Exp(-x)) / 2f;
+    }
+
+    float Cosh(float x)
+    {
+        return (Mathf.Exp(x) + Mathf.Exp(-x)) / 2f;
+    }
+
+    float Tanh(float x)
+    {
+        float ex = Mathf.Exp(x);
+        float e_x = Mathf.Exp(-x);
+        return (ex - e_x) / (ex + e_x + Epsilon);
     }
 }

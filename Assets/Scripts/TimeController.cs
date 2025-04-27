@@ -1,64 +1,43 @@
 using UnityEngine;
-using System;
 
 public class TimeController : MonoBehaviour
 {
-    // Singleton instance
-    private static TimeController _instance;
-    public static TimeController Instance
+    private readonly float[] timeScales = { 1f, 5f, 10f, 50f, 100f };
+    private int currentIndex = 0;
+
+    void Update()
     {
-        get
+        if (Input.GetKeyDown(KeyCode.Period) || Input.GetKeyDown(KeyCode.Greater)) // > or .
         {
-            if (_instance == null)
-            {
-                _instance = FindFirstObjectByType<TimeController>();
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject("TimeController");
-                    _instance = obj.AddComponent<TimeController>();
-                }
-            }
-            return _instance;
+            IncreaseTimeScale();
+        }
+        else if (Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.Less)) // < or ,
+        {
+            DecreaseTimeScale();
         }
     }
 
-    [Header("Settings")]
-    [SerializeField, Range(0f, 100f)]
-    private float _timeScale = 1f;
-
-    public float TimeScale
+    void IncreaseTimeScale()
     {
-        get => _timeScale;
-        set
-        {
-            _timeScale = Mathf.Clamp(value, 0f, 100f);
-            UpdateTimeScale();
-            OnTimeScaleChanged?.Invoke(_timeScale);
-        }
-    }
-
-    public static event Action<float> OnTimeScaleChanged;
-
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(this.gameObject); // Optional: persist across scenes
+        currentIndex = Mathf.Min(currentIndex + 1, timeScales.Length - 1);
         UpdateTimeScale();
     }
 
-    private void UpdateTimeScale()
+    void DecreaseTimeScale()
     {
-        Time.timeScale = _timeScale;
-        Time.fixedDeltaTime = 0.02f * _timeScale;
+        currentIndex = Mathf.Max(currentIndex - 1, 0);
+        UpdateTimeScale();
     }
 
-    public void Pause() => TimeScale = 0f;
-    public void Resume() => TimeScale = 1f;
-    public void SetTimeScale(float scale) => TimeScale = scale;
+    void UpdateTimeScale()
+    {
+        Time.timeScale = timeScales[currentIndex];
+        Debug.Log($"Time scale set to: {Time.timeScale}x");
+    }
+
+    void OnDestroy()
+    {
+        // Reset time scale when this component is destroyed
+        Time.timeScale = 1f;
+    }
 }

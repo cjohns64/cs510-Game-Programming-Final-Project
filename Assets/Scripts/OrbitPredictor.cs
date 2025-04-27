@@ -1,9 +1,13 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(LineRenderer))]
 public class OrbitPredictor : MonoBehaviour
 {
+    public float lineScreenWidth = 0.2f;
+    private Camera mainCamera;
+
     public int segments = 180;
     public float maxRenderDistance = 100f;
 
@@ -15,12 +19,34 @@ public class OrbitPredictor : MonoBehaviour
     private Transform centralBody;
     private LineRenderer lineRenderer;
 
+    [Header("Orbit Materials")]
+    public Material StableMaterial;
+    public Material CollisionMaterial;
+    public Material EscapeMaterial;
+    public Material EncounterMaterial;
+
+    [Header("SOI Exit")]
+    public GameObject soiExitMarkerPrefab;
+    private GameObject soiExitMarker;
+    private Vector3 soiExitPoint;
+    private bool hasSOIExit;
+    private float exitTheta;
+
     void Start()
     {
         mover = GetComponent<OrbitMoverAnalytic>();
         centralBody = mover.CentralBody;
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = segments + 1;
+
+        mainCamera = Camera.main;
+        lineRenderer.useWorldSpace = true;
+
+        if (soiExitMarkerPrefab != null )
+        {
+            soiExitMarker = Instantiate(soiExitMarkerPrefab);
+            soiExitMarker.SetActive(false);
+        }
     }
 
     void Update()
@@ -28,6 +54,8 @@ public class OrbitPredictor : MonoBehaviour
         if (mover != null && mover.enabled)
         {
             DrawFromAnalyticMover(mover);
+            AdjustLineWidth();
+            SwitchMaterial();
         }
     }
 
@@ -50,20 +78,58 @@ public class OrbitPredictor : MonoBehaviour
 
     void DrawEllipse(float a, float e, Vector3 normal, Vector3 perigee)
     {
-        Quaternion rotation = Quaternion.LookRotation(perigee, normal);
-        Vector3[] points = new Vector3[segments + 1];
+        // Parameter validation
+        if (a <= 0 || e < 0 || e >= 1)
+            throw new ArgumentException("Invalid ellipse parameters");
 
-        for (int i = 0; i <= segments; i++)
+        if (normal == Vector3.zero || perigee == Vector3.zero)
+            throw new ArgumentException("Vectors cannot be zero");
+
+        Quaternion rotation = Quaternion.LookRotation(perigee, normal);
+        Vector3[] points = new Vector3[hasSOIExit ? segments + 2 : segments + 2]; // +2 for ship position and potential loop closure
+
+        if (hasSOIExit)
         {
-            float theta = 2 * Mathf.PI * i / segments;
-            float r = (a * (1 - e * e)) / (1 + e * Mathf.Cos(theta));
-            points[i] = centralBody.position + rotation * new Vector3(r * Mathf.Sin(theta), 0, r * Mathf.Cos(theta));
+            // Draw from ship to SOI exit (escaping orbit)
+            float thetaShip = GetCurrentTrueAnomaly();
+            float exitTheta = CalculateExitThetaForEllipse(a, e);
+
+            // Ensure we go the "short way" around
+            if (exitTheta < thetaShip) exitTheta += 2 * Mathf.PI;
+
+            points[0] = transform.position; // Exact ship position
+
+            for (int i = 0; i <= segments; i++)
+            {
+                float t = (float)i / segments;
+                float theta = Mathf.Lerp(thetaShip, exitTheta, t);
+                points[i + 1] = CalculateEllipsePoint(a, e, rotation, theta);
+            }
+        }
+        else
+        {
+            // Draw full ellipse (stable orbit)
+            for (int i = 0; i <= segments; i++)
+            {
+                float theta = 2 * Mathf.PI * i / segments;
+                points[i] = CalculateEllipsePoint(a, e, rotation, theta);
+            }
+            points[segments + 1] = points[0]; // Close the loop
         }
 
         lineRenderer.positionCount = points.Length;
         lineRenderer.SetPositions(points);
-
         UpdateMarkers(a, e, rotation);
+    }
+
+    Vector3 CalculateEllipsePoint(float a, float e, Quaternion rotation, float theta)
+    {
+        float r = (a * (1 - e * e)) / (1 + e * Mathf.Cos(theta));
+        return centralBody.position + rotation * new Vector3(
+            r * Mathf.Sin(theta),
+            0,
+            r * Mathf.Cos(theta)
+        );
     }
 
     void DrawHyperbola(float a, float e, Vector3 normal, Vector3 perigee)
@@ -128,6 +194,128 @@ public class OrbitPredictor : MonoBehaviour
         {
             apoapsisMarker.SetActive(false); // Hide for hyperbolic orbits
         }
+    }
+
+    void AdjustLineWidth()
+    {
+        if (mainCamera == null) return;
+
+        float distance = Vector3.Distance(
+            mainCamera.transform.position,
+            centralBody.position
+        );
+
+        float worldWidth = lineScreenWidth * distance / mainCamera.fieldOfView;
+        lineRenderer.startWidth = worldWidth;
+        lineRenderer.endWidth = worldWidth;
+    }
+
+    void SwitchMaterial()
+    {
+        float centralBodyRadius = centralBody.GetComponent<CelestialBody>().Radius;
+        float soiRadius = centralBody.GetComponent<CelestialBody>().SoiRadius;
+        float periapsis = mover.SemiMajorAxis * (1 - mover.Eccentricity);
+        float apoapsis = mover.SemiMajorAxis * (1 + mover.Eccentricity);
+
+        hasSOIExit = false;
+
+        if (mover.Eccentricity < 1f && apoapsis > soiRadius)
+        {
+            lineRenderer.material = EscapeMaterial;
+            CalculateSOIExitPoint(soiRadius);
+            hasSOIExit = true;
+
+            if (soiExitMarker != null)
+            {
+                soiExitMarker.SetActive(true);
+                soiExitMarker.transform.position = soiExitPoint;
+            }
+
+            if (apoapsisMarker != null)
+            {
+                apoapsisMarker.SetActive(false);
+            }
+        }
+        else if (periapsis <= centralBodyRadius)
+        {
+            lineRenderer.material = CollisionMaterial;
+        }
+        else
+        {
+            lineRenderer.material = StableMaterial;
+            if (soiExitMarker != null) soiExitMarker.SetActive(false);
+        }
+    }
+
+    void CalculateSOIExitPoint(float soiRadius)
+    {
+        float e = mover.Eccentricity;
+        float a = mover.SemiMajorAxis;
+
+        float numerator = (e < 1f) ? a * (1 - e * e) - soiRadius : a * (e * e - 1) - soiRadius;
+
+        float cosTheta = numerator / (e * soiRadius);
+        cosTheta = Mathf.Clamp(cosTheta, -1f, 1f);
+
+        exitTheta = Mathf.Acos(cosTheta);
+        soiExitPoint = GetOrbitPoint(exitTheta);
+
+    }
+
+
+    Vector3 GetOrbitPoint(float theta)
+    {
+        float e = mover.Eccentricity;
+        float a = mover.SemiMajorAxis;
+        float r;
+        if (e < 1f)
+        {
+            r = (a * (1 - e * e)) / (1 + e * Mathf.Cos(theta));
+        }
+        else
+        {
+            r = (a * (e * e - 1)) / (1 + e * Mathf.Cos(theta));
+        }
+
+        Quaternion rotation = Quaternion.LookRotation(mover.EccentricityVec.normalized, mover.AngularMomentumVec.normalized);
+        Vector3 localPos;
+        if (e < 1f)
+        {
+            localPos = new Vector3(r * Mathf.Sin(theta), 0, r * Mathf.Cos(theta));
+        }
+        else
+        {
+            localPos = new Vector3(-r * Mathf.Sin(theta), 0, -r * Mathf.Cos(theta));
+        }
+        return centralBody.position + rotation * localPos;
+    }
+
+    float GetCurrentTrueAnomaly()
+    {
+        Vector3 shipPos = transform.position - centralBody.position;
+        Vector3 eccentricityVec = mover.EccentricityVec.normalized;
+        Vector3 angularMomentum = mover.AngularMomentumVec.normalized;
+
+        // Project position onto the orbital plane
+        Vector3 planarPos = Vector3.ProjectOnPlane(shipPos, angularMomentum);
+        if (planarPos.magnitude < 0.001f) return 0f;
+
+        // Calculate angle between eccentricity vector and position
+        float cosTheta = Vector3.Dot(eccentricityVec, planarPos.normalized);
+        float theta = Mathf.Acos(cosTheta);
+
+        // Determine direction using cross product
+        Vector3 cross = Vector3.Cross(eccentricityVec, planarPos.normalized);
+        float sign = Mathf.Sign(Vector3.Dot(cross, angularMomentum));
+        return theta * sign;
+    }
+
+    float CalculateExitThetaForEllipse(float a, float e)
+    {
+        float soiRadius = centralBody.GetComponent<CelestialBody>().SoiRadius;
+        float numerator = a * (1 - e * e) - soiRadius;
+        float cosTheta = numerator / (e * soiRadius);
+        return Mathf.Acos(Mathf.Clamp(cosTheta, -1f, 1f));
     }
 }
 
