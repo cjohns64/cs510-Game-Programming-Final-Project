@@ -91,7 +91,7 @@ public class UpgradeManager : MonoBehaviour
 
     private void SlotSetActiveMesh(int slot_number, int selection_index)
     {
-        for (int i=0; i<slot_mesh_array.GetLength(0); i++)
+        for (int i=0; i<slot_mesh_array.GetLength(1); i++)
         {
             // only activate the selection index mesh
             if (slot_mesh_array[slot_number, i])
