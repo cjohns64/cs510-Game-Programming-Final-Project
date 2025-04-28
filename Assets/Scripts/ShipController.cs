@@ -6,6 +6,7 @@ public class ShipController : MonoBehaviour
     public float turnSpeedDegPerSec = 89.9f;
     public float thrustForceForward = 0.1f;
     public float thrustForceBackward = 0.05f;
+    public Animator shipAnimatior;
 
     private OrbitMoverAnalytic orbitMoverAnalytic;
     private Transform centralBody;
@@ -79,6 +80,11 @@ public class ShipController : MonoBehaviour
         {
             ApplyThrust(thrustDirection * thrustMagnitude);
         }
+        else
+        {
+            // inform animator
+            shipAnimatior.SetBool("isImpulse", false);
+        }
     }
 
     void EnforceYRotation()
@@ -90,5 +96,7 @@ public class ShipController : MonoBehaviour
     void ApplyThrust(Vector3 thrustVector)
     {
         orbitMoverAnalytic.ApplyDeltaVelocity(thrustVector * Time.deltaTime);
+        // inform animator
+        shipAnimatior.SetBool("isImpulse", true);
     }
 }
