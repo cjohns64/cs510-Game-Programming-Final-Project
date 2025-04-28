@@ -30,7 +30,7 @@ public class ShipController : MonoBehaviour
 
         if (wantPrograde || wantRetrograde)
         {
-            Vector3 velocity = orbitMoverAnalytic.CurrentVelocity;
+            Vector3 velocity = orbitMoverAnalytic.CurrentOrbitState.Velocity;
 
             // Project velocity onto central body's XZ plane
             Vector3 horizontalVelocity = Vector3.ProjectOnPlane(velocity, centralBody.up);
@@ -65,11 +65,11 @@ public class ShipController : MonoBehaviour
         Vector3 thrustDirection = Vector3.zero;
         float thrustMagnitude = 0f;
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             thrustDirection = transform.forward;
             thrustMagnitude = thrustForceForward;
-        } else if (Input.GetKey(KeyCode.S))
+        } else if (Input.GetKeyDown(KeyCode.S))
         {
             thrustDirection = -transform.forward;
             thrustMagnitude = thrustForceBackward;

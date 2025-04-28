@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
 public class OrbitMoverAnalytic : MonoBehaviour
 {
@@ -13,246 +14,357 @@ public class OrbitMoverAnalytic : MonoBehaviour
     public float TimeMultiplier = 1f;
 
     //---------------------- Public State ---------------------------------
-    public float SemiMajorAxis { get; private set; }
-    public float Eccentricity { get; private set; }
-    public Vector3 AngularMomentumVec { get; private set; }
-    public Vector3 EccentricityVec { get; private set; }
-    public Quaternion OrbitalPlaneRotation { get; private set; }
-    public Vector3 CurrentVelocity { get; private set; }
-    public float ElapsedTime { get; private set; }
+    public OrbitShape CurrentOrbitShape { get; private set; }
+    public OrbitState CurrentOrbitState { get; private set; }
 
-    //---------------------- Private State ---------------------------------
     private CelestialBody centralCelestialBody;
-    private float mu;
-    private float aCubed;
 
-    // --------------------- Unity Callbacks -------------------------------
-    void Start()
+    [ContextMenu("Print Orbit Info")]
+    public void PrintOrbitInfo()
     {
-        ElapsedTime = 0f;
-
-        if (CentralBody == null || !CentralBody.TryGetComponent(out centralCelestialBody))
+        if (CurrentOrbitShape == null || CurrentOrbitState == null)
         {
-            Debug.LogError("Central body configuration error!");
-            enabled = false;
+            Debug.LogWarning("[OrbitMoverAnalytic] Shape or State is null; nothing to print.");
             return;
         }
 
-        CurrentVelocity = InitialVelocity;
-        InitializeOrbitParameters(CurrentVelocity);
+        Debug.Log(CurrentOrbitShape.ToString());
+        Debug.Log(CurrentOrbitState.ToString());
+    }
+
+    void Awake()
+    {
+        if (!TryInitCentralBody()) { enabled = false; return; }
+
+        CurrentOrbitState = new OrbitState(
+            transform.position,
+            InitialVelocity
+        );
+
+    }
+
+    void Start()
+    {
+        if (!InitializeOrbit(InitialVelocity)) enabled = false;
+        RecomputeElapsedFromPosition();
     }
 
     void FixedUpdate()
     {
-        ElapsedTime += Time.fixedDeltaTime * TimeMultiplier;
-        if (Eccentricity < 1f)
-            UpdateEllipticalOrbit();
-        else
-            UpdateHyperbolicOrbit();
+        AdvanceTime();
+        UpdateOrbitState();
+        ApplyPosition();
     }
 
-    //---------------------- Public API ---------------------------------------
-    /// <summary>
-    /// Apply an impulsive deltaV at the current position, re-compute orbital elements,
-    /// and update elapsed time so the orbit picks up at the correct phase.
-    /// </summary>
-    /// <param name="deltaV"></param>
-    public void ApplyDeltaVelocity(Vector3 deltaV)
+    public void ApplyDeltaVelocity(Vector3 deltaVelocity)
     {
-        CurrentVelocity += deltaV;
-        InitializeOrbitParameters(CurrentVelocity);
-        ComputeElapsedTimeFromCurrentPosition();
-    }
-
-    //---------------------- Orbit Initialization -----------------------------
-    void InitializeOrbitParameters(Vector3 velocity)
-    {
-        Vector3 rVec = transform.position - CentralBody.position;
-        mu = GravitationalConstants.G * centralCelestialBody.Mass;
-
-        AngularMomentumVec = Vector3.Cross(rVec, velocity);
-
-        EccentricityVec = Vector3.Cross(velocity, AngularMomentumVec) / mu - rVec.normalized;
-        Eccentricity = EccentricityVec.magnitude;
-
-        float specificEnergy = velocity.sqrMagnitude / 2f - mu / rVec.magnitude;
-        SemiMajorAxis = -mu / (2f * specificEnergy);
-        aCubed = SemiMajorAxis * SemiMajorAxis * SemiMajorAxis;
-
-        Vector3 periapsisDir = EccentricityVec.normalized;
-        Vector3 orbitalNormal = AngularMomentumVec.normalized;
-        OrbitalPlaneRotation = Quaternion.LookRotation(periapsisDir, orbitalNormal);
-    }
-
-    //---------------------- Elliptical Propagation ---------------------------
-    // TODO update this
-    void UpdateEllipticalOrbit()
-    {
-        float meanMotion = Mathf.Sqrt(mu / Mathf.Pow(SemiMajorAxis, 3));
-        float meanAnomaly = meanMotion * ElapsedTime;
-
-        float eccentricAnomaly = SolveKeplerEccentricAnomaly(meanAnomaly, Eccentricity);
-        float trueAnomaly = 2f * Mathf.Atan(
-            Mathf.Sqrt((1 + Eccentricity) / (1 - Eccentricity)) *
-            Mathf.Tan(eccentricAnomaly / 2f)
+        PrintOrbitInfo();
+        CurrentOrbitState.Velocity += deltaVelocity;
+        if (!InitializeOrbit(CurrentOrbitState.Velocity)) enabled = false;
+        CurrentOrbitState.UpdateFromTrueAnomaly(
+            CurrentOrbitState.TrueAnomaly,
+            CurrentOrbitShape,
+            CentralBody
         );
-
-        float distance = SemiMajorAxis * (1f - Eccentricity * Eccentricity) /
-                        (1 + Eccentricity * Mathf.Cos(trueAnomaly));
-
-        UpdatePositionAndVelocity(trueAnomaly, distance);
+        ApplyPosition();
+        RecomputeElapsedFromPosition();
+        PrintOrbitInfo();
     }
 
-    //---------------------- Hyperbolic Propagation ---------------------------
-    void UpdateHyperbolicOrbit()
+    private bool TryInitCentralBody()
     {
-        float meanMotion = Mathf.Sqrt(-mu / (SemiMajorAxis * SemiMajorAxis * SemiMajorAxis));
-        float meanAnomaly = meanMotion * ElapsedTime;
-
-        float hyperbolicAnomaly = SolveKeplerHyperbolicAnomaly(meanAnomaly, Eccentricity);
-        float trueAnomaly = 2f * Mathf.Atan(
-            Mathf.Sqrt((Eccentricity + 1) / (Eccentricity - 1)) *
-            Tanh(hyperbolicAnomaly / 2f)
-        );
-
-        float distance = SemiMajorAxis * (Eccentricity * Eccentricity - 1) / (1 + Eccentricity * Mathf.Cos(trueAnomaly));
-
-        UpdatePositionAndVelocity(trueAnomaly, distance);
-    }
-    
-    // TODO update this
-    void UpdatePositionAndVelocity(float trueAnomaly, float r)
-    {
-        // Position
-        Vector3 localPos = new Vector3(
-            Mathf.Sin(trueAnomaly),
-            0,
-            Mathf.Cos(trueAnomaly)
-        ) * r;
-        transform.position = CentralBody.position + OrbitalPlaneRotation * localPos;
-
-        // Velocity
-        float vMag = Mathf.Sqrt(mu * (2 / r - 1 / SemiMajorAxis));
-        CurrentVelocity = OrbitalPlaneRotation *
-                new Vector3(
-                    Eccentricity + Mathf.Cos(trueAnomaly),
-                    0,
-                    -Mathf.Sin(trueAnomaly)
-                ).normalized * vMag;
-    }
-
-    //---------------------- Time Sync After deltaV ---------------------------
-    /// <summary>
-    /// Computes ElapsedTime such that at this orbital phase
-    /// the analytic propagation picks up exactly from the current position.
-    /// </summary>
-    void ComputeElapsedTimeFromCurrentPosition()
-    {
-        Vector3 rVec = transform.position - CentralBody.position;
-        Vector3 localPos = Quaternion.Inverse(OrbitalPlaneRotation) * rVec;
-        localPos.y = 0f; // Project onto orbital plane
-
-        if (localPos.magnitude < 1e-6f)
+        if (CentralBody == null || !CentralBody.TryGetComponent(out centralCelestialBody))
         {
-            ElapsedTime = 0f;
+            Debug.LogError("[OrbitMoverAnalytic] Central Body Initialization Error.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void AdvanceTime()
+    {
+        CurrentOrbitState.ElapsedTime += Time.fixedDeltaTime * TimeMultiplier;
+    }
+
+    private void ApplyPosition()
+    {
+        transform.position = CurrentOrbitState.Position;
+    }
+
+    private bool InitializeOrbit(Vector3 velocity)
+    {
+        Vector3 rVec = transform.position - CentralBody.position;
+        float r = rVec.magnitude;
+        if (r < 1e-3)
+        {
+            Debug.LogError("[OrbitMoverAnalytic] Orbit Radius is zero-cannot initialize.");
+            return false;
+        }
+        if (velocity.magnitude < 1e-3f)
+        {
+            Debug.LogError("[OrbitMoverAnalytic] Initial velocity is too small-please set a non-zero InitialVelocity..");
+            return false;
+        }
+
+        float mu = GravitationalConstants.G * centralCelestialBody.Mass;
+        CurrentOrbitShape = new OrbitShape(rVec, velocity, mu);
+
+        if (float.IsNaN(CurrentOrbitShape.SemiMajorAxis) || float.IsInfinity(CurrentOrbitShape.Eccentricity))
+        {
+            Debug.LogError("[OrbitMoverAnalytic] OrbitShape came back invalid—check initial conditions.");
+            return false;
+        }
+        return true;
+    }
+
+    private void UpdateOrbitState()
+    {
+        float meanAnomaly = CalculateMeanAnomaly();
+        float anomaly = CurrentOrbitShape.IsClosedOrbit
+            ? SolveKeplerEccentricAnomaly(meanAnomaly)
+            : SolveKeplerHyperbolicAnomaly(meanAnomaly);
+
+        CurrentOrbitState.UpdateFromTrueAnomaly(anomaly, CurrentOrbitShape, CentralBody);
+    }
+
+    private float CalculateMeanAnomaly()
+    {
+        float a = CurrentOrbitShape.SemiMajorAxis;
+        float n = Mathf.Sqrt(CurrentOrbitShape.GravitationalParameter / (a * a * a * (CurrentOrbitShape.IsClosedOrbit ? 1 : -1)));
+
+        return n * CurrentOrbitState.ElapsedTime;
+    }
+
+    private void RecomputeElapsedFromPosition()
+    {
+        const float EPS = 1e-6f;
+        var shape = CurrentOrbitShape;
+        if (shape == null || CentralBody == null) return;
+
+        // 1) Project into orbital plane
+        Vector3 rVec = transform.position - CentralBody.position;
+        Vector3 localPos = Quaternion.Inverse(shape.OrbitalPlaneRotation) * rVec;
+        localPos.y = 0f;
+
+        if (localPos.magnitude < EPS)
+        {
+            CurrentOrbitState.ElapsedTime = 0f;
+            //CurrentOrbitState.TrueAnomaly = 0f;
             return;
         }
 
+        // 2) True anomaly θ ∈ (-π, π]
         float theta = Mathf.Atan2(localPos.x, localPos.z);
-        float e = Eccentricity;
+        //CurrentOrbitState.TrueAnomaly = theta;
 
-        // Elliptical orbit (e < 1)
+        float e = shape.Eccentricity;
+        float a = shape.SemiMajorAxis;
+        float mu = shape.GravitationalParameter;
+
+        // 3) Elliptical case (e < 1)
         if (e < 1f)
         {
-            float cosTheta = Mathf.Cos(theta);
-            float denominator = 1f + e * cosTheta;
+            float cosT = Mathf.Cos(theta);
+            float sinT = Mathf.Sin(theta);
+            float denom = 1f + e * cosT;
 
-            if (Mathf.Abs(denominator) < 1e-6f)
+            if (Mathf.Abs(denom) < EPS)
             {
-                ElapsedTime = 0f;
+                CurrentOrbitState.ElapsedTime = 0f;
                 return;
             }
 
-            float cosE = (e + cosTheta) / denominator;
-            float sinE = Mathf.Sqrt(1f - e * e) * Mathf.Sin(theta) / denominator;
+            // Eccentric anomaly E:
+            float sqrt1me2 = Mathf.Sqrt(1f - e * e);
+            float sinE = sqrt1me2 * sinT / denom;
+            float cosE = (e + cosT) / denom;
             float E = Mathf.Atan2(sinE, cosE);
 
+            // Normalize E into [0, 2π)
+            //if (E < 0f) E += 2f * Mathf.PI;
+
+            // Mean anomaly M = E − e sin E
             float M = E - e * Mathf.Sin(E);
-            float n = Mathf.Sqrt(mu / Mathf.Abs(SemiMajorAxis * SemiMajorAxis * SemiMajorAxis));
-            ElapsedTime = M / n;
+
+            // Normalize M into [0, 2π)
+            //if (M < 0f) M += 2f * Mathf.PI;
+            //else if (M >= 2f * Mathf.PI) M -= 2f * Mathf.PI;
+
+            // Mean motion n = sqrt(μ/a³)
+            float n = Mathf.Sqrt(mu / Mathf.Abs(a * a * a));
+
+            CurrentOrbitState.ElapsedTime = M / n;
         }
-        // Hyperbolic orbit (e >= 1)
+        // 4) Hyperbolic case (e ≥ 1), unchanged
         else
         {
-            float cosTheta = Mathf.Cos(theta);
-            float denominator = 1f + e * cosTheta;
-
-            if (Mathf.Abs(denominator) < 1e-6f)
+            float cosT = Mathf.Cos(theta);
+            float denom = 1f + e * cosT;
+            if (Mathf.Abs(denom) < EPS)
             {
-                ElapsedTime = 0f;
+                CurrentOrbitState.ElapsedTime = 0f;
                 return;
             }
 
-            float coshH = (e + cosTheta) / denominator;
+            float coshH = (e + cosT) / denom;
+            //coshH = Mathf.Max(coshH, 1f + EPS);   // clamp domain
             float H = Mathf.Log(coshH + Mathf.Sqrt(coshH * coshH - 1f));
 
             float M = e * Sinh(H) - H;
-            float n = Mathf.Sqrt(-mu / (SemiMajorAxis * SemiMajorAxis * SemiMajorAxis));
-            ElapsedTime = M / n;
+            float n = Mathf.Sqrt(-mu / (a * a * a));
+
+            CurrentOrbitState.ElapsedTime = M / n;
         }
     }
 
-    //---------------------- Kepler Solver ------------------------------------
-    float SolveKeplerEccentricAnomaly(float M, float e, float tolerance = 1e-6f)
+
+
+    private float SolveKeplerEccentricAnomaly(float M, float tolerance = 1e-6f)
     {
+        if (CurrentOrbitShape == null) throw new InvalidOperationException("Orbit parameters not initialized");
+
+        float e = CurrentOrbitShape.Eccentricity;
         float E = M;
-        float delta;
         int iterations = 0;
         const int maxIterations = 100;
+
+        float sinE;
+        float f;
+        float df;
+        float delta;
 
         do
         {
             if (float.IsNaN(E) || float.IsInfinity(E)) return M;
 
-            float f = E - e * Mathf.Sin(E) - M;
-            float df = 1 - e * Mathf.Cos(E);
+            sinE = Mathf.Sin(E);
+            f = E - e * sinE - M;
+            df = 1 - e * Mathf.Cos(E);
+
             if (Mathf.Abs(df) < 1e-9f) break;
 
             delta = f / df;
             E -= delta;
-            iterations++;
-        } while (Mathf.Abs(delta) > tolerance && iterations < maxIterations);
+
+            if (++iterations >= maxIterations) break;
+
+        } while (Mathf.Abs(f) > tolerance);
 
         return E;
     }
 
-    float SolveKeplerHyperbolicAnomaly(float M, float e, float tolerance = 1e-6f)
+    private float SolveKeplerHyperbolicAnomaly(float M, float tolerance = 1e-6f)
     {
+        if (CurrentOrbitShape == null) throw new InvalidOperationException("Orbit parameters not initialized");
+
+        float e = CurrentOrbitShape.Eccentricity;
         float H = M;
-        float delta;
         int iterations = 0;
         const int maxIterations = 100;
+        const float epsilon = 1e-9f;
+
+        float sh;
+        float ch;
+        float f;
+        float df;
+        float delta;
 
         do
         {
             if (float.IsNaN(H) || float.IsInfinity(H)) return M;
 
-            float sh = Sinh(H);
-            float ch = Cosh(H);
+            sh = Sinh(H);
+            ch = Cosh(H);
+            f = e * sh - H - M;
+            df = e * ch - 1;
 
-            float f = e * sh - H - M;
-            float df = e * ch - 1;
+            if (Mathf.Abs(df) < epsilon) break;
 
-            if (Mathf.Abs(df) < 1e-9f) break;
+            delta = f / (df + epsilon);
+            H -= delta * 0.5f;  // Damped Newton-Raphson for stability
 
-            delta = f / (df + Epsilon); // Epsilon prevents division by zero
-            H -= delta * 0.5f; // Dampening for stability
+            if (++iterations >= maxIterations) break;
 
-            iterations++;
-        } while (Mathf.Abs(delta) > tolerance && iterations < maxIterations);
+        } while (Mathf.Abs(f) > tolerance);
 
         return H;
     }
+
+    private bool SanityCheckAll(string contextTag = "")
+    {
+        bool ok = true;
+        Action<string, float> chkF = (n, v) =>
+        {
+            if (float.IsNaN(v) || float.IsInfinity(v))
+            {
+                Debug.LogError($"[SanityCheck:{contextTag}] {n} is invalid: {v}");
+                ok = false;
+            }
+        };
+        Action<string, Vector3> chkV3 = (n, v) =>
+        {
+            chkF($"{n}.x", v.x);
+            chkF($"{n}.y", v.y);
+            chkF($"{n}.z", v.z);
+        };
+
+        // 1) Central body & mu
+        if (centralCelestialBody == null)
+        {
+            Debug.LogError($"[SanityCheck:{contextTag}] centralCelestialBody is null");
+            return false;
+        }
+        float mu = GravitationalConstants.G * centralCelestialBody.Mass;
+        chkF("G", GravitationalConstants.G);
+        chkF("centralCelestialBody.Mass", centralCelestialBody.Mass);
+        chkF("mu", mu);
+
+        // 2) OrbitShape
+        if (CurrentOrbitShape == null)
+        {
+            Debug.LogError($"[SanityCheck:{contextTag}] CurrentOrbitShape is null");
+            ok = false;
+        }
+        else
+        {
+            chkF("Shape.SemiMajorAxis", CurrentOrbitShape.SemiMajorAxis);
+            chkF("Shape.Eccentricity", CurrentOrbitShape.Eccentricity);
+            chkF("Shape.GravitationalParameter", CurrentOrbitShape.GravitationalParameter);
+            chkV3("Shape.AngularMomentum", CurrentOrbitShape.AngularMomentum);
+            chkV3("Shape.EccentricityVector", CurrentOrbitShape.EccentricityVector);
+            chkF("Shape.OrbitalPlaneRot.x", CurrentOrbitShape.OrbitalPlaneRotation.x);
+            chkF("Shape.OrbitalPlaneRot.y", CurrentOrbitShape.OrbitalPlaneRotation.y);
+            chkF("Shape.OrbitalPlaneRot.z", CurrentOrbitShape.OrbitalPlaneRotation.z);
+            chkF("Shape.OrbitalPlaneRot.w", CurrentOrbitShape.OrbitalPlaneRotation.w);
+        }
+
+        // 3) OrbitState
+        if (CurrentOrbitState == null)
+        {
+            Debug.LogError($"[SanityCheck:{contextTag}] CurrentOrbitState is null");
+            ok = false;
+        }
+        else
+        {
+            chkV3("State.Position", CurrentOrbitState.Position);
+            chkV3("State.Velocity", CurrentOrbitState.Velocity);
+            chkF("State.TrueAnomaly", CurrentOrbitState.TrueAnomaly);
+            chkF("State.ElapsedTime", CurrentOrbitState.ElapsedTime);
+        }
+
+        // 4) Transform vs CentralBody
+        chkV3("transform.position", transform.position);
+        chkV3("CentralBody.position", CentralBody.position);
+        Vector3 r = transform.position - CentralBody.position;
+        chkV3("rVector", r);
+
+        if (!ok)
+            enabled = false;  // optionally halt further updates
+
+        return ok;
+    }
+
 
 
     //---------------------- Math Utilities -----------------------------------
@@ -273,5 +385,104 @@ public class OrbitMoverAnalytic : MonoBehaviour
         float ex = Mathf.Exp(x);
         float e_x = Mathf.Exp(-x);
         return (ex - e_x) / (ex + e_x + Epsilon);
+    }
+}
+
+
+[System.Serializable]
+public class OrbitShape
+{
+    public float SemiMajorAxis { get; private set; }
+    public float Eccentricity { get; private set; }
+    public Vector3 AngularMomentum { get; private set; }
+    public Vector3 EccentricityVector { get; private set; }
+    public Quaternion OrbitalPlaneRotation { get; private set; }
+    public float GravitationalParameter { get; private set; }
+
+    public bool IsClosedOrbit => Eccentricity < 1f;
+
+    public OrbitShape(Vector3 position, Vector3 velocity, float mu)
+    {
+        CalculateOrbitalElements(position, velocity, mu);
+    }
+
+    private void CalculateOrbitalElements(Vector3 rVec, Vector3 velocity, float mu)
+    {
+        float rMag = rVec.magnitude;
+        if (rMag < 1e-6f) throw new InvalidOperationException("Position too close to central body.");
+
+        AngularMomentum = Vector3.Cross(rVec, velocity);
+
+        EccentricityVector = Vector3.Cross(velocity, AngularMomentum) / mu - rVec.normalized;
+        Eccentricity = EccentricityVector.magnitude;
+
+        float specificEnergy = velocity.sqrMagnitude / 2f - mu / rVec.magnitude;
+        SemiMajorAxis = -mu / (2f * specificEnergy);
+
+        Vector3 periapsisDir = EccentricityVector.normalized;
+        Vector3 orbitalNormal = AngularMomentum.normalized;
+        OrbitalPlaneRotation = Quaternion.LookRotation(periapsisDir, orbitalNormal);
+
+        GravitationalParameter = mu;
+    }
+
+    public override string ToString()
+    {
+        return
+            $"OrbitShape:\n" +
+            $"- SemiMajorAxis: {SemiMajorAxis:F4}\n" +
+            $"- Eccentricity: {Eccentricity:F4}\n" +
+            $"- μ: {GravitationalParameter:E4}\n" +
+            $"- AngularMomentum: {AngularMomentum}\n" +
+            $"- EccVector: {EccentricityVector}\n" +
+            $"- PlaneRot: {OrbitalPlaneRotation.eulerAngles}\n" +
+            $"- IsClosedOrbit: {IsClosedOrbit}\n";
+    }
+}
+
+public class OrbitState
+{
+    public float TrueAnomaly { get; internal set; }
+    public float ElapsedTime { get; set; }
+    public Vector3 Velocity { get; internal set; }
+    public Vector3 Position { get; internal set; }
+
+    public OrbitState(Vector3 initialPosition, Vector3 initialVelocity)
+    {
+        Position = initialPosition;
+        Velocity = initialVelocity;
+        TrueAnomaly = 0f;
+        ElapsedTime = 0f;
+    }
+
+    public void UpdateFromTrueAnomaly(float trueAnomaly, OrbitShape orbitShape, Transform centralBody)
+    {
+        TrueAnomaly = trueAnomaly;
+
+        float r = orbitShape.SemiMajorAxis * (1 - orbitShape.Eccentricity * orbitShape.Eccentricity) / (1 + orbitShape.Eccentricity * Mathf.Cos(trueAnomaly));
+        r *= orbitShape.IsClosedOrbit ? 1 : -1;
+
+        Vector3 localPosition = orbitShape.IsClosedOrbit
+                ? new Vector3(Mathf.Sin(trueAnomaly), 0, Mathf.Cos(trueAnomaly)) * r
+                : new Vector3(-Mathf.Sin(trueAnomaly), 0, -Mathf.Cos(trueAnomaly)) * r;
+
+        Position = centralBody.position + orbitShape.OrbitalPlaneRotation * localPosition;
+
+        float velocityMagnitude = Mathf.Sqrt(orbitShape.GravitationalParameter * (2 / r - 1 / orbitShape.SemiMajorAxis));
+        Velocity = orbitShape.OrbitalPlaneRotation * new Vector3(
+            orbitShape.Eccentricity + Mathf.Cos(trueAnomaly),
+            0,
+            -Mathf.Sin(trueAnomaly)
+        ).normalized * velocityMagnitude;
+    }
+
+    public override string ToString()
+    {
+        return
+            $"OrbitState:\n" +
+            $"- Position: {Position}\n" +
+            $"- Velocity: {Velocity}\n" +
+            $"- TrueAnomaly: {TrueAnomaly:F4}\n" +
+            $"- ElapsedTime: {ElapsedTime:F4}";
     }
 }
