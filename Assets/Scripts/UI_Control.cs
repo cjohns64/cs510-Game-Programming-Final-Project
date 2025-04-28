@@ -11,8 +11,9 @@ public class UI_Control : MonoBehaviour
     public GameObject tradeMenu;
     public GameObject upgradeMenu;
     public GameObject prompt;
-    public Animator shipAnimatior;
-    private bool docked = false;
+    public Animator shipAnimator;
+    private float key_timer_docking = 0.0f;
+    private bool keydown_docking = false;
 
     void FixedUpdate()
     {
@@ -62,6 +63,17 @@ public class UI_Control : MonoBehaviour
                 ResetTradeTimer();
             }
         }
+        else if (keydown_docking && key_timer_docking > wait_time * 10.0f)
+        {
+            shipAnimator.SetBool("isDocked", true);
+            keydown_docking = false;
+            key_timer_docking = 0.0f;
+        }
+        else
+        {
+            shipAnimator.SetBool("isDocked", false);
+            keydown_docking = false;
+        }
     }
 
     void ToggleMenus(bool trade, bool upgrade)
@@ -91,10 +103,11 @@ public class UI_Control : MonoBehaviour
     {
         key_timer_T += Time.deltaTime;
         key_timer_U += Time.deltaTime;
-        if (Input.GetKeyDown("y") && key_timer_T > wait_time)
+        key_timer_docking += Time.deltaTime;
+
+        if (Input.GetKeyDown("y"))
         {
-            key_timer_T = 0.0f;
-            shipAnimatior.SetBool("isDocked", !docked);
+            keydown_docking = true;
         }
         if (Input.GetKeyDown("t"))
         {

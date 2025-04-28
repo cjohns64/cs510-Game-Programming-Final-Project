@@ -3,7 +3,32 @@ guid: 62a597f8f587f0737a0ee64323cf8555
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Armor-01
+    second: {fileID: 2100000, guid: 1bfd4b1e03f8fc0eabfa02c98f00264a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cargo_Module_01
+    second: {fileID: 2100000, guid: d64a5a14a0575035da5a745a0e7527a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shield_Generator_01
+    second: {fileID: 2100000, guid: b2e03a828b621a9eb874450489a9cdf4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ship_hull_01
+    second: {fileID: 2100000, guid: cf0a7924758236c46843f86b063301ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SolarSail_Mat
+    second: {fileID: 2100000, guid: 80a1c17a85286f25e9dd91a316e9c369, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
