@@ -167,7 +167,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
         float R2 = otherBody.SoiRadius * otherBody.SoiRadius;
 
         // Pre‐allocate delegates for f(t)
-        float f0 = 0f;
+        //float f0 = 0f;
         Func<float, float> F = (t) => {
             Vector3 d = PredictPositionAtTime(t) - other.PredictPositionAtTime(t);
             return d.sqrMagnitude - R2;

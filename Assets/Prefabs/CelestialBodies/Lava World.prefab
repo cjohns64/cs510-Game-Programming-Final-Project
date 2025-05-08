@@ -86,6 +86,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2354792944155440946, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: StableMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 555bfe75e16346f43870f0ea50d0aa5f, type: 2}
+    - target: {fileID: 2354792944155440946, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: lineScreenWidth
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 3418304652704228701, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: InitialVelocity.x
       value: 1
@@ -112,15 +120,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7441145518050613387, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7441145518050613387, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7441145518050613387, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7441145518050613387, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: m_LocalPosition.x

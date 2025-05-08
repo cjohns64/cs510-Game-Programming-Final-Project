@@ -36,8 +36,6 @@ Transform:
   m_Children:
   - {fileID: 7411779455667334854}
   - {fileID: 4635191544412602098}
-  - {fileID: 5634074344827137403}
-  - {fileID: 8701575132519208802}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6988757651447056607
@@ -73,8 +71,8 @@ MonoBehaviour:
   lineScreenWidth: 0.2
   segments: 180
   maxRenderDistance: 100
-  periapsisMarker: {fileID: 375162086486595316}
-  apoapsisMarker: {fileID: 1754674685956803898}
+  periapsisMarker: {fileID: 1968943684699969113, guid: 6665a42374c1ccf4c999f2581254a8a0, type: 3}
+  apoapsisMarker: {fileID: 9087650406825086019, guid: f9306e375f77ff946adbbaa473658fdc, type: 3}
   StableMaterial: {fileID: 2100000, guid: 4a875fc416384ec44a3a7d6fbe453740, type: 2}
   CollisionMaterial: {fileID: 2100000, guid: b667dfa335876894bb28da613dbc01a0, type: 2}
   EscapeMaterial: {fileID: 2100000, guid: d927c3e57d115aa47b7fff510f8688e0, type: 2}

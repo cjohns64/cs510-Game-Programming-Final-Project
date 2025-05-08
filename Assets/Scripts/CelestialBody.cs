@@ -2,9 +2,14 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-[ExecuteAlways] // <- Important!
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+[ExecuteAlways]
 public class CelestialBody : MonoBehaviour
 {
+    [Header("Physical Properties")]
     public float Mass = 1f;
     public float Radius = 1f;
 
@@ -13,63 +18,81 @@ public class CelestialBody : MonoBehaviour
     public GameObject SoiPrefab;
     private GameObject _soiVis;
 
-    private static List<CelestialBody> _celestialBodies = new List<CelestialBody>();
+    private static readonly List<CelestialBody> _bodies = new List<CelestialBody>();
 
-    void OnEnable()
+#if UNITY_EDITOR 
+    private void OnValidate() 
     {
-        _celestialBodies.Add(this);
-        _celestialBodies = _celestialBodies.OrderBy(body => body.SoiRadius).ToList();
-        UpdateScale();
-        UpdateSOI();
-    }
-
-    void OnDisable()
-    {
-        _celestialBodies.Remove(this);
-    }
-
-    void Update()
-    {
-#if UNITY_EDITOR
         if (!Application.isPlaying)
-        {
-            UpdateScale();
-            UpdateSOI();
-        }
-#endif
+            transform.localScale = Vector3.one * Radius * 2f;
+    }
+#endif 
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(0.5f, 0.5f, 1f, 0.1f);
+        Gizmos.DrawWireSphere(transform.position, SoiRadius);
     }
 
-    private void UpdateScale()
+    private void Awake()
     {
-        transform.localScale = Vector3.one * Radius * 2f;
+        if (!Application.isPlaying) return;
+
+        // Maintain sorted list
+        int idx = _bodies.FindIndex(b => b.SoiRadius > SoiRadius);
+        if (idx < 0) _bodies.Add(this);
+        else _bodies.Insert(idx, this);
     }
 
-    private void UpdateSOI()
+    private void OnDestroy()
     {
-        if (SoiPrefab != null && _soiVis == null)
+        if (!Application.isPlaying) return;
+        _bodies.Remove(this);
+    }
+
+    private void Start()
+    {
+        if (SoiPrefab == null) return;
+
+        var old = transform.Find("SOI_Vis");
+        if (old != null)
         {
-            _soiVis = Instantiate(SoiPrefab);
-            _soiVis.transform.SetParent(this.transform);
+#if UNITY_EDITOR
+            DestroyImmediate(old.gameObject);
+#else 
+            Destroy(old.gameObject);
+#endif 
         }
+
+        _soiVis = Application.isPlaying
+            ? Instantiate(SoiPrefab, transform)
+            : null;
 
         if (_soiVis != null)
         {
-            _soiVis.transform.localScale = Vector3.one * SoiRadius * 2f / transform.localScale.x;
+            _soiVis.name = "SOI_Vis";
             _soiVis.transform.localPosition = Vector3.zero;
+
+            float parentScale = transform.lossyScale.x;
+            _soiVis.transform.localScale = Vector3.one * SoiRadius * 2f / parentScale;
         }
     }
 
-    public static List<CelestialBody> GetAllCelestialBodies() => _celestialBodies;
+    public static IReadOnlyList<CelestialBody> GetAllCelestialBodies() => _bodies;
+
+    public bool IsPointInsideSOI(Vector3 pt)
+    {
+        return (pt - transform.position).sqrMagnitude < SoiRadius * SoiRadius;
+    }
 
     public static CelestialBody FindBodyWithSOIContaining(Vector3 point)
     {
-        return _celestialBodies.FirstOrDefault(body => body.IsPointInsideSOI(point));
-    }
-
-    public bool IsPointInsideSOI(Vector3 point)
-    {
-        float distanceSqr = (point - transform.position).sqrMagnitude;
-        return distanceSqr < SoiRadius * SoiRadius;
+        foreach (var body in _bodies)
+        {
+            if (body.IsPointInsideSOI(point))
+                return body;
+        }
+        return null;
     }
 
     public void SOIVisEnabled(bool enabled)
@@ -78,9 +101,4 @@ public class CelestialBody : MonoBehaviour
             _soiVis.SetActive(enabled);
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(0.5f, 0.5f, 1f, 0.1f);
-        Gizmos.DrawWireSphere(transform.position, SoiRadius);
-    }
 }
