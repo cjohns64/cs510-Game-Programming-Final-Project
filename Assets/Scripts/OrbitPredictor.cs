@@ -1,10 +1,14 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(LineRenderer))]
 public class OrbitPredictor : MonoBehaviour
 {
+    [Header("Object Type")]
+    public bool isSpaceship = false;
+
     public float lineScreenWidth = 0.2f;
     private Camera mainCamera;
 
@@ -29,8 +33,15 @@ public class OrbitPredictor : MonoBehaviour
     public GameObject soiExitMarkerPrefab;
     private GameObject soiExitMarker;
     private Vector3 soiExitPoint;
-    private bool hasSOIExit;
+    private bool hasSOIExit = false;
     private float exitTheta;
+
+    [Header("SOI Entry")]
+    public GameObject soiEntryMarkerPrefab;
+    private GameObject soiEntryMarker;
+    private bool hasSOIEntry = false;
+    private Vector3 soiEntryPoint;
+    private float soiEntryTheta;
 
     void Start()
     {
@@ -47,6 +58,12 @@ public class OrbitPredictor : MonoBehaviour
             soiExitMarker = Instantiate(soiExitMarkerPrefab);
             soiExitMarker.SetActive(false);
         }
+
+        if (soiEntryMarkerPrefab != null )
+        {
+            soiEntryMarker = Instantiate(soiEntryMarkerPrefab);
+            soiEntryMarker.SetActive(false);
+        }
     }
 
     void Update()
@@ -56,17 +73,33 @@ public class OrbitPredictor : MonoBehaviour
             DrawFromAnalyticMover(mover);
             AdjustLineWidth();
             SwitchMaterial();
+            CheckSOITransition();
         }
+    }
+
+    private void OnEnable()
+    {
+        if (mover != null) mover.OnOrbitParametersChanged += HandleOrbitUpdate;
+    }
+
+    private void OnDisable()
+    {
+        if (mover != null) mover.OnOrbitParametersChanged -= HandleOrbitUpdate;
+    }
+
+    private void HandleOrbitUpdate()
+    {
+        Debug.Log("Orbit needs update!!!");
     }
 
     void DrawFromAnalyticMover(OrbitMoverAnalytic mover)
     {
-        float a = mover.SemiMajorAxis;
-        float e = mover.Eccentricity;
-        Vector3 normal = mover.AngularMomentumVec.normalized;
-        Vector3 perigee = mover.EccentricityVec.normalized;
+        float a = mover.shape.a;
+        float e = mover.shape.e;
+        Vector3 normal = mover.shape.AngularMomentumVec.normalized;
+        Vector3 perigee = mover.shape.EccentricityVec.normalized;
 
-        if (e < 1f)
+        if (mover.shape.IsClosedOrbit)
         {
             DrawEllipse(a, e, normal, perigee);
         }
@@ -88,11 +121,15 @@ public class OrbitPredictor : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(perigee, normal);
         Vector3[] points = new Vector3[hasSOIExit ? segments + 2 : segments + 2]; // +2 for ship position and potential loop closure
 
-        if (hasSOIExit)
+        if (hasSOIExit || hasSOIEntry)
         {
             // Draw from ship to SOI exit (escaping orbit)
-            float thetaShip = GetCurrentTrueAnomaly();
-            float exitTheta = CalculateExitThetaForEllipse(a, e);
+            float thetaShip = mover.state.theta;
+
+            float exitTheta = hasSOIEntry 
+                ? soiEntryTheta
+                : CalculateExitThetaForEllipse(a, e);
+
 
             // Ensure we go the "short way" around
             if (exitTheta < thetaShip) exitTheta += 2 * Mathf.PI;
@@ -182,7 +219,7 @@ public class OrbitPredictor : MonoBehaviour
             periapsisMarker.transform.position = periPos;
         }
 
-        if (apoapsisMarker != null && e < 1f) // Apoapsis only exists for closed orbits (e < 1)
+        if (apoapsisMarker != null && mover.shape.IsClosedOrbit) // Apoapsis only exists for closed orbits (e < 1)
         {
             // Apoapsis: farthest point from central body
             float r_apo = a * (1 + e);
@@ -214,12 +251,12 @@ public class OrbitPredictor : MonoBehaviour
     {
         float centralBodyRadius = centralBody.GetComponent<CelestialBody>().Radius;
         float soiRadius = centralBody.GetComponent<CelestialBody>().SoiRadius;
-        float periapsis = mover.SemiMajorAxis * (1 - mover.Eccentricity);
-        float apoapsis = mover.SemiMajorAxis * (1 + mover.Eccentricity);
+        float periapsis = mover.shape.a * (1 - mover.shape.e);
+        float apoapsis = mover.shape.a * (1 + mover.shape.e);
 
         hasSOIExit = false;
 
-        if (mover.Eccentricity < 1f && apoapsis > soiRadius)
+        if (mover.shape.IsClosedOrbit && apoapsis > soiRadius)
         {
             lineRenderer.material = EscapeMaterial;
             CalculateSOIExitPoint(soiRadius);
@@ -247,12 +284,73 @@ public class OrbitPredictor : MonoBehaviour
         }
     }
 
+    void CheckSOITransition()
+    {
+        if (!isSpaceship) return;
+
+        float closestTheta = float.MaxValue;
+        CelestialBody nearestBody = null;
+        Vector3 encounterPoint = Vector3.zero;
+        float currentTheta = mover.state.theta;
+
+        var allBodies = CelestialBody.GetAllCelestialBodies()
+            .Where(b => b.transform != centralBody)
+            .ToList();
+
+        foreach (var body in allBodies)
+        {
+            body.SOIVisEnabled(false);
+
+            if (ShouldSkipBody(body)) continue;
+
+            var bodyMover = body.GetComponent<OrbitMoverAnalytic>();
+            if (!bodyMover) continue;
+
+            float encounterAnomaly = mover.CalculateEncounterAnomaly(bodyMover, 200);
+
+            if (encounterAnomaly < 0) continue;
+
+            float deltaTheta = encounterAnomaly - currentTheta;
+
+            if (mover.shape.IsClosedOrbit && deltaTheta < 0)
+                deltaTheta += 2 * Mathf.PI;
+
+            if (deltaTheta >= closestTheta) {
+                continue;
+            }
+
+            closestTheta = encounterAnomaly;
+            nearestBody = body;
+        }
+
+        if (nearestBody != null)
+        {
+            soiEntryMarker.SetActive(true);
+            //encounterMarker.transform.position = encounterPoint;
+            soiEntryMarker.transform.position = GetOrbitPoint(closestTheta);
+            //encounterMarker.transform.LookAt(nearestBody.transform.position);
+            hasSOIEntry = true;
+            soiEntryTheta = closestTheta;
+            nearestBody.SOIVisEnabled(true);
+        }
+        else
+        {
+            soiEntryMarker.SetActive(false);
+            hasSOIEntry = false;
+        }
+    }
+
+    bool ShouldSkipBody(CelestialBody body)
+    {
+        return false;
+    }
+
     void CalculateSOIExitPoint(float soiRadius)
     {
-        float e = mover.Eccentricity;
-        float a = mover.SemiMajorAxis;
+        float e = mover.shape.e;
+        float a = mover.shape.a;
 
-        float numerator = (e < 1f) ? a * (1 - e * e) - soiRadius : a * (e * e - 1) - soiRadius;
+        float numerator = (mover.shape.IsClosedOrbit) ? a * (1 - e * e) - soiRadius : a * (e * e - 1) - soiRadius;
 
         float cosTheta = numerator / (e * soiRadius);
         cosTheta = Mathf.Clamp(cosTheta, -1f, 1f);
@@ -265,10 +363,10 @@ public class OrbitPredictor : MonoBehaviour
 
     Vector3 GetOrbitPoint(float theta)
     {
-        float e = mover.Eccentricity;
-        float a = mover.SemiMajorAxis;
+        float e = mover.shape.e;
+        float a = mover.shape.a;
         float r;
-        if (e < 1f)
+        if (mover.shape.IsClosedOrbit)
         {
             r = (a * (1 - e * e)) / (1 + e * Mathf.Cos(theta));
         }
@@ -277,9 +375,9 @@ public class OrbitPredictor : MonoBehaviour
             r = (a * (e * e - 1)) / (1 + e * Mathf.Cos(theta));
         }
 
-        Quaternion rotation = Quaternion.LookRotation(mover.EccentricityVec.normalized, mover.AngularMomentumVec.normalized);
+        Quaternion rotation = Quaternion.LookRotation(mover.shape.EccentricityVec.normalized, mover.shape.AngularMomentumVec.normalized);
         Vector3 localPos;
-        if (e < 1f)
+        if (mover.shape.IsClosedOrbit)
         {
             localPos = new Vector3(r * Mathf.Sin(theta), 0, r * Mathf.Cos(theta));
         }
@@ -288,26 +386,6 @@ public class OrbitPredictor : MonoBehaviour
             localPos = new Vector3(-r * Mathf.Sin(theta), 0, -r * Mathf.Cos(theta));
         }
         return centralBody.position + rotation * localPos;
-    }
-
-    float GetCurrentTrueAnomaly()
-    {
-        Vector3 shipPos = transform.position - centralBody.position;
-        Vector3 eccentricityVec = mover.EccentricityVec.normalized;
-        Vector3 angularMomentum = mover.AngularMomentumVec.normalized;
-
-        // Project position onto the orbital plane
-        Vector3 planarPos = Vector3.ProjectOnPlane(shipPos, angularMomentum);
-        if (planarPos.magnitude < 0.001f) return 0f;
-
-        // Calculate angle between eccentricity vector and position
-        float cosTheta = Vector3.Dot(eccentricityVec, planarPos.normalized);
-        float theta = Mathf.Acos(cosTheta);
-
-        // Determine direction using cross product
-        Vector3 cross = Vector3.Cross(eccentricityVec, planarPos.normalized);
-        float sign = Mathf.Sign(Vector3.Dot(cross, angularMomentum));
-        return theta * sign;
     }
 
     float CalculateExitThetaForEllipse(float a, float e)

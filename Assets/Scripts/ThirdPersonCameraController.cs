@@ -7,7 +7,7 @@ public class ThirdPersonCameraController : MonoBehaviour
     public Transform target;
 
     [Header("Click-to-Focus Settings")]
-    [Tooltip("Which layers count as focusable (e.g. your Ship & Planet layers)")]
+    [Tooltip("Which tags count as focusable (e.g. your Ship & Planet layers)")]
     public LayerMask focusableLayers;
     [Tooltip("Max raycast distance when clicking")]
     public float focusRayDistance = 1000f;

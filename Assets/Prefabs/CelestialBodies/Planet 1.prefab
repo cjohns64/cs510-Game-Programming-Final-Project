@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5054003797783970044}
   - component: {fileID: 8999109282530646392}
   - component: {fileID: 5565183419363073518}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Planet 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ MonoBehaviour:
   Mass: 1
   Radius: 1
   SoiRadius: 2
-  InitialVelocity: {x: 0.5, y: 0, z: 0}
+  SoiPrefab: {fileID: 8962762696380920678, guid: 77a23aa63f6b53749b0371dae85f2e6c, type: 3}
 --- !u!114 &3418304652704228701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,8 +67,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CentralBody: {fileID: 0}
+  initializationType: 0
   InitialVelocity: {x: 0, y: 0, z: 0.3}
   TimeMultiplier: 1
+  otherBody: {fileID: 0}
 --- !u!114 &2354792944155440946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8dd01737b81e784394ecbe9b1e4ec74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSpaceship: 0
   lineScreenWidth: 0.2
   segments: 180
   maxRenderDistance: 100
@@ -91,6 +94,7 @@ MonoBehaviour:
   EscapeMaterial: {fileID: 0}
   EncounterMaterial: {fileID: 0}
   soiExitMarkerPrefab: {fileID: 0}
+  soiEntryMarkerPrefab: {fileID: 0}
 --- !u!33 &8514567691468323681
 MeshFilter:
   m_ObjectHideFlags: 0

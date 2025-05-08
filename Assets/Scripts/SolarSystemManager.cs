@@ -41,7 +41,7 @@ public class SolarSystemManager : MonoBehaviour
             var celestialBody = newBody.GetComponent<CelestialBody>();
             if (celestialBody != null)
             {
-                celestialBody.InitialVelocity = bodyData.initialVelocity;
+                //celestialBody.InitialVelocity = bodyData.initialVelocity;
                 bodyData.instance = celestialBody;
             }
 

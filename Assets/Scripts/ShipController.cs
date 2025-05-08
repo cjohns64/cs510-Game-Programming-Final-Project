@@ -31,7 +31,7 @@ public class ShipController : MonoBehaviour
 
         if (wantPrograde || wantRetrograde)
         {
-            Vector3 velocity = orbitMoverAnalytic.CurrentVelocity;
+            Vector3 velocity = orbitMoverAnalytic.state.velocity;
 
             // Project velocity onto central body's XZ plane
             Vector3 horizontalVelocity = Vector3.ProjectOnPlane(velocity, centralBody.up);
