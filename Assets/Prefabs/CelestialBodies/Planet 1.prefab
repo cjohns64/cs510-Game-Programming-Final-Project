@@ -163,7 +163,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7429903661203585788}
@@ -216,16 +216,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSpaceship: 0
-  lineScreenWidth: 0.2
+  lineScreenWidth: 0.15
   segments: 180
   maxRenderDistance: 100
   periapsisMarker: {fileID: 0}
   apoapsisMarker: {fileID: 0}
-  StableMaterial: {fileID: 2100000, guid: 4a875fc416384ec44a3a7d6fbe453740, type: 2}
+  StableMaterial: {fileID: 2100000, guid: 555bfe75e16346f43870f0ea50d0aa5f, type: 2}
   CollisionMaterial: {fileID: 2100000, guid: b667dfa335876894bb28da613dbc01a0, type: 2}
   EscapeMaterial: {fileID: 2100000, guid: d927c3e57d115aa47b7fff510f8688e0, type: 2}
   EncounterMaterial: {fileID: 2100000, guid: ae94eb4e49730fb4ab7bf6d75405140c, type: 2}
   soiExitMarkerPrefab: {fileID: 0}
+  soiEntryMarkerPrefab: {fileID: 0}
 --- !u!135 &8999109282530646392
 SphereCollider:
   m_ObjectHideFlags: 0
