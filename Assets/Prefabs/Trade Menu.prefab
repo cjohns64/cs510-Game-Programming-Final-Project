@@ -324,6 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: 8877b87778bbf74b1b9a4f1f10c4640f, type: 2}
+  item_ui_prefab: {fileID: 320702074256166927, guid: 1ab87e877259f25e4baac92266368107, type: 3}
   show_price: 1
 --- !u!114 &3873123818466157441
 MonoBehaviour:
@@ -575,6 +576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: 90bf215cec9fbecdaa6e1751fac0795a, type: 2}
+  item_ui_prefab: {fileID: 320702074256166927, guid: 1ab87e877259f25e4baac92266368107, type: 3}
   show_price: 1
 --- !u!114 &1636338302609354600
 MonoBehaviour:

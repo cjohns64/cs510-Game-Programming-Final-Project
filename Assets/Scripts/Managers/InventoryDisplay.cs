@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using TMPro;
 
 public class InventoryDisplay : MonoBehaviour
 {
     public InventoryObject inventory;
+    public GameObject item_ui_prefab;
     public bool show_price = false;
     Dictionary<InventorySlot, GameObject> itemsDisplayed = new Dictionary<InventorySlot, GameObject>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -52,7 +54,20 @@ public class InventoryDisplay : MonoBehaviour
         // skip null slots, items, and prefabs
         if (_slot.item != null)
         {
-            var obj = Instantiate(_slot.item.prefab, transform);
+            // add an item ui to the menu
+            var obj = Instantiate(item_ui_prefab, transform);
+            // update item icon
+            Image[] imageResults = GetComponentsInChildren<Image>();
+            // find the icon
+            foreach (Image img in imageResults)
+            {
+                if (img.name == "ItemIcon")
+                {
+                    img.sprite = _slot.item.icon;
+                    break;
+                }
+            }
+            // update the text
             UpdateItemText(obj, _slot);
             itemsDisplayed.Add(_slot, obj);
         }

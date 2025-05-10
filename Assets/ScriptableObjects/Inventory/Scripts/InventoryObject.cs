@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName="New Inventory", menuName="Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject
 {
-    // ItemType.Default is the last element
     public InventorySlot[] container = new InventorySlot[(int) ItemType.GetNames(typeof(ItemType)).Length];
     public float credits = 0.0f;
 
