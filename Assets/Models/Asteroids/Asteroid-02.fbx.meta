@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: a131937f00a561a4c8c89488854a91e1
+guid: ba79301b3bb3c7b48934bebfedb35108
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Asteroid
+    second: {fileID: 2100000, guid: d3ff87e3945aa364aa29ea6324c14e6f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -32,17 +37,21 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages: []
-    globalScale: 1
-    meshCompression: 0
+    lODScreenPercentages:
+    - 0.25
+    - 0.125
+    - 0.0625
+    - 0.01
+    globalScale: 0.25
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1
     importVisibility: 1
-    importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
@@ -76,7 +85,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human: []
@@ -88,7 +97,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.25
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
