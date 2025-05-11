@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [CreateAssetMenu(fileName="New Inventory", menuName="Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject
@@ -12,6 +12,9 @@ public class InventoryObject : ScriptableObject
     [SerializeField] private InventorySlot[] defined_default_inv;
     [SerializeField] private InventorySlot[] produces;
     [SerializeField] private InventorySlot[] consumes;
+    public int inventory_capacity = 500;
+    private int current_capacity = 0;
+    public event Action<ItemType> OnInventoryChanged;
     public float credits = 0.0f;
 
     /**
@@ -39,6 +42,8 @@ public class InventoryObject : ScriptableObject
         if (items.ContainsKey(item))
         {
             items[item] += amount; // add amount
+            current_capacity += amount;
+            OnInventoryChanged?.Invoke(item);
             return;
         }
         else
@@ -52,6 +57,7 @@ public class InventoryObject : ScriptableObject
     private void GrowInventory(ItemType item, int amount)
     {
         items.Add(item, amount);
+        OnInventoryChanged?.Invoke(item);
     }
 
     /**
@@ -68,15 +74,17 @@ public class InventoryObject : ScriptableObject
                 // amount is negative, calculate the difference and adjust amount removed
                 int remove_amount = amount + items[item];
                 items[item] = 0;
+                current_capacity -= remove_amount;
                 return remove_amount;
             }
+            OnInventoryChanged?.Invoke(item);
             // on success return the amount we removed
             return amount;
         }
         else
         {
             // add to dictionary
-            GrowInventory(item, amount);
+            GrowInventory(item, 0);
             // did not remove anything since it was not in inventory
             return 0;
         }

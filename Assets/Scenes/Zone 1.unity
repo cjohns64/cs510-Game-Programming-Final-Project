@@ -1027,6 +1027,57 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 16928e16a4b216b4b8b1d38d918730d5, type: 2}
   - {fileID: 11400000, guid: 08efec4661eabab4bbb38a36f39495ad, type: 2}
   trade_menu: {fileID: 1498344933}
+  OnProductionCycle:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: d3ccf3fa70c08ed44b0295ffe19bc221, type: 2}
+        m_TargetAssemblyTypeName: InventoryObject, Assembly-CSharp
+        m_MethodName: ProduceItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 4809bbe5608578c4ea5c6ea8ddf7097b, type: 2}
+        m_TargetAssemblyTypeName: InventoryObject, Assembly-CSharp
+        m_MethodName: ProduceItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 16928e16a4b216b4b8b1d38d918730d5, type: 2}
+        m_TargetAssemblyTypeName: InventoryObject, Assembly-CSharp
+        m_MethodName: ProduceItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 08efec4661eabab4bbb38a36f39495ad, type: 2}
+        m_TargetAssemblyTypeName: InventoryObject, Assembly-CSharp
+        m_MethodName: ProduceItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1391823737
 Transform:
   m_ObjectHideFlags: 0

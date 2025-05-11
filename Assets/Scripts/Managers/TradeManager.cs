@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
+using UnityEngine.Events;
 
 
 /**
@@ -22,10 +23,26 @@ public class TradeManager : MonoBehaviour
     private int currentStation = 0;
     // the number in station trade area name == active station number
     private Regex regex = new Regex(@"\d+");
+    // production cycle event
+    public UnityEvent OnProductionCycle;
+    // time delay between production cycles
+    private float production_timer = 0.0f;
+    private float production_delay = 5.0f;
 
     private void Awake()
     {
         Initialize();
+    }
+
+    private void FixedUpdate()
+    {
+        // every trading cycle, trigger item production
+        production_timer += Time.deltaTime;
+        if (production_timer > production_delay )
+        {
+            OnProductionCycle.Invoke();
+            production_timer = 0.0f;
+        }
     }
 
     private void Initialize()

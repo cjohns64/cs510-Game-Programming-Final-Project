@@ -29,6 +29,8 @@ public class InventoryDisplay : MonoBehaviour
         inventory.InitInventory();
         // set up the display with all inventory objects, disable the ones with no items
         CreateDisplay();
+        // subscribe to the OnInventoryChanged Event
+        inventory.OnInventoryChanged += UpdateDisplay;
     }
 
     public void UpdateDisplay(ItemType item)
