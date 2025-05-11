@@ -14,6 +14,7 @@ public class Update_TradingInfo_UI : MonoBehaviour
         name_text = this.transform.Find("NameText").gameObject.GetComponent<TextMeshProUGUI>();
         name_text.text = station_name;
         credits_text = this.transform.Find("CreditsText").gameObject.GetComponent<TextMeshProUGUI>();
+        UpdateUI(ItemType.AntiGravGenerator); // update ui, parameter is not used
         inventory.OnInventoryChanged += UpdateUI; // subscribe to inventory changed event
     }
 

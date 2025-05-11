@@ -25,6 +25,8 @@ public class TradeManager : MonoBehaviour
     private Regex regex = new Regex(@"\d+");
     // production cycle event
     public UnityEvent OnProductionCycle;
+    public UnityEvent OnTradeFailNotEnoughFunds;
+    public UnityEvent OnTradeFailNotEnoughSpace;
     // time delay between production cycles
     private float production_timer = 0.0f;
     private float production_delay = 5.0f;
@@ -150,7 +152,17 @@ public class TradeManager : MonoBehaviour
         float unit_cost = GetItemCost(item_from);
         float full_cost = amount * unit_cost;
         // allow transaction if full cost can be paid for
-        if (full_cost <= inventory_to.credits)
+        if (full_cost > inventory_to.credits) 
+        {
+            // didn't have enough funds
+            OnTradeFailNotEnoughFunds.Invoke();
+        }
+        else if (!inventory_to.HasCapacity(amount))
+        {
+            // didn't have enough inventory space
+            OnTradeFailNotEnoughSpace.Invoke();
+        }
+        else
         {
             // remove items from seller inventory
             int sold_quantity = inventory_from.RemoveItem(item_from, amount);

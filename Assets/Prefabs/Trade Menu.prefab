@@ -2226,7 +2226,7 @@ PrefabInstance:
     - target: {fileID: 3719676173046969356, guid: c4b2bc8128258a64aa3b2c8954c9fbdd, type: 3}
       propertyPath: inventory
       value: 
-      objectReference: {fileID: 11400000, guid: 8877b87778bbf74b1b9a4f1f10c4640f, type: 2}
+      objectReference: {fileID: 11400000, guid: 13946770a6e30d84890359eee364ece9, type: 2}
     - target: {fileID: 5957024510614876448, guid: c4b2bc8128258a64aa3b2c8954c9fbdd, type: 3}
       propertyPath: m_Pivot.x
       value: 1

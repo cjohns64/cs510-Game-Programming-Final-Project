@@ -19,4 +19,6 @@ MonoBehaviour:
   - item: 20
     amount: 15
   consumes: []
-  credits: 1000
+  inventory_capacity: 500
+  credits: 1100
+  production_profit_scale: 0.01

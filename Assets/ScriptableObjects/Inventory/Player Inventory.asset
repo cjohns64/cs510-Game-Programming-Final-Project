@@ -15,8 +15,10 @@ MonoBehaviour:
   defined_default_inv:
   - item: 0
     amount: 1
-  - item: 6
-    amount: 1
-  - item: 16
-    amount: 15
-  credits: 3000
+  - item: 20
+    amount: 25
+  produces: []
+  consumes: []
+  inventory_capacity: 100
+  credits: 1000
+  production_profit_scale: 0

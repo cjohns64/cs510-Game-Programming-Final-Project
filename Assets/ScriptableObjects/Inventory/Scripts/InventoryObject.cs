@@ -51,6 +51,12 @@ public class InventoryObject : ScriptableObject
         production_profit = (production_return - (production_cost / 2)) * production_profit_scale;
     }
 
+    // checks if inventory has space for new items
+    public bool HasCapacity(int add_amount)
+    {
+        return current_capacity + add_amount < inventory_capacity;
+    }
+
     /**
      * Add items to inventory
      */
@@ -120,6 +126,7 @@ public class InventoryObject : ScriptableObject
     public void ProduceItems()
     {
         bool can_produce = true;
+        int inventory_required = 0;
         foreach (InventorySlot cslot in consumes)
         {
             if (GetItemAmount(cslot.item) < cslot.amount)
@@ -128,8 +135,13 @@ public class InventoryObject : ScriptableObject
                 can_produce = false;
                 break;
             }
+            inventory_required -= cslot.amount; // these items get removed
         }
-        if (can_produce)
+        foreach (InventorySlot pslot in produces)
+        {
+            inventory_required += pslot.amount; // these items get added
+        }
+        if (can_produce && inventory_required + current_capacity <= inventory_capacity)
         {
             credits += production_profit;
             // reduce items in inventory in quantity defined in consume set
