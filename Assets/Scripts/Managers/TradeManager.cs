@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Text.RegularExpressions;
 
 
 /**
@@ -10,15 +11,17 @@ using TMPro;
 public class TradeManager : MonoBehaviour
 {
     [SerializeField] private InventoryObject playerInventory;
-    [SerializeField] private List<InventoryObject> tradingPosts = new List<InventoryObject>();
+    [SerializeField] private List<InventoryObject> tradingPosts = new();
+    [SerializeField] private GameObject trade_menu; // needed because trade menu starts inactive
+    private List<GameObject> station_trade_areas = new();
     private ItemManager itemManager;
-    private GameObject playerTradeArea;
-    private GameObject stationTradeArea;
     private TextMeshProUGUI playerCreditsText;
     private TextMeshProUGUI stationCreditsText;
     private TMP_InputField quantityValueText;
     private bool is_initialized = false;
     private int currentStation = 0;
+    // the number in station trade area name == active station number
+    private Regex regex = new Regex(@"\d+");
 
     private void Awake()
     {
@@ -30,18 +33,26 @@ public class TradeManager : MonoBehaviour
         // lookup all components needed by the trade manager
         // lookup item manager
         itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
-        // most are children of the Trade Menu
-        GameObject trade_menu = GameObject.Find("Trade Menu");
-        // Debug.Log("trade_menu=" + trade_menu.name);
-        // lookup player trade area. It is a child of trade_menu, so use transform.Find
-        playerTradeArea = trade_menu.transform.Find("Viewport").Find("PlayerInventoryContent").gameObject;
-        // Debug.Log("player trade area=" + playerTradeArea.name);
-        // lookup station trade area
-        stationTradeArea = trade_menu.transform.Find("Viewport").Find("StationInventoryContent").gameObject;
-        // Debug.Log("station trade area=" + stationTradeArea.name);
+        // lookup all station trade areas, the exact number is not known
+        Transform tmp = trade_menu.transform.Find("Viewport").transform.Find("s0-InventoryContent");
+        station_trade_areas.Add(tmp.gameObject);
+        int i = 0;
+        while (tmp != null)
+        {
+            i++;
+            // find the next station
+            tmp = trade_menu.transform.Find("Viewport").transform.Find("s" + i + "-InventoryContent");
+            if (tmp != null)
+            {
+                // set it to inactive
+                tmp.gameObject.SetActive(false);
+                station_trade_areas.Add(tmp.gameObject);
+            }
+        }
+  
         // lookup player credits text area
         playerCreditsText = trade_menu.transform.Find("CreditsPanel").Find("PlayerCreditsValueText").gameObject.GetComponent<TextMeshProUGUI>();
-        Debug.Log("player credits text=" + playerCreditsText.name);
+        //Debug.Log("player credits text=" + playerCreditsText.name);
         // lookup station credits text area
         stationCreditsText = trade_menu.transform.Find("CreditsPanel").Find("StationCreditsValueText").gameObject.GetComponent<TextMeshProUGUI>();
         // Debug.Log("station credits text=" + stationCreditsText.name);
@@ -61,11 +72,22 @@ public class TradeManager : MonoBehaviour
         playerCreditsText.text = playerInventory.credits.ToString("c2");
         // update station credits text
         stationCreditsText.text = tradingPosts[currentStation].credits.ToString("c2");
+        // update active station trade area
+        foreach (GameObject station in station_trade_areas)
+        {
+            Match match = regex.Match(station.name);
+            if (match.Success)
+            {
+                // set all station trade areas to inactive except the current one
+                station.SetActive(currentStation == int.Parse(match.Value));
+            }
+        }
     }
 
     float GetItemCost(ItemType item)
     {
         //TODO add supply and demand calculations
+        //Debug.Log("" + item==ItemType.Metals + " " + itemManager.name);
         return itemManager.GetItem(item).item_value;
     }
 
@@ -80,13 +102,13 @@ public class TradeManager : MonoBehaviour
         if (is_player_inv)
         {
             // other inventory is a station inventory
-            Debug.Log("player inventory clicked, quantity = " + quantity);
+            //Debug.Log("player inventory clicked, quantity = " + quantity);
             TradeItems(item_type, playerInventory, tradingPosts[currentStation], quantity);
         }
         else
         {
             // other inventory is the player inventory
-            Debug.Log("station inventory clicked, quantity = " + quantity);
+            //Debug.Log("station inventory clicked, quantity = " + quantity);
             TradeItems(item_type, tradingPosts[currentStation], playerInventory, quantity);
         }
     }

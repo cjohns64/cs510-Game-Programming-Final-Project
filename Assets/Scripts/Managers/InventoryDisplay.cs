@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using static UnityEditor.Progress;
 
 /**
  * Inventory Display handles managing the user interface of a single inventory.
@@ -96,6 +95,11 @@ public class InventoryDisplay : MonoBehaviour
     {
         // add an item ui to the menu
         var obj = Instantiate(item_manager.item_ui_prefab, transform);
+        // update item type
+        var button_script = obj.GetComponentInChildren<ItemButton>();
+        //Debug.Log("before " + button_script.thisItem);
+        button_script.thisItem = item;
+        //Debug.Log("after " + button_script.thisItem);
         // update item icon
         Image[] imageResults = obj.GetComponentsInChildren<Image>();
         // find the icon
@@ -104,7 +108,7 @@ public class InventoryDisplay : MonoBehaviour
             if (img.name == "ItemIcon")
             {
                 // update the icon
-                Debug.Log("adding item icon: " + item + " " + item_manager.GetItem(item));
+                //Debug.Log("adding item icon: " + item + " " + item_manager.GetItem(item));
                 img.sprite = item_manager.GetItem(item).icon;
                 break;
             }
