@@ -66,7 +66,6 @@ public class TradeManager : MonoBehaviour
                 station_trade_areas.Add(tmp.gameObject);
             }
         }
-  
         // lookup player credits text area
         playerCreditsText = trade_menu.transform.Find("CreditsPanel").Find("PlayerCreditsValueText").gameObject.GetComponent<TextMeshProUGUI>();
         //Debug.Log("player credits text=" + playerCreditsText.name);
@@ -77,6 +76,11 @@ public class TradeManager : MonoBehaviour
         quantityValueText = trade_menu.transform.Find("QuantityUI").Find("QuantityInputField").gameObject.GetComponent<TMP_InputField>();
         // Debug.Log("quantity value text=" + quantityValueText.name);
         is_initialized = true;
+        // subscribe to inventory update events
+        foreach (InventoryObject inv in tradingPosts)
+        {
+            inv.OnInventoryChanged += event_listener_UpdateCreditsText;
+        }
     }
 
     void OnEnable ()
@@ -85,10 +89,8 @@ public class TradeManager : MonoBehaviour
         {
             Initialize();
         }
-        // update player credits text
-        playerCreditsText.text = playerInventory.credits.ToString("c2");
-        // update station credits text
-        stationCreditsText.text = tradingPosts[currentStation].credits.ToString("c2");
+        // update ui
+        UpdateCreditsText();
         // update active station trade area
         foreach (GameObject station in station_trade_areas)
         {
@@ -129,6 +131,18 @@ public class TradeManager : MonoBehaviour
             TradeItems(item_type, tradingPosts[currentStation], playerInventory, quantity);
         }
     }
+    public void event_listener_UpdateCreditsText(ItemType x)
+    {
+        UpdateCreditsText();
+    }
+
+    public void UpdateCreditsText()
+    {
+        // update player credits text
+        playerCreditsText.text = playerInventory.credits.ToString("c2");
+        // update station credits text
+        stationCreditsText.text = tradingPosts[currentStation].credits.ToString("c2");
+    }
 
     public void TradeItems(ItemType item_from, InventoryObject inventory_from, InventoryObject inventory_to, int amount)
     {
@@ -147,10 +161,7 @@ public class TradeManager : MonoBehaviour
             // remove credits form buyer inventory
             inventory_to.credits -= (sold_quantity * unit_cost);
             // update ui
-            // update player credits text
-            playerCreditsText.text = playerInventory.credits.ToString("c2");
-            // update station credits text
-            stationCreditsText.text = tradingPosts[currentStation].credits.ToString("c2");
+            UpdateCreditsText();
         }
     }
 }

@@ -16,6 +16,8 @@ public class InventoryObject : ScriptableObject
     private int current_capacity = 0;
     public event Action<ItemType> OnInventoryChanged;
     public float credits = 0.0f;
+    private float production_profit = 10.0f;
+    public float production_profit_scale = 0.01f;
 
     /**
      * Sets up the inventory with the values defined in the inspector.
@@ -25,6 +27,7 @@ public class InventoryObject : ScriptableObject
     {
         if (items.Count == 0) // don't add items unless actual items dict is uninitialized
         {
+            // setup inventory
             // use defined_default_inv
             for (int i = 0; i < defined_default_inv.Length; i++)
             {
@@ -32,6 +35,20 @@ public class InventoryObject : ScriptableObject
                 AddItem(defined_default_inv[i].item, defined_default_inv[i].amount);
             }
         }
+        // calculate production profit
+        // lookup item manager
+        ItemManager itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
+        float production_cost = 0.0f;
+        float production_return = 0.0f;
+        foreach (InventorySlot cslot in consumes)
+        {
+            production_cost += cslot.amount * itemManager.GetItem(cslot.item).item_value;
+        }
+        foreach (InventorySlot pslot in produces)
+        {
+            production_return += pslot.amount * itemManager.GetItem(pslot.item).item_value;
+        }
+        production_profit = (production_return - (production_cost / 2)) * production_profit_scale;
     }
 
     /**
@@ -75,6 +92,7 @@ public class InventoryObject : ScriptableObject
                 int remove_amount = amount + items[item];
                 items[item] = 0;
                 current_capacity -= remove_amount;
+                OnInventoryChanged?.Invoke(item);
                 return remove_amount;
             }
             OnInventoryChanged?.Invoke(item);
@@ -108,10 +126,12 @@ public class InventoryObject : ScriptableObject
             {
                 // not enough of this item
                 can_produce = false;
+                break;
             }
         }
         if (can_produce)
         {
+            credits += production_profit;
             // reduce items in inventory in quantity defined in consume set
             foreach (InventorySlot cslot in consumes)
             {
