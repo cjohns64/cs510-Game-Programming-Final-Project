@@ -1,57 +1,56 @@
+using System.Numerics;
+using NUnit.Framework;
 using UnityEngine;
 
 public enum ItemType
 {
-    ArmorUpgrade,
-    ShieldingUpgrade,
-    CargoUpgrade,
+    SolarSails,
+    ChemicalEngine,
+    IonEngine,
+    NuclearThermalEngine,
+    WarpEngine,
+    WormholeEngine,
+    HullBrace,
+    HullExtenderM1,
+    OuterStabilizers,
+    EngineArmSmall,
+    HullExtenderM2,
+    InnerStabilizers,
+    EngineArmLarge,
+    ArmorModule,
+    ShieldingModule,
+    CargoModule,
     Metals,
+    HeavyMetals,
     Ions,
     SemiConductors,
-    HeavyMetals,
     Fuel,
-    SolarSails,
     Conductors,
     EnergyCells,
     IonSource,
     RadiationShielding,
-    ChemicalEngine,
     FuelRods,
     Processors,
     LaserArray,
-    IonEngine,
     ComputerCores,
     PhaseInverter,
     FissionReactor,
     TachyonSource,
     WarpStabilizer,
     WarpDrive,
-    SubspaceNAVComputer,
-    NuclearThermalEngine,
     MassConverter,
-    HyperspaceComputer,
-    SubspaceDrive,
-    WarpEngine,
     AntiGravGenerator,
-    HyperDrive,
     WormholeStabilizer,
     FusionReactor,
-    SubspaceEngine,
-    AntimatterContainmentUnit,
-    WormholeDrive,
-    HyperspaceEngine,
-    AntimatterReactor,
-    QuantumProjector,
-    WormholeEngine,
-    TeleportationEngine,
-    Default
+    WormholeDrive
 }
 
 public abstract class ItemObject : ScriptableObject
 {
-    public GameObject prefab;
+    public Sprite icon;
     public ItemType type;
-    public float item_value = 0.0f;
+    public float item_value = 100.0f;
+    public int item_size = 1;
     public string item_name;
     [TextArea(15,20)]
     public string description;

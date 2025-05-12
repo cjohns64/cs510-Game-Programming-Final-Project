@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
 public class UI_Control : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class UI_Control : MonoBehaviour
     public Animator shipAnimator;
     private float key_timer_docking = 0.0f;
     private bool keydown_docking = false;
+    public UnityEvent OnUpgradeMenuActive;
 
     void FixedUpdate()
     {
@@ -84,6 +86,11 @@ public class UI_Control : MonoBehaviour
         upgradeMenu.SetActive(upgrade && !trade);
         // activate prompt if both menus are up or both are down
         prompt.SetActive(!(trade || upgrade) || (trade && upgrade));
+        if (upgradeMenu.activeSelf)
+        {
+            Debug.Log("Upgrade Menu Active");
+            OnUpgradeMenuActive.Invoke();
+        }
     }
 
     void ResetTradeTimer()
