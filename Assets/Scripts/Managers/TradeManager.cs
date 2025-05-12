@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
 using UnityEngine.Events;
-
 
 /**
  * Manages: station inventories, trading, item production, supply and demand calculations.
@@ -30,6 +30,10 @@ public class TradeManager : MonoBehaviour
     // time delay between production cycles
     private float production_timer = 0.0f;
     private float production_delay = 5.0f;
+
+    public OrbitMoverAnalytic playerMover;
+    public event Action<CelestialBody> OnMenuClosed;
+    private CelestialBody currentBody;
 
     private void Awake()
     {
@@ -83,6 +87,8 @@ public class TradeManager : MonoBehaviour
         {
             inv.OnInventoryChanged += event_listener_UpdateCreditsText;
         }
+
+        
     }
 
     void OnEnable ()
@@ -175,5 +181,19 @@ public class TradeManager : MonoBehaviour
             // update ui
             UpdateCreditsText();
         }
+    }
+
+    public void OpenMenu(CelestialBody body) {
+        currentBody = body;
+        trade_menu.SetActive(true);
+        UpdateCreditsText();
+    }
+
+    /// <summary>
+    /// Call this from a "Close" or "Done" button in the UI.
+    /// </summary>
+    public void CloseMenu() {
+        trade_menu.SetActive(false);
+        OnMenuClosed?.Invoke(currentBody);
     }
 }

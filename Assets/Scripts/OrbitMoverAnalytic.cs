@@ -37,7 +37,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
     public bool isSpaceship;
 
     // --------------------- Unity Callbacks -----------------------------
-    void Start()
+    public void Start()
     {
         if (CentralBody == null || !CentralBody.TryGetComponent(out centralCelestialBody))
         {
@@ -227,9 +227,6 @@ public class OrbitMoverAnalytic : MonoBehaviour
         // no encounter
         return -1f;
     }
-
-
-
 }
 
 [System.Serializable]
