@@ -21,8 +21,6 @@ MonoBehaviour:
     amount: 1
   - item: 7
     amount: 1
-  - item: 8
-    amount: 1
   produces: []
   consumes: []
   inventory_capacity: 100

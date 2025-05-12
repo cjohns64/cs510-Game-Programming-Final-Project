@@ -550,83 +550,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3312051952614369064, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
   m_PrefabInstance: {fileID: 606943148}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &606943150 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1789300549902987637, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
-  m_PrefabInstance: {fileID: 606943148}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &606943151 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8085065401444086688, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
-  m_PrefabInstance: {fileID: 606943148}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &606943152 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4638242018303135456, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
-  m_PrefabInstance: {fileID: 606943148}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &606943153 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1518916372225790590, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
-  m_PrefabInstance: {fileID: 606943148}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &606943154 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8483792554362544828, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
-  m_PrefabInstance: {fileID: 606943148}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &606943155 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4138203389367261191, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
-  m_PrefabInstance: {fileID: 606943148}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &606943156 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 374020660989888826, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
-  m_PrefabInstance: {fileID: 606943148}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &606943157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9175707927088704396, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
@@ -1053,9 +976,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
---- !u!95 &835747237 stripped
+--- !u!1 &835747237 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3982015299105311154, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+  m_PrefabInstance: {fileID: 835747236}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &835747238 stripped
 Animator:
-  m_CorrespondingSourceObject: {fileID: 4589785200682607135, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4321656017677047103, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
   m_PrefabInstance: {fileID: 835747236}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1030528656
@@ -1175,34 +1103,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50d548c432c53a166bb2addb653d4a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slot1: {fileID: 606943155}
-  slot2: {fileID: 606943154}
-  slot3: {fileID: 606943153}
-  slot4: {fileID: 606943152}
-  slot5: {fileID: 606943151}
-  slot6: {fileID: 606943150}
-  engineSlot: {fileID: 606943156}
-  slot1_Armor_Mesh: {fileID: 0}
-  slot1_Shield_Mesh: {fileID: 0}
-  slot1_Cargo_Mesh: {fileID: 0}
-  slot2_Armor_Mesh: {fileID: 0}
-  slot2_Shield_Mesh: {fileID: 0}
-  slot2_Cargo_Mesh: {fileID: 0}
-  slot3_Armor_Mesh: {fileID: 0}
-  slot3_Shield_Mesh: {fileID: 0}
-  slot3_Cargo_Mesh: {fileID: 0}
-  slot4_Armor_Mesh: {fileID: 0}
-  slot4_Shield_Mesh: {fileID: 0}
-  slot4_Cargo_Mesh: {fileID: 0}
-  slot5_Armor_Mesh: {fileID: 0}
-  slot5_Shield_Mesh: {fileID: 0}
-  slot5_Cargo_Mesh: {fileID: 0}
-  slot6_Armor_Mesh: {fileID: 0}
-  slot6_Shield_Mesh: {fileID: 0}
-  slot6_Cargo_Mesh: {fileID: 0}
-  engineSlot_tier0: {fileID: 0}
-  engineSlot_tier1: {fileID: 0}
-  engineSlot_tier2: {fileID: 0}
+  upgrade_menu: {fileID: 606943157}
+  player_inventory: {fileID: 11400000, guid: 90bf215cec9fbecdaa6e1751fac0795a, type: 2}
+  ship_mesh: {fileID: 835747237}
 --- !u!114 &1391823735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1219,7 +1122,22 @@ MonoBehaviour:
   tradeMenu: {fileID: 1498344933}
   upgradeMenu: {fileID: 606943157}
   prompt: {fileID: 6014176712897565823}
-  shipAnimator: {fileID: 835747237}
+  shipAnimator: {fileID: 835747238}
+  OnUpgradeMenuActive:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1391823734}
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: CheckInventory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1391823736
 MonoBehaviour:
   m_ObjectHideFlags: 0
