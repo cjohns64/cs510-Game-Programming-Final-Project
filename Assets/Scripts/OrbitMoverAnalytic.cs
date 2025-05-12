@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define ORBIT_DEBUG
+
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 
@@ -26,13 +28,13 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
     //--------------------- Events ---------------------------------------
     public event Action OnOrbitParametersChanged;
+    public event Action OnSOITransition;
 
     //--------------------- Private State --------------------------------
     private CelestialBody centralCelestialBody;
 
-    // TODO DELTE THIS IS TO QUICKLY VISUALIZE ENCOUNTER CODE
-    public OrbitMoverAnalytic otherBody;
-    // AAAAAHHHHHHH
+    // TODO DELTE THIS. TWO SOURCES OF TRUTH!!!
+    public bool isSpaceship;
 
     // --------------------- Unity Callbacks -----------------------------
     void Start()
@@ -49,6 +51,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
     void FixedUpdate()
     {
+        CheckSOITransition();
         UpdateOrbitState();
     }
 
@@ -69,6 +72,14 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
         state.velocity = InitialVelocity;
         state.SyncElapsedTimeToCurrentPosition(transform.position, CentralBody.position);
+    }
+
+    private void CheckSOITransition() {
+        if (!isSpaceship) return;
+        CelestialBody newCentralBody = CelestialBody.FindBodyWithSOIContaining(transform.position);
+        if (newCentralBody == centralCelestialBody) return;
+
+        OnSOITransition?.Invoke();
     }
 
     private void UpdateOrbitState()
@@ -93,7 +104,6 @@ public class OrbitMoverAnalytic : MonoBehaviour
         if (Mathf.Abs(1f - shape.e) < ECCENTRICITY_THRESHOLD)
         {
             Vector3 dir = Vector3.Cross(shape.AngularMomentumVec, shape.EccentricityVec).normalized;
-            Debug.Log(dir.x + " " + dir.y + " " + dir.z);
             state.velocity += dir * CORRECTION_FACTOR;
             shape.RecomputeOrbitShape(CentralBody.position, transform.position, state.velocity);
         }
@@ -275,6 +285,41 @@ public class OrbitShape
         rApoapsis = a * (1 + e);
         h = Mathf.Sqrt(mu * p);
     }
+
+    /// <summary>
+    /// Returns the *relative* world‑space position at true anomaly theta.
+    /// Caller should add central-body offset if needed.
+    /// </summary>
+    public Vector3 GetOrbitPoint(float theta)
+    {
+        float r = p / (1 + e * Mathf.Cos(theta));
+
+        
+        Vector3 localPos = new Vector3(
+            r * Mathf.Sin(theta), 
+            0, 
+            r * Mathf.Cos(theta)
+        );
+
+        return OrbitalPlaneRotation * localPos;
+    }
+
+    /// <summary>
+    /// Returns the true anomaly of the orbit at radius.
+    /// </summary>
+    public float? GetTrueAnomalyForRadius(float radius) {
+        float numerator = IsClosedOrbit 
+            ? a * (1 - e * e) - radius 
+            : a * (e * e - 1) - radius;
+        float denominator = e * radius;
+
+        if (Mathf.Abs(denominator) < 1e-6f) return null;
+
+        float cosTheta = numerator / denominator;
+        cosTheta = Mathf.Clamp(cosTheta, -1f, 1f);
+
+        return Mathf.Acos(cosTheta);
+    }
 }
 
 [System.Serializable]
@@ -376,8 +421,11 @@ public class OrbitState
             Mathf.Tan(E / 2f)
         );
 
-        r = shape.a * (1f - shape.e * shape.e) /
-                        (1 + shape.e * Mathf.Cos(theta));
+        //r = shape.a * (1f - shape.e * shape.e) /
+        //                (1 + shape.e * Mathf.Cos(theta));
+        float denom = 1f + shape.e * Mathf.Cos(theta);
+        denom = Mathf.Max(denom, 1e-6f);     
+        r = shape.p / denom;
 
         UpdatePositionAndVelocity(centralBodyPosition, transform);
     }
@@ -393,7 +441,10 @@ public class OrbitState
             Tanh(H / 2f)
         );
 
-        r = shape.a * (shape.e * shape.e - 1) / (1 + shape.e * Mathf.Cos(theta));
+        //r = shape.a * (shape.e * shape.e - 1) / (1 + shape.e * Mathf.Cos(theta));
+        float denom = 1f + shape.e * Mathf.Cos(theta);
+        denom = Mathf.Max(denom, 1e-6f);     // also clamp to avoid divide‑by‑zero
+        r = shape.p / denom;
 
         UpdatePositionAndVelocity(centralBodyPosition, transform);
     }
@@ -420,10 +471,12 @@ public class OrbitState
 
     private float SolveKeplerEquation(float M, float e, bool elliptical)
     {
-        float guess = M;
+        float guess = (elliptical) 
+            ? M
+            : Mathf.Log(2f * Mathf.Abs(M) / e + 1.8f); 
         float delta;
         int iterations = 0;
-        const int maxIterations = 10;
+        const int maxIterations = 25;
         const float tolerance = 1e-6f;
 
         do
@@ -450,6 +503,13 @@ public class OrbitState
             delta = f / (df - (f * d2f) / (2 * df + 1e-9f));
             guess -= delta;
         } while (Mathf.Abs(delta) > tolerance && ++iterations < maxIterations);
+
+#if ORBIT_DEBUG
+        if (iterations == maxIterations)
+        {
+            Debug.Log("MAX ITERATIONS REACHED FOR KEPLER SOLVER");
+        }
+#endif // DEBUG
 
         return guess;
     }

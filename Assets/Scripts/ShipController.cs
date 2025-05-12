@@ -65,6 +65,7 @@ public class ShipController : MonoBehaviour
     {
         Vector3 thrustDirection = Vector3.zero;
         float thrustMagnitude = 0f;
+        float multiplierCheat = Input.GetKey(KeyCode.X) ? 5f : 1f;
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -75,6 +76,8 @@ public class ShipController : MonoBehaviour
             thrustDirection = -transform.forward;
             thrustMagnitude = thrustForceBackward;
         }
+
+        thrustMagnitude *= multiplierCheat;
 
         if (thrustDirection != Vector3.zero)
         {

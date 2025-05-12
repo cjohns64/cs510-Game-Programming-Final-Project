@@ -75,6 +75,7 @@ public class CelestialBody : MonoBehaviour
 
             float parentScale = transform.lossyScale.x;
             _soiVis.transform.localScale = Vector3.one * SoiRadius * 2f / parentScale;
+            SOIVisEnabled(false);
         }
     }
 
