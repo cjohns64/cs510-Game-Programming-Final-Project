@@ -39,14 +39,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
     // --------------------- Unity Callbacks -----------------------------
     public void Start()
     {
-        if (CentralBody == null || !CentralBody.TryGetComponent(out centralCelestialBody))
-        {
-            Debug.LogError("Central body configuration error!");
-            enabled = false;
-            return;
-        }
-
-        InitializeOrbit();
+        RecomputeOrbit();
     }
 
     void FixedUpdate()
@@ -56,8 +49,13 @@ public class OrbitMoverAnalytic : MonoBehaviour
     }
 
     //--------------------- Core Methods ---------------------------------
-    private void InitializeOrbit()
+    private void RecomputeOrbit()
     {
+        if (CentralBody == null || !CentralBody.TryGetComponent(out centralCelestialBody))
+        {
+            Debug.LogError("Central body configuration error!");
+            return;
+        }
         float mu = GravitationalConstants.G * centralCelestialBody.Mass;
 
         if (initializationType == InitializationType.CircularOrbit)
@@ -72,6 +70,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
         state.velocity = InitialVelocity;
         state.SyncElapsedTimeToCurrentPosition(transform.position, CentralBody.position);
+        OnOrbitParametersChanged?.Invoke();
     }
 
     private void CheckSOITransition() {
@@ -226,6 +225,32 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
         // no encounter
         return -1f;
+    }
+
+
+    public void SetPosition(Vector3 newPosition)
+    {
+        transform.position = newPosition;
+        RecomputeOrbit();
+    }
+
+    public void SetVelocity(Vector3 newVelocity)
+    {
+        InitialVelocity = newVelocity;
+        RecomputeOrbit();
+    }
+
+    public void SetCentralBody(Transform newCentralBody) 
+    {
+        if (newCentralBody == null || !newCentralBody.TryGetComponent(out CelestialBody celestialBody)) 
+        {
+            Debug.LogError("New central body must have a CelestialBody component.");
+            return;
+        }
+
+        CentralBody = newCentralBody;
+        centralCelestialBody = celestialBody;
+        RecomputeOrbit();
     }
 }
 

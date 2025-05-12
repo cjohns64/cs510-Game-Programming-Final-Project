@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 
     private float previousTimeScale;
 
+    [SerializeField] private TimeController timeController;
+
     void OnEnable()
     {
         shipMover.OnSOITransition += HandleSOITransition;
@@ -31,24 +33,14 @@ public class GameManager : MonoBehaviour
 
     private void HandleMenuClosed(CelestialBody landedBody)
     {
-        Debug.Log("CLOSE");
         PlaceShipInOrbit(landedBody);
-
-        Time.timeScale = previousTimeScale;
+        timeController.SetTimeScale();
     }
 
     private void PlaceShipInOrbit(CelestialBody body)
     {
-        float radius = body.SoiRadius * 1.05f;
-        Vector3 offset = new Vector3(radius, 0, 0); 
-
-        Vector3 spawnPos = body.transform.position + 
-                           body.transform.rotation * offset;
-
-        shipMover.transform.position = spawnPos;
-
-        shipMover.CentralBody = body.transform;
-        shipMover.initializationType = OrbitMoverAnalytic.InitializationType.CircularOrbit;
-        shipMover.Start(); 
+        Vector3 direction = (body.transform.position - shipMover.CentralBody.position).normalized;
+        Vector3 positionOutsideSOI = body.transform.position + direction * body.SoiRadius * 1.1f;
+        shipMover.SetPosition(positionOutsideSOI);
     }
 }

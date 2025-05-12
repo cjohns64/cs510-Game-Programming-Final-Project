@@ -17,13 +17,13 @@ public class TimeController : MonoBehaviour
         }
     }
 
-    void IncreaseTimeScale()
+    public void IncreaseTimeScale()
     {
         currentIndex = Mathf.Min(currentIndex + 1, timeScales.Length - 1);
         UpdateTimeScale();
     }
 
-    void DecreaseTimeScale()
+    public void DecreaseTimeScale()
     {
         currentIndex = Mathf.Max(currentIndex - 1, 0);
         UpdateTimeScale();
@@ -33,6 +33,12 @@ public class TimeController : MonoBehaviour
     {
         Time.timeScale = timeScales[currentIndex];
         Debug.Log($"Time scale set to: {Time.timeScale}x");
+    }
+
+    public void SetTimeScale(int index = 0) 
+    {
+        currentIndex = index;
+        UpdateTimeScale();
     }
 
     void OnDestroy()
