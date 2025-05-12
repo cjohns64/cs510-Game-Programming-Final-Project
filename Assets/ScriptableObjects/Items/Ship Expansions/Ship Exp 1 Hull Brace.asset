@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5c7f020b0266a40a0ce610f69f8f39, type: 3}
   m_Name: Ship Exp 1 Hull Brace
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b1d9079351bf5e747b7007d587e4eff0, type: 3}
+  icon: {fileID: 21300000, guid: 900780158c93b9e4490fe2bb46467267, type: 3}
   type: 6
   item_value: 1200
   item_size: 1
@@ -20,6 +20,7 @@ MonoBehaviour:
   description: '[only one can be installed at a time]'
   hull_bonus: 50
   shield_bonus: 0
+  armor_bonus: 0
   cargo_bonus: 0
   speed_bonus: 0
   unlock_slot_number: 2

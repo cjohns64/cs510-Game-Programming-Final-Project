@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5c7f020b0266a40a0ce610f69f8f39, type: 3}
   m_Name: Ship Exp 7 Large Engine Arms
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b1d9079351bf5e747b7007d587e4eff0, type: 3}
+  icon: {fileID: 21300000, guid: d03184f6d7a1c1c4ca34f5b4b5b460d2, type: 3}
   type: 12
   item_value: 76000
   item_size: 1
   item_name: Large Engine Expanders
   description: '[only one can be installed at a time]'
+  hull_bonus: 0
   shield_bonus: 0
   armor_bonus: 0
   cargo_bonus: 0

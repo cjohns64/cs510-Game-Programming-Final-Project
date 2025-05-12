@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6050268687744737055, guid: 64807cf1041c5ae4b90c481d862990aa, type: 3}
       propertyPath: m_Name
-      value: WC-TradingPost Variant
+      value: Station01-WorldCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 8947537851871179430, guid: 64807cf1041c5ae4b90c481d862990aa, type: 3}
       propertyPath: m_Pivot.x

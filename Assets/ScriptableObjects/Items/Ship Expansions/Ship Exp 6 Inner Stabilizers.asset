@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5c7f020b0266a40a0ce610f69f8f39, type: 3}
   m_Name: Ship Exp 6 Inner Stabilizers
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b1d9079351bf5e747b7007d587e4eff0, type: 3}
+  icon: {fileID: 21300000, guid: afb474b55f6e8224ea85dc8ea357a745, type: 3}
   type: 11
   item_value: 63000
   item_size: 1
   item_name: Inner Stabilizer Arms
   description: '[only one can be installed at a time]'
+  hull_bonus: 0
   shield_bonus: 0
   armor_bonus: 20
   cargo_bonus: 0

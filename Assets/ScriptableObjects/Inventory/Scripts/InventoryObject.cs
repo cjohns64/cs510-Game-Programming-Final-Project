@@ -57,6 +57,15 @@ public class InventoryObject : ScriptableObject
         return current_capacity + add_amount < inventory_capacity;
     }
 
+    public int GetCurrentCapacity()
+    {
+        return current_capacity;
+    }
+    public int GetCurrentMaxCapacity()
+    {
+        return inventory_capacity;
+    }
+
     /**
      * Add items to inventory
      */

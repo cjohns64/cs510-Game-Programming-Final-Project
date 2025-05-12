@@ -1007,6 +1007,16 @@ MonoBehaviour:
   playerInventory: {fileID: 11400000, guid: 90bf215cec9fbecdaa6e1751fac0795a, type: 2}
   tradingPosts:
   - {fileID: 11400000, guid: 8877b87778bbf74b1b9a4f1f10c4640f, type: 2}
+  trade_menu: {fileID: 0}
+  OnProductionCycle:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTradeFailNotEnoughFunds:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTradeFailNotEnoughSpace:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &971727569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6414,6 +6424,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Upgrade Menu
       objectReference: {fileID: 0}
+    - target: {fileID: 9175707927088704396, guid: 616ba44568713caed92eeea6ff2a7988, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8955,7 +8969,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7998275781021529928, guid: ac169c3e45ffd55af846b838b29d3b46, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
