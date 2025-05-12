@@ -9,7 +9,12 @@ public class UpgradeManager : MonoBehaviour
 {
     // ui data
     [SerializeField] private GameObject upgrade_menu;
+    [SerializeField] private InventoryObject player_inventory;
     private List<TMP_Dropdown> expansion_dropdowns = new();
+    private ItemType[] expansion_types = { ItemType.HullBrace, ItemType.HullExtenderM1,
+        ItemType.OuterStabilizers, ItemType.EngineArmSmall, ItemType.HullExtenderM2,
+        ItemType.InnerStabilizers, ItemType.EngineArmLarge
+    };
     private List<TMP_Dropdown> slot_dropdowns = new();
     private TMP_Dropdown engine_dropdown;
     // mesh data
@@ -22,6 +27,7 @@ public class UpgradeManager : MonoBehaviour
 
     void Start()
     {
+        player_inventory.InitInventory();
         // lookup Viewport
         GameObject ui_parent = upgrade_menu.transform.Find("Viewport").gameObject;
         // lookup engine dropdown menu
@@ -74,7 +80,6 @@ public class UpgradeManager : MonoBehaviour
             shield_meshes.Add(slot_parent.transform.Find("Shields_" + i.ToString()).gameObject);
         }
 
-
         // lookup engine upgrades
         // try and lookup tiers 0-5
         for (int i=0; i<6;  i++)
@@ -84,12 +89,10 @@ public class UpgradeManager : MonoBehaviour
             {
                 // found tier
                 engine_mesh_parents.Add(tmp.gameObject);
-                Debug.Log(i);
             }
         }
 
         // add onValueChanged event listeners
-        //for (int i=0; i<expansion_dropdowns.Count; i++)
         foreach (TMP_Dropdown d in expansion_dropdowns)
         {
             d.onValueChanged.AddListener(delegate {
@@ -101,11 +104,44 @@ public class UpgradeManager : MonoBehaviour
             d.onValueChanged.AddListener(delegate {
                 UpdateMesh(d);
             });
-            //Debug.Log(d.name);
         }
         engine_dropdown.onValueChanged.AddListener(delegate {
             UpdateMesh(engine_dropdown);
         });
+    }
+
+    /**
+     * Checks the given inventory for upgrade items and enables associated options
+     * Will only disable options if their dropdown is set to option 0,
+     * since an enabled option indicates an item in use.
+     * 
+     * Must be triggered by a unity event when the upgrade menu is opened
+     */
+    public void CheckInventory()
+    {
+        int[] exp_amounts = { 0, 0, 0, 0, 0, 0, 0 };
+        // get amounts
+        for (int i=0; i<7; i++)
+        {
+            exp_amounts[i] = player_inventory.GetItemAmount(expansion_types[i]);
+        }
+       
+        // check amounts
+        for (int i=0; i<7; i++)
+        {
+            //Debug.Log("check amounts " + i + " " +  exp_amounts[i] + " " + expansion_types[i].ToString());
+            if (exp_amounts[i] > 0)
+            {
+                // enable associated dropdown
+                expansion_dropdowns[i].gameObject.SetActive(true);
+            }
+            else if (expansion_dropdowns[i].value == 0)
+            {
+                // this expansion is no longer valid
+                expansion_dropdowns[i].gameObject.SetActive(false);
+            }
+            // skip the case of no item in inventory and dropdown value is not 0
+        }
     }
 
     void UpdateMesh(TMP_Dropdown d)
@@ -192,6 +228,17 @@ public class UpgradeManager : MonoBehaviour
                 // enable/disable extra engine meshes
                 test.gameObject.SetActive(selection == 1);
             }
+        }
+        // Add/Remove item from inventory
+        if (selection == 0)
+        {
+            // removing upgrade, add to player inventory
+            player_inventory.AddItem(expansion_types[slot - 1], 1);
+        }
+        else
+        {
+            // adding upgrade, remove from player inventory
+            player_inventory.RemoveItem(expansion_types[slot - 1], 1);
         }
     }
 }
