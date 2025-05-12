@@ -28,7 +28,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
     //--------------------- Events ---------------------------------------
     public event Action OnOrbitParametersChanged;
-    public event Action OnSOITransition;
+    public event Action<CelestialBody> OnSOITransition;
 
     //--------------------- Private State --------------------------------
     private CelestialBody centralCelestialBody;
@@ -79,7 +79,7 @@ public class OrbitMoverAnalytic : MonoBehaviour
         CelestialBody newCentralBody = CelestialBody.FindBodyWithSOIContaining(transform.position);
         if (newCentralBody == centralCelestialBody) return;
 
-        OnSOITransition?.Invoke();
+        OnSOITransition?.Invoke(newCentralBody);
     }
 
     private void UpdateOrbitState()

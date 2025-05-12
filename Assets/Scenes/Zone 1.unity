@@ -882,17 +882,33 @@ PrefabInstance:
       propertyPath: isSpaceship
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2744475106661511954, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: SoiExitMarkerPrefab
+      value: 
+      objectReference: {fileID: 9087650406825086019, guid: f9306e375f77ff946adbbaa473658fdc, type: 3}
+    - target: {fileID: 2744475106661511954, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: ApoapsisMarkerPrefab
+      value: 
+      objectReference: {fileID: 9087650406825086019, guid: f9306e375f77ff946adbbaa473658fdc, type: 3}
+    - target: {fileID: 2744475106661511954, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: SoiEntryMarkerPrefab
+      value: 
+      objectReference: {fileID: 1968943684699969113, guid: 8a826ac744ab98b40a29d7f534f628d8, type: 3}
+    - target: {fileID: 2744475106661511954, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: PeriapsisMarkerPrefab
+      value: 
+      objectReference: {fileID: 1968943684699969113, guid: 6665a42374c1ccf4c999f2581254a8a0, type: 3}
     - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_Size.x
-      value: 1.2
+      value: 1.71
       objectReference: {fileID: 0}
     - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_Size.y
-      value: 1
+      value: 1.45
       objectReference: {fileID: 0}
     - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_Size.z
-      value: 1.91
+      value: 2.61
       objectReference: {fileID: 0}
     - target: {fileID: 4672132530331064166, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -938,6 +954,10 @@ PrefabInstance:
       propertyPath: CentralBody
       value: 
       objectReference: {fileID: 1902692669}
+    - target: {fileID: 6988757651447056607, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: isSpaceship
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6988757651447056607, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: InitialVelocity.x
       value: 1

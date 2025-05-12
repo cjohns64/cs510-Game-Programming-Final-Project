@@ -35,13 +35,13 @@ public class OrbitPredictor : MonoBehaviour
 
     public GameObject SoiExitMarkerPrefab;
     private GameObject soiExitMarker;
-    public bool hasSOIExit = false;
+    private bool hasSOIExit = false;
     private Vector3 soiExitPoint;
     private float soiExitTheta;
 
     public GameObject SoiEntryMarkerPrefab;
     private GameObject soiEntryMarker;
-    public bool hasSOIEntry = false;
+    private bool hasSOIEntry = false;
     private Vector3 soiEntryPoint;
     private float soiEntryTheta;
 
@@ -52,7 +52,7 @@ public class OrbitPredictor : MonoBehaviour
     private Camera mainCamera;
 
     // Private variable
-    public float trueAnomalySpan;
+    private float trueAnomalySpan;
 
     // Cached values
     private Vector3[] points;
@@ -133,7 +133,7 @@ public class OrbitPredictor : MonoBehaviour
         // Debug.Log("ORBIT UPDATE");
     }
 
-    private void HandleSOITransition() {
+    private void HandleSOITransition(CelestialBody celestialBody) {
         // Debug.Log("New SOI!!!");
     }
 
