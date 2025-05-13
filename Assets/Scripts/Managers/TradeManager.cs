@@ -20,7 +20,6 @@ public class TradeManager : MonoBehaviour
     private TextMeshProUGUI stationCreditsText;
     private TMP_InputField quantityValueText;
     private bool is_initialized = false;
-    private int currentStation = 0;
     // the number in station trade area name == active station number
     private Regex regex = new Regex(@"\d+");
     // production cycle event
@@ -87,11 +86,9 @@ public class TradeManager : MonoBehaviour
         {
             inv.OnInventoryChanged += event_listener_UpdateCreditsText;
         }
-
-        
     }
 
-    void OnEnable ()
+    void UpdateForActivation ()
     {
         if (!is_initialized)
         {
@@ -106,9 +103,14 @@ public class TradeManager : MonoBehaviour
             if (match.Success)
             {
                 // set all station trade areas to inactive except the current one
-                station.SetActive(currentStation == int.Parse(match.Value));
+                station.SetActive(GetCurrentStationIndex() == int.Parse(match.Value));
             }
         }
+    }
+
+    private int GetCurrentStationIndex()
+    {
+        return currentBody != null ? currentBody.inventory_index : 0;
     }
 
     float GetItemCost(ItemType item)
@@ -130,13 +132,13 @@ public class TradeManager : MonoBehaviour
         {
             // other inventory is a station inventory
             //Debug.Log("player inventory clicked, quantity = " + quantity);
-            TradeItems(item_type, playerInventory, tradingPosts[currentStation], quantity);
+            TradeItems(item_type, playerInventory, tradingPosts[GetCurrentStationIndex()], quantity);
         }
         else
         {
             // other inventory is the player inventory
             //Debug.Log("station inventory clicked, quantity = " + quantity);
-            TradeItems(item_type, tradingPosts[currentStation], playerInventory, quantity);
+            TradeItems(item_type, tradingPosts[GetCurrentStationIndex()], playerInventory, quantity);
         }
     }
     public void event_listener_UpdateCreditsText(ItemType x)
@@ -149,7 +151,7 @@ public class TradeManager : MonoBehaviour
         // update player credits text
         playerCreditsText.text = playerInventory.credits.ToString("c2");
         // update station credits text
-        stationCreditsText.text = tradingPosts[currentStation].credits.ToString("c2");
+        stationCreditsText.text = tradingPosts[GetCurrentStationIndex()].credits.ToString("c2");
     }
 
     public void TradeItems(ItemType item_from, InventoryObject inventory_from, InventoryObject inventory_to, int amount)
@@ -185,8 +187,10 @@ public class TradeManager : MonoBehaviour
 
     public void OpenMenu(CelestialBody body) {
         currentBody = body;
+        // set the new body's inventory and trade area
+        UpdateForActivation();
+        // activate the menu
         trade_menu.SetActive(true);
-        UpdateCreditsText();
     }
 
     /// <summary>

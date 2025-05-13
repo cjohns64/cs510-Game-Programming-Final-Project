@@ -343,7 +343,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2000
+  m_Intensity: 3000
   m_Range: 1000
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1062,6 +1062,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3210647664348128636, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
+      propertyPath: inventory_index
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7041734764491598283, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: otherBody
       value: 
@@ -1272,7 +1276,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  playerMover: {fileID: 0}
+  playerMover: {fileID: 1474436731}
 --- !u!4 &1391823737
 Transform:
   m_ObjectHideFlags: 0
@@ -1634,6 +1638,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8517761520962945334, guid: d78232369b7b36b41beb859b68c02d26, type: 3}
+      propertyPath: inventory_index
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1730,6 +1738,10 @@ PrefabInstance:
     - target: {fileID: 8517761520962945334, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
       propertyPath: SoiRadius
       value: 20.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 8517761520962945334, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
+      propertyPath: inventory_index
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8656858542470027085, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
       propertyPath: m_LocalScale.x
@@ -1852,6 +1864,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 330585545}
+    - target: {fileID: 8517761520962945334, guid: 5cdd879dd87ad0a439219e9f17b12b4a, type: 3}
+      propertyPath: inventory_index
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8517761520962945334, guid: 5cdd879dd87ad0a439219e9f17b12b4a, type: 3}
       propertyPath: InitialVelocity.x
       value: 1
@@ -1986,6 +2002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mass: 25
   Radius: 4
+  inventory_index: 0
   SoiRadius: 150
   SoiPrefab: {fileID: 0}
 --- !u!1 &1978458579

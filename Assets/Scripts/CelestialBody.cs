@@ -13,6 +13,9 @@ public class CelestialBody : MonoBehaviour
     public float Mass = 1f;
     public float Radius = 1f;
 
+    [Header("Trade System Properties")]
+    public int inventory_index;
+
     [Header("Sphere of Influence")]
     public float SoiRadius = 2f;
     public GameObject SoiPrefab;
