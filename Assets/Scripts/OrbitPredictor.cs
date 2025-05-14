@@ -6,8 +6,7 @@ using System.Linq;
 [RequireComponent(typeof(LineRenderer))]
 public class OrbitPredictor : MonoBehaviour
 {
-    [Header("Object Type")]
-    public bool isSpaceship = false;
+    private bool isSpaceship;
 
     [Header("Line Settings")]
     public float lineScreenWidth = 0.2f;
@@ -72,6 +71,8 @@ public class OrbitPredictor : MonoBehaviour
 
         points = new Vector3[segments + 2];
         centralCelestialBody = centralBody.GetComponent<CelestialBody>();
+
+        isSpaceship = CompareTag("Ship");
     }
 
     void Start()

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Asteroid
   - Focusable
+  - Ship
   layers:
   - Default
   - TransparentFX

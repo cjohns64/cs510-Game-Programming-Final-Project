@@ -32,13 +32,15 @@ public class OrbitMoverAnalytic : MonoBehaviour
 
     //--------------------- Private State --------------------------------
     private CelestialBody centralCelestialBody;
+    private bool isSpaceship;
 
-    // TODO DELTE THIS. TWO SOURCES OF TRUTH!!!
-    public bool isSpaceship;
+    private Vector3[] thisPosCache;
+    private int cacheFrame = -1;
 
     // --------------------- Unity Callbacks -----------------------------
     public void Start()
     {
+        isSpaceship = CompareTag("Ship");
         RecomputeOrbit();
     }
 
@@ -139,93 +141,73 @@ public class OrbitMoverAnalytic : MonoBehaviour
         return distances;
     }
 
-    // Negative number means no encounter with other within one period of this
-    //public float CalculateEncounterAnomaly(OrbitMoverAnalytic other, int samples = 100)
-    //{
-    //    CelestialBody otherBody = other.gameObject.GetComponent<CelestialBody>(); 
-    //    if (!otherBody) return -1f;
-    //    float period = shape.period;
-    //    float timeStep = period / samples;
-    //    float otherSoi = otherBody.SoiRadius;
-    //    float otherSoiSqr = otherSoi * otherSoi;
-
-    //    for (int i = 0; i < samples; i++)
-    //    {
-    //        float deltaTime = i * timeStep;
-    //        Vector3 positionThis = PredictPositionAtTime(deltaTime);
-    //        Vector3 positionOther = other.PredictPositionAtTime(deltaTime);
-
-    //        if ((positionThis - positionOther).sqrMagnitude <= otherSoiSqr)
-    //        {
-    //            return state.ComputeTrueAnomalyInFuture(deltaTime);
-    //        }
-    //    }
-
-    //    return -1.0f;
-
-    //}
-
     public float CalculateEncounterAnomaly(OrbitMoverAnalytic other, int samples = 100, int refineIters = 5)
     {
-        // 1) One‐time work:
-        CelestialBody otherBody = other.gameObject.GetComponent<CelestialBody>();
-        if (otherBody == null) return -1f;
+        // Initialize cache if needed
+        if (thisPosCache == null) 
+        {
+            thisPosCache = new Vector3[samples + 1];
+            cacheFrame = -1;
+        }
 
+        // Frame local cache of "this" position over time.
         float P = shape.period;
         float dt = P / samples;
+
+        if (cacheFrame != Time.frameCount)
+        {
+            cacheFrame = Time.frameCount;
+            for (int i = 0; i <= samples; i++)
+            {
+                float t = i * dt;
+                thisPosCache[i] = PredictPositionAtTime(t);
+            }
+        }
+
+        CelestialBody otherBody = other.gameObject.GetComponent<CelestialBody>();
+        if (otherBody == null) return -1f;
         float R2 = otherBody.SoiRadius * otherBody.SoiRadius;
 
-        // Pre‐allocate delegates for f(t)
-        //float f0 = 0f;
-        Func<float, float> F = (t) => {
-            Vector3 d = PredictPositionAtTime(t) - other.PredictPositionAtTime(t);
-            return d.sqrMagnitude - R2;
-        };
-
-        // 2) Coarse sampling: find first sign‐change f((i-1)dt)>0 to f(i⋅dt)<=0
-        float prevT = 0f;
-        float prevF = F(prevT);
+        float prevF = (thisPosCache[0] - other.PredictPositionAtTime(0)).sqrMagnitude - R2;
         for (int i = 1; i <= samples; i++)
         {
-            float t = i * dt;
-            float curF = F(t);
+            Vector3 thisPos = thisPosCache[i];
+            Vector3 otherPos = other.PredictPositionAtTime(i * dt);
+            float curF = (thisPos - otherPos).sqrMagnitude - R2;
+
             if (curF <= 0f && prevF > 0f)
             {
-                // bracket [prevT, t]
-                float tLo = prevT, tHi = t;
-                float fLo = prevF, fHi = curF;
-
-                // 3) Refine via bisection (or false‐position, etc.)
-                float tMid = 0;
+                // bracket [ (i−1)dt , i·dt ]
+                float tLo = (i - 1) * dt, tHi = i * dt;
+                float fLo = prevF,    fHi = curF;
+                // refine via bisection...
+                float tMid = 0f;
                 for (int k = 0; k < refineIters; k++)
                 {
                     tMid = 0.5f * (tLo + tHi);
-                    float fMid = F(tMid);
+                    Vector3 midThis = PredictPositionAtTime(tMid);
+                    Vector3 midOther = other.PredictPositionAtTime(tMid);
+                    float fMid = (midThis - midOther).sqrMagnitude - R2;
 
-                    // Replace the half‐interval that still brackets the root
                     if (fMid > 0f)
                     {
-                        tLo = tMid;
-                        fLo = fMid;
+                        tLo = tMid; fLo = fMid;
                     }
                     else
                     {
-                        tHi = tMid;
-                        fHi = fMid;
+                        tHi = tMid; fHi = fMid;
                     }
                 }
-
-                // 4) Compute and return the true anomaly at the refined time
                 return state.ComputeTrueAnomalyInFuture(tMid);
             }
 
-            prevT = t;
             prevF = curF;
         }
 
         // no encounter
         return -1f;
     }
+
 
 
     public void SetPosition(Vector3 newPosition)
