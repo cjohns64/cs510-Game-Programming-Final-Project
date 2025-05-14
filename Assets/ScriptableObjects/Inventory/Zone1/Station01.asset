@@ -12,17 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c4d6d2ab54fa3a9a917530cd397a85, type: 3}
   m_Name: Station01
   m_EditorClassIdentifier: 
-  defined_default_inv:
-  - item: 13
-    amount: 10
-  - item: 14
-    amount: 10
-  - item: 15
-    amount: 10
-  - item: 6
-    amount: 1
-  - item: 7
-    amount: 1
+  defined_default_inv: []
   produces:
   - item: 1
     amount: 1

@@ -874,7 +874,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 818333889853681619, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1143692526443088264, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1751112282616962435, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -898,6 +906,10 @@ PrefabInstance:
       propertyPath: PeriapsisMarkerPrefab
       value: 
       objectReference: {fileID: 1968943684699969113, guid: 6665a42374c1ccf4c999f2581254a8a0, type: 3}
+    - target: {fileID: 2910868789119604270, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_Size.x
       value: 1.71
@@ -1810,6 +1822,10 @@ PrefabInstance:
       objectReference: {fileID: 1902692669}
     - target: {fileID: 4252222162236001665, guid: 5cdd879dd87ad0a439219e9f17b12b4a, type: 3}
       propertyPath: initializationType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4284996643416029661, guid: 5cdd879dd87ad0a439219e9f17b12b4a, type: 3}
+      propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4696094369907097207, guid: 5cdd879dd87ad0a439219e9f17b12b4a, type: 3}
