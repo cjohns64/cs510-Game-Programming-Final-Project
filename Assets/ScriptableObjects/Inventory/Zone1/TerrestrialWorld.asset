@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c4d6d2ab54fa3a9a917530cd397a85, type: 3}
   m_Name: TerrestrialWorld
   m_EditorClassIdentifier: 
-  defined_default_inv:
-  - item: 16
-    amount: 50
-  - item: 19
-    amount: 100
+  defined_default_inv: []
   produces:
   - item: 16
     amount: 1
@@ -24,5 +20,5 @@ MonoBehaviour:
     amount: 5
   consumes: []
   inventory_capacity: 500
-  credits: 1100
+  credits: 0
   production_profit_scale: 0.01

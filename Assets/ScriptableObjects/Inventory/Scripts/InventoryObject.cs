@@ -49,12 +49,19 @@ public class InventoryObject : ScriptableObject
             production_return += pslot.amount * itemManager.GetItem(pslot.item).item_value;
         }
         production_profit = (production_return - (production_cost / 2)) * production_profit_scale;
+        
+        // calculate current inventory capacity
+        current_capacity = 0;
+        foreach (var item in items)
+        {
+            current_capacity += item.Value;
+        }
     }
 
     // checks if inventory has space for new items
     public bool HasCapacity(int add_amount)
     {
-        return current_capacity + add_amount < inventory_capacity;
+        return current_capacity + add_amount <= inventory_capacity;
     }
 
     public int GetCurrentCapacity()

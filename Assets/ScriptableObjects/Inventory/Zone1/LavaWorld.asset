@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c4d6d2ab54fa3a9a917530cd397a85, type: 3}
   m_Name: LavaWorld
   m_EditorClassIdentifier: 
-  defined_default_inv:
-  - item: 16
-    amount: 100
-  - item: 17
-    amount: 20
+  defined_default_inv: []
   produces:
   - item: 16
     amount: 5
@@ -24,5 +20,5 @@ MonoBehaviour:
     amount: 1
   consumes: []
   inventory_capacity: 500
-  credits: 66
+  credits: 0
   production_profit_scale: 0.01
