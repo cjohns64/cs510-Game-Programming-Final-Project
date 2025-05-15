@@ -18,6 +18,7 @@ public class ThirdPersonCameraController : MonoBehaviour
     public float distance = 20f;
     public float zoomSpeed = 10f;
     public float minDistance = 5f;
+    public float tempMinDistance = -1f;
     public float maxDistance = 100f;
 
     [Header("Rotation Settings")]
@@ -28,6 +29,17 @@ public class ThirdPersonCameraController : MonoBehaviour
     private float yaw = 0f;
     private float pitch = 20f;
     bool isFocusing = false;
+
+    private Camera camera;
+
+    // double click logic
+    private float lastClickTime = 0f;
+    private const float doubleClickThreshold = 0.3f;
+
+    void Awake() 
+    {
+        camera = Camera.main;
+    }
 
     void Update()
     {
@@ -41,22 +53,25 @@ public class ThirdPersonCameraController : MonoBehaviour
 
     void HandleFocusClick()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Camera cam = Camera.main;
-            if (cam == null) return;
+        if (!Input.GetMouseButtonDown(0)) return;
 
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, focusRayDistance, focusableLayers))
-            {
-                StopAllCoroutines();
-                StartCoroutine(FocusRoutine(hit.transform));
-            }
+        float timeSinceLastClick = Time.time - lastClickTime;
+        lastClickTime = Time.time;
+
+        if (timeSinceLastClick > doubleClickThreshold) return;
+
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, focusRayDistance, focusableLayers))
+        {
+            StopAllCoroutines();
+            StartCoroutine(FocusRoutine(hit.transform));
         }
     }
 
     IEnumerator FocusRoutine(Transform newTarget)
     {
+        if (newTarget == target) yield break;
+
         isFocusing = true;
 
         Vector3 startPos = transform.position;
@@ -85,6 +100,7 @@ public class ThirdPersonCameraController : MonoBehaviour
         transform.position = endPos;
         transform.rotation = endRot;
         target = newTarget;
+        tempMinDistance = newTarget.GetComponent<CelestialBody>()?.Radius + Camera.main.nearClipPlane * 1.1f ?? -1f;
 
         Vector3 eulers = transform.rotation.eulerAngles;
         yaw = eulers.y;
@@ -96,6 +112,8 @@ public class ThirdPersonCameraController : MonoBehaviour
     // Immediate focus
     public void FocusOn(Transform newTarget)
     {
+        if (newTarget == target) return;
+
         StopAllCoroutines();
         target = newTarget;
         Vector3 dir = (target.position - transform.position).normalized;
@@ -108,7 +126,7 @@ public class ThirdPersonCameraController : MonoBehaviour
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         distance -= scroll * zoomSpeed;
-        distance = Mathf.Clamp(distance, minDistance, maxDistance);
+        distance = Mathf.Clamp(distance, Mathf.Max(tempMinDistance, minDistance), maxDistance);
     }
 
     void HandleRotation()
