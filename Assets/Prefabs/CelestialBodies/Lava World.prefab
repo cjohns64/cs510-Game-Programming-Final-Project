@@ -116,6 +116,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6742876287423988191, guid: c2db04c4a13ae1f45af639792128fd89, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5060793479792459672, guid: c2db04c4a13ae1f45af639792128fd89, type: 3}
@@ -216,6 +220,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 535340346848457754, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: credits
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 535340346848457754, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: produces.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 535340346848457754, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: produces.Array.data[0].item
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 535340346848457754, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: produces.Array.data[1].item
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 535340346848457754, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: produces.Array.data[0].amount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 535340346848457754, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: produces.Array.data[1].amount
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2354792944155440946, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: StableMaterial
       value: 

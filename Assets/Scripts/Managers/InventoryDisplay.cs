@@ -12,49 +12,84 @@ using System;
 public class InventoryDisplay : MonoBehaviour
 {
     // this is the inventory managed by this Inventory Display
-    [SerializeField] private InventoryObject inventory;
+    public Inventory active_inventory;
+    public Inventory player_inventory;
+    [SerializeField] private GameObject trade_menu;
     // The item manager that can translate the ItemType enum to the associated ItemObject.
     private ItemManager item_manager;
+    private GameObject player_trade_area;
+    private GameObject station_trade_area;
     public bool show_price = false;
-    public bool is_player_inv = false;
     // internal dictionary of all items in the display, including disabled ones
-    private Dictionary<ItemType, GameObject> itemsDisplayed = new();
+    private Dictionary<ItemType, GameObject> player_items_displayed = new();
+    private Dictionary<ItemType, GameObject> station_items_displayed = new();
 
     void Start()
     {
         // lookup the item manager
         item_manager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
         //Debug.Log("Item manager :: " +  item_manager);
-        // make sure the inventory is initialized
-        inventory.InitInventory();
+        // lookup trade areas for player and stations
+        player_trade_area = trade_menu.transform.Find("Viewport").Find("PlayerInventoryContent").gameObject;
+        station_trade_area = trade_menu.transform.Find("Viewport").Find("s0-InventoryContent").gameObject;
+        // make sure the inventories are initialized
+        active_inventory.InitInventory();
+        player_inventory.InitInventory();
         // set up the display with all inventory objects, disable the ones with no items
-        CreateDisplay();
-        // subscribe to the OnInventoryChanged Event
-        inventory.OnInventoryChanged += UpdateDisplay;
+        CreateDisplay(true); // player inventory display
+        CreateDisplay(false); // default station inventory display
+        // subscribe to the OnInventoryChanged Event for the default station inventory
+        active_inventory.OnInventoryChanged += (ItemType item) => { UpdateDisplay(item, false); };
+        // subscribe to the OnInventoryChanged Event for the player inventory
+        player_inventory.OnInventoryChanged += (ItemType item) => { UpdateDisplay(item, true); };
     }
 
-    public void UpdateDisplay(ItemType item)
+    public void UpdateAllItems(bool is_player_display)
+    {
+        foreach (ItemType item in Enum.GetValues(typeof(ItemType)))
+        {
+            UpdateDisplay(item, is_player_display);
+        }
+    }
+
+    public void UpdateDisplay(ItemType item, bool is_player_display)
     {
         // updates a single item in the display, call from an event
-        if (itemsDisplayed.ContainsKey(item))
+        if (is_player_display)
         {
-            UpdateItemText(item, itemsDisplayed[item]);
+            if (player_items_displayed.ContainsKey(item))
+            {
+                UpdateItemText(item, player_items_displayed[item], player_inventory);
+            }
+            else
+            {
+                AddItemUI(item, is_player_display);
+            }
         }
         else
         {
-            AddItemUI(item);
+            if (station_items_displayed.ContainsKey(item))
+            {
+                UpdateItemText(item, station_items_displayed[item], active_inventory);
+            }
+            else
+            {
+                AddItemUI(item, is_player_display);
+            }
         }
+        
     }
 
-    public void CreateDisplay()
+    private void CreateDisplay(bool is_player_display)
     {
         // add an entry for each item
         foreach (ItemType item in Enum.GetValues(typeof(ItemType)))
         {
-            AddItemUI(item);
+            AddItemUI(item, is_player_display);
         }
     }
-    public void UpdateItemText(ItemType item, GameObject game_object)
+
+    private void UpdateItemText(ItemType item, GameObject game_object, Inventory inventory)
     {
         if (inventory.GetItemAmount(item) == 0) // no item
         {
@@ -93,10 +128,13 @@ public class InventoryDisplay : MonoBehaviour
         }
     }
 
-    public void AddItemUI(ItemType item)
+    private void AddItemUI(ItemType item, bool is_player_display)
     {
         // add an item ui to the menu
-        var obj = Instantiate(item_manager.item_ui_prefab, transform);
+        var obj = Instantiate(item_manager.item_ui_prefab,
+            is_player_display ? player_trade_area.transform : station_trade_area.transform);
+        // set the inventory state on the button
+        obj.GetComponentInChildren<ItemButton>().is_player_inv = is_player_display;
         // update item type
         var button_script = obj.GetComponentInChildren<ItemButton>();
         //Debug.Log("before " + button_script.thisItem);
@@ -116,8 +154,17 @@ public class InventoryDisplay : MonoBehaviour
             }
         }
         // update the text
-        UpdateItemText(item, obj);
-        itemsDisplayed.Add(item, obj);
+        UpdateItemText(item, obj, is_player_display ? player_inventory : active_inventory);
+        if (is_player_display)
+        {
+            player_items_displayed.Add(item, obj);
+            //Debug.Log("Player Display Add: " + item);
+        }
+        else
+        {
+            station_items_displayed.Add(item, obj);
+            //Debug.Log("Station Display Add: " + item);
         }
     }
+}
     

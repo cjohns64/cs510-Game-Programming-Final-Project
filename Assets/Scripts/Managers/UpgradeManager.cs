@@ -9,7 +9,8 @@ public class UpgradeManager : MonoBehaviour
 {
     // ui data
     [SerializeField] private GameObject upgrade_menu;
-    [SerializeField] private InventoryObject player_inventory;
+    [SerializeField] private GameObject ship;
+    private Inventory player_inventory;
     private List<TMP_Dropdown> expansion_dropdowns = new();
     private ItemType[] expansion_types = { ItemType.HullBrace, ItemType.HullExtenderM1,
         ItemType.OuterStabilizers, ItemType.EngineArmSmall, ItemType.HullExtenderM2,
@@ -18,7 +19,6 @@ public class UpgradeManager : MonoBehaviour
     private List<TMP_Dropdown> slot_dropdowns = new();
     private TMP_Dropdown engine_dropdown;
     // mesh data
-    [SerializeField] private GameObject ship_mesh;
     private List<GameObject> expansion_meshes = new();
     private List<GameObject> armor_meshes = new();
     private List<GameObject> cargo_meshes = new();
@@ -27,7 +27,12 @@ public class UpgradeManager : MonoBehaviour
 
     void Start()
     {
+        // lookup the ship mesh
+        GameObject ship_mesh = ship.transform.Find("ShipModel").gameObject;
+        // lookup the player's inventory, it is attached to the parent of the ship mesh
+        player_inventory = ship.GetComponent<Inventory>();
         player_inventory.InitInventory();
+
         // lookup Viewport
         GameObject ui_parent = upgrade_menu.transform.Find("Viewport").gameObject;
         // lookup engine dropdown menu

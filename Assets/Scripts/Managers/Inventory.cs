@@ -3,21 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName="New Inventory", menuName="Inventory System/Inventory")]
-public class InventoryObject : ScriptableObject
+public class Inventory : MonoBehaviour
 {
     // actual inventory
     private Dictionary<ItemType, int> items = new Dictionary<ItemType, int>();
+
     // for defining the default inventory in the inspector
+    [Header("Starting Inventory - Item & quantity")]
     [SerializeField] private InventorySlot[] defined_default_inv;
+
+    [Header("Production/Consumption Lists - Item & produced/consumed amounts")]
     [SerializeField] private InventorySlot[] produces;
     [SerializeField] private InventorySlot[] consumes;
+
+    [Header("Trading Metadata")]
     public int inventory_capacity = 500;
     private int current_capacity = 0;
-    public event Action<ItemType> OnInventoryChanged;
     public float credits = 0.0f;
     private float production_profit = 10.0f;
     public float production_profit_scale = 0.01f;
+
+    public event Action<ItemType> OnInventoryChanged;
 
     /**
      * Sets up the inventory with the values defined in the inspector.
