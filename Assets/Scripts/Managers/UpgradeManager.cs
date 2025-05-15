@@ -31,7 +31,6 @@ public class UpgradeManager : MonoBehaviour
         GameObject ship_mesh = ship.transform.Find("ShipModel").gameObject;
         // lookup the player's inventory, it is attached to the parent of the ship mesh
         player_inventory = ship.GetComponent<Inventory>();
-        player_inventory.InitInventory();
 
         // lookup Viewport
         GameObject ui_parent = upgrade_menu.transform.Find("Viewport").gameObject;

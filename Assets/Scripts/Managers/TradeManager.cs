@@ -11,11 +11,12 @@ using UnityEngine.Events;
  */
 public class TradeManager : MonoBehaviour
 {
-    [SerializeField] private Inventory playerInventory;
+    [SerializeField] private GameObject ship;
     [SerializeField] private GameObject trade_menu; // needed because trade menu starts inactive
     [SerializeField] private string global_scripts = "GlobalScripts";
     private InventoryDisplay inventoryDisplay;
     private Inventory current_station_inventory;
+    private Inventory playerInventory;
     private ItemManager itemManager;
     private TextMeshProUGUI playerCreditsText;
     private TextMeshProUGUI stationCreditsText;
@@ -25,12 +26,12 @@ public class TradeManager : MonoBehaviour
     public UnityEvent OnProductionCycle;
     public UnityEvent OnTradeFailNotEnoughFunds;
     public UnityEvent OnTradeFailNotEnoughSpace;
+    public event Action<CelestialBody> OnMenuClosed;
     // time delay between production cycles
     private float production_timer = 0.0f;
     private float production_delay = 30.0f;
 
-    public OrbitMoverAnalytic playerMover;
-    public event Action<CelestialBody> OnMenuClosed;
+    //private OrbitMoverAnalytic playerMover;
     private CelestialBody currentBody;
 
     private void Awake()
@@ -52,6 +53,8 @@ public class TradeManager : MonoBehaviour
     private void Initialize()
     {
         // lookup all components needed by the trade manager
+        playerInventory = ship.GetComponent<Inventory>();
+        //playerMover = ship.GetComponent<OrbitMoverAnalytic>();
         // lookup item manager
         itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
         // lookup the global scripts manager and find the inventory display component
@@ -66,7 +69,7 @@ public class TradeManager : MonoBehaviour
         quantityValueText = trade_menu.transform.Find("QuantityUI").Find("QuantityInputField").gameObject.GetComponent<TMP_InputField>();
     }
 
-    void SwitchStations()
+    public void SwitchStations()
     {
         if (current_station_inventory != null)
         {
@@ -78,13 +81,13 @@ public class TradeManager : MonoBehaviour
         // subscribe new inventory
         current_station_inventory.OnInventoryChanged += event_listener_UpdateCreditsText;
         // swap station inventory in inventory display
-        inventoryDisplay.active_inventory = current_station_inventory;
+        inventoryDisplay.SetNewActiveInventory(current_station_inventory);
         // update all items in trade area
         inventoryDisplay.UpdateAllItems(false);
         inventoryDisplay.UpdateAllItems(true);
     }
 
-    float GetItemCost(ItemType item)
+    public float GetItemCost(ItemType item)
     {
         //TODO add supply and demand calculations
         //Debug.Log("" + item==ItemType.Metals + " " + itemManager.name);
@@ -160,6 +163,7 @@ public class TradeManager : MonoBehaviour
         currentBody = body;
         // set the new body's inventory and trade area
         SwitchStations();
+        UpdateCreditsText();
         // activate the menu
         trade_menu.SetActive(true);
     }

@@ -12,8 +12,8 @@ using System;
 public class InventoryDisplay : MonoBehaviour
 {
     // this is the inventory managed by this Inventory Display
-    public Inventory active_inventory;
-    public Inventory player_inventory;
+    [SerializeField] private Inventory active_inventory;
+    [SerializeField] private Inventory player_inventory;
     [SerializeField] private GameObject trade_menu;
     // The item manager that can translate the ItemType enum to the associated ItemObject.
     private ItemManager item_manager;
@@ -32,16 +32,29 @@ public class InventoryDisplay : MonoBehaviour
         // lookup trade areas for player and stations
         player_trade_area = trade_menu.transform.Find("Viewport").Find("PlayerInventoryContent").gameObject;
         station_trade_area = trade_menu.transform.Find("Viewport").Find("s0-InventoryContent").gameObject;
-        // make sure the inventories are initialized
-        active_inventory.InitInventory();
-        player_inventory.InitInventory();
+        
         // set up the display with all inventory objects, disable the ones with no items
         CreateDisplay(true); // player inventory display
         CreateDisplay(false); // default station inventory display
         // subscribe to the OnInventoryChanged Event for the default station inventory
-        active_inventory.OnInventoryChanged += (ItemType item) => { UpdateDisplay(item, false); };
+        active_inventory.OnInventoryChanged += StationUpdateDisplay;
         // subscribe to the OnInventoryChanged Event for the player inventory
         player_inventory.OnInventoryChanged += (ItemType item) => { UpdateDisplay(item, true); };
+    }
+
+    private void StationUpdateDisplay(ItemType item)
+    {
+        UpdateDisplay(item, false);
+    }
+
+    public void SetNewActiveInventory(Inventory new_active_inventory)
+    {
+        // remove last station from subscriber pool
+        active_inventory.OnInventoryChanged -= StationUpdateDisplay;
+        // switch stations
+        active_inventory = new_active_inventory;
+        // subscribe to OnInventoryChanged
+        active_inventory.OnInventoryChanged += StationUpdateDisplay;
     }
 
     public void UpdateAllItems(bool is_player_display)
@@ -96,13 +109,14 @@ public class InventoryDisplay : MonoBehaviour
             // don't display this slot
             game_object.SetActive(false);
         }
-        else if (!game_object.activeSelf) // icon is disabled, already check that it isn't 0
+        else // amount != 0
         {
-            // turn item back on if amount isn't 0
-            game_object.SetActive(true);
-        }
-        else // amount != 0 and icon is active
-        {
+            // check if icon is disabled, we already checked that its amount isn't 0
+            if (!game_object.activeSelf)
+            {
+                // turn item back on if amount isn't 0
+                game_object.SetActive(true);
+            }
             // get all child Components of type TextMeshProUGUI, these are the elements that will be updated
             TextMeshProUGUI[] components_list = game_object.GetComponentsInChildren<TextMeshProUGUI>();
 

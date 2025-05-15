@@ -911,6 +911,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: credits
+      value: 999000
+      objectReference: {fileID: 0}
     - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_Size.x
       value: 1.71
@@ -1007,10 +1011,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: -5499990802247065735, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7532754105240880961, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1474436736}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
 --- !u!95 &835747238 stripped
 Animator:
@@ -1202,7 +1203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b53e7865d69030f1b64126428a1bfa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventory: {fileID: 1474436736}
+  ship: {fileID: 1026390263}
   trade_menu: {fileID: 1498344933}
   global_scripts: GlobalScripts
   OnProductionCycle:
@@ -1298,7 +1299,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  playerMover: {fileID: 1474436731}
 --- !u!4 &1391823737
 Transform:
   m_ObjectHideFlags: 0
@@ -1369,11 +1369,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b6a84d46f073f47b75f292e3836de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1474436736
+--- !u!114 &1474436736 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+  m_PrefabInstance: {fileID: 835747236}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026390263}
   m_Enabled: 1
@@ -1381,26 +1380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a16f5109d2ba7ff45843dec2265eaf46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defined_default_inv:
-  - item: 6
-    amount: 1
-  - item: 7
-    amount: 1
-  - item: 8
-    amount: 1
-  - item: 9
-    amount: 2
-  - item: 10
-    amount: 1
-  - item: 11
-    amount: 1
-  - item: 12
-    amount: 1
-  produces: []
-  consumes: []
-  inventory_capacity: 100
-  credits: 5000
-  production_profit_scale: 0
 --- !u!1001 &1498344926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1516,7 +1495,7 @@ PrefabInstance:
     - target: {fileID: 4577550910136560178, guid: ac169c3e45ffd55af846b838b29d3b46, type: 3}
       propertyPath: inventory
       value: 
-      objectReference: {fileID: 1474436736}
+      objectReference: {fileID: 0}
     - target: {fileID: 5451934822958469382, guid: ac169c3e45ffd55af846b838b29d3b46, type: 3}
       propertyPath: inventory
       value: 
@@ -2149,7 +2128,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mass: 25
   Radius: 4
-  inventory_index: 0
   SoiRadius: 150
   SoiPrefab: {fileID: 0}
 --- !u!1 &1978458579

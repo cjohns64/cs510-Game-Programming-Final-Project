@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1978155610678570189}
   - component: {fileID: 4616813932254770500}
   - component: {fileID: 8605495257203014370}
+  - component: {fileID: 3454473838020469502}
   m_Layer: 3
   m_Name: Ship
   m_TagString: Untagged
@@ -54,7 +55,6 @@ MonoBehaviour:
   initializationType: 0
   InitialVelocity: {x: 1.5, y: 0, z: 0}
   TimeMultiplier: 1
-  otherBody: {fileID: 0}
 --- !u!114 &2744475106661511954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,18 +67,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8dd01737b81e784394ecbe9b1e4ec74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSpaceship: 0
   lineScreenWidth: 0.2
   segments: 180
   maxRenderDistance: 100
-  periapsisMarker: {fileID: 1968943684699969113, guid: 6665a42374c1ccf4c999f2581254a8a0, type: 3}
-  apoapsisMarker: {fileID: 9087650406825086019, guid: f9306e375f77ff946adbbaa473658fdc, type: 3}
   StableMaterial: {fileID: 2100000, guid: 4a875fc416384ec44a3a7d6fbe453740, type: 2}
   CollisionMaterial: {fileID: 2100000, guid: b667dfa335876894bb28da613dbc01a0, type: 2}
   EscapeMaterial: {fileID: 2100000, guid: d927c3e57d115aa47b7fff510f8688e0, type: 2}
   EncounterMaterial: {fileID: 2100000, guid: ae94eb4e49730fb4ab7bf6d75405140c, type: 2}
-  soiExitMarkerPrefab: {fileID: 1968943684699969113, guid: 8a826ac744ab98b40a29d7f534f628d8, type: 3}
-  soiEntryMarkerPrefab: {fileID: 1968943684699969113, guid: 8a826ac744ab98b40a29d7f534f628d8, type: 3}
+  PeriapsisMarkerPrefab: {fileID: 0}
+  ApoapsisMarkerPrefab: {fileID: 0}
+  SoiExitMarkerPrefab: {fileID: 0}
+  SoiEntryMarkerPrefab: {fileID: 0}
 --- !u!114 &1978155610678570189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +222,25 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &3454473838020469502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532754105240880961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a16f5109d2ba7ff45843dec2265eaf46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defined_default_inv: []
+  produces: []
+  consumes: []
+  trade_capacity: 100
+  production_capacity: 0
+  credits: 1000
+  production_profit_scale: 0
 --- !u!1 &9132690210089862020
 GameObject:
   m_ObjectHideFlags: 0
