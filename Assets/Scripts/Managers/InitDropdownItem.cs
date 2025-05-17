@@ -17,7 +17,7 @@ public class InitDropdownItem : MonoBehaviour
             // "Item 0: Solar Sails"
             // only works up to item 9, but dropdowns in the upgrade menu only go up to 5
             int index = this.gameObject.name[5] - '0';
-            Debug.Log(this.gameObject.name + " " + index);
+            //Debug.Log(this.gameObject.name + " " + index);
             toggle_component.interactable = controller.GetInteractableState(index);
         }
     }
