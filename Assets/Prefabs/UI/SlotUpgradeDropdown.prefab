@@ -711,6 +711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1609659693349596488}
   - component: {fileID: 8872020513552596143}
+  - component: {fileID: 6902076083799466440}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -762,11 +763,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.76729554, g: 0.76729554, b: 0.76729554, a: 1}
+    m_HighlightedColor: {r: 0, g: 0.8553459, b: 0.7104779, a: 1}
+    m_PressedColor: {r: 0.39347723, g: 0.616661, b: 0.72327036, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.09803922}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -789,6 +790,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!114 &6902076083799466440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6744750221869484347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 399818759c51e8f45a19abc5874a9458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 5761360685429646912}
 --- !u!1 &6754854012194136293
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,6 +890,7 @@ GameObject:
   - component: {fileID: 6981153052661838863}
   - component: {fileID: 5716680305204847841}
   - component: {fileID: 8569208972083747446}
+  - component: {fileID: 5761360685429646912}
   m_Layer: 5
   m_Name: SlotUpgradeDropdown
   m_TagString: Untagged
@@ -1012,6 +1027,20 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_AlphaFadeSpeed: 0.15
+--- !u!114 &5761360685429646912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6758432916250115054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad651482ff769184a98ec0d87bdbbb88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  global_scripts: GlobalScripts
 --- !u!1 &8124856593754455642
 GameObject:
   m_ObjectHideFlags: 0

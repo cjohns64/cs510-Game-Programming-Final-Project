@@ -32,6 +32,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Solar Sails
       objectReference: {fileID: 0}
+    - target: {fileID: 1965583106822873948, guid: 04acf8d619cbb90058cd4375f2d6151d, type: 3}
+      propertyPath: m_fontSize
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761360685429646912, guid: 04acf8d619cbb90058cd4375f2d6151d, type: 3}
+      propertyPath: type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6758432916250115054, guid: 04acf8d619cbb90058cd4375f2d6151d, type: 3}
       propertyPath: m_Name
       value: EngineDropdown
