@@ -13,6 +13,8 @@ public class TradeManager : MonoBehaviour
 {
     [SerializeField] private GameObject ship;
     [SerializeField] private GameObject trade_menu; // needed because trade menu starts inactive
+    [SerializeField] private GameObject player_menu;
+    private PlayerMenuTabManager tab_manager;
     [SerializeField] private string global_scripts = "GlobalScripts";
     private InventoryDisplay inventoryDisplay;
     private Inventory current_station_inventory;
@@ -20,6 +22,8 @@ public class TradeManager : MonoBehaviour
     private ItemManager itemManager;
     private TextMeshProUGUI playerCreditsText;
     private TextMeshProUGUI stationCreditsText;
+    private TextMeshProUGUI player_cargo_text;
+    private TextMeshProUGUI station_cargo_text;
     private TMP_InputField quantityValueText;
 
     // production cycle event
@@ -52,6 +56,8 @@ public class TradeManager : MonoBehaviour
 
     private void Initialize()
     {
+        // lookup tab manager script from player menu
+        tab_manager = player_menu.GetComponent<PlayerMenuTabManager>();
         // lookup all components needed by the trade manager
         playerInventory = ship.GetComponent<Inventory>();
         //playerMover = ship.GetComponent<OrbitMoverAnalytic>();
@@ -65,6 +71,9 @@ public class TradeManager : MonoBehaviour
         // lookup station credits text area
         stationCreditsText = trade_menu.transform.Find("CreditsPanel").Find("StationCreditsValueText").gameObject.GetComponent<TextMeshProUGUI>();
         // Debug.Log("station credits text=" + stationCreditsText.name);
+        // lookup cargo space text areas
+        station_cargo_text = trade_menu.transform.Find("CreditsPanel").Find("StationCargo").gameObject.GetComponent<TextMeshProUGUI>();
+        player_cargo_text = trade_menu.transform.Find("CreditsPanel").Find("PlayerCargo").gameObject.GetComponent<TextMeshProUGUI>();
         // lookup quantity text area
         quantityValueText = trade_menu.transform.Find("QuantityUI").Find("QuantityInputField").gameObject.GetComponent<TMP_InputField>();
     }
@@ -122,10 +131,19 @@ public class TradeManager : MonoBehaviour
 
     public void UpdateCreditsText()
     {
+        if (current_station_inventory != null)
+        {
+            // update station credits text
+            stationCreditsText.text = current_station_inventory.credits.ToString("c2");
+            // update inventory space text
+            station_cargo_text.text = current_station_inventory.GetCurrentCapacity().ToString("n0") +
+                "/" + current_station_inventory.GetCurrentMaxCapacity().ToString("n0");
+        }
         // update player credits text
         playerCreditsText.text = playerInventory.credits.ToString("c2");
-        // update station credits text
-        stationCreditsText.text = current_station_inventory.credits.ToString("c2");
+        // update inventory space text
+        player_cargo_text.text = playerInventory.GetCurrentCapacity().ToString("n0") +
+            "/" + playerInventory.GetCurrentMaxCapacity().ToString("n0");
     }
 
     public void TradeItems(ItemType item_from, Inventory inventory_from, Inventory inventory_to, int amount)
@@ -163,16 +181,16 @@ public class TradeManager : MonoBehaviour
         currentBody = body;
         // set the new body's inventory and trade area
         SwitchStations();
-        UpdateCreditsText();
         // activate the menu
-        trade_menu.SetActive(true);
+        player_menu.SetActive(true);
+        tab_manager.ActivateTradeTab();
     }
 
     /// <summary>
     /// Call this from a "Close" or "Done" button in the UI.
     /// </summary>
     public void CloseMenu() {
-        trade_menu.SetActive(false);
+        player_menu.SetActive(false);
         OnMenuClosed?.Invoke(currentBody);
     }
 }
