@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdc6d3cf3719114aa170313fb547e86, type: 3}
   m_Name: Tier4 Item 1 Tachyon Source
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b1d9079351bf5e747b7007d587e4eff0, type: 3}
+  icon: {fileID: 21300000, guid: ea9c63d08633fa346b61138126cda76b, type: 3}
   type: 31
   item_value: 100
   item_size: 1
-  item_name: Tachyon Source
+  item_name: Tachyonic Field Amplifier
   description: 

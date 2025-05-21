@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47e8da5167969956b878840e70c921f, type: 3}
   m_Name: Slot Upgrade 1 Armor
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 76b08d0bff4083646a9e67e936111399, type: 3}
+  icon: {fileID: 21300000, guid: a1440d1d9f58103489d0db595224ff90, type: 3}
   type: 13
   item_value: 1000
   item_size: 1
