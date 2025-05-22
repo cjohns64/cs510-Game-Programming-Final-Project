@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdc6d3cf3719114aa170313fb547e86, type: 3}
   m_Name: Tier6 Item 2 Wormhole Stabilizer
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b1d9079351bf5e747b7007d587e4eff0, type: 3}
+  icon: {fileID: 21300000, guid: 24a5ac261dde9034eb270ec55ba835bf, type: 3}
   type: 36
   item_value: 100
   item_size: 1

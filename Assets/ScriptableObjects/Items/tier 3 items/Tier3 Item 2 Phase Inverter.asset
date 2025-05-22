@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdc6d3cf3719114aa170313fb547e86, type: 3}
   m_Name: Tier3 Item 2 Phase Inverter
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b1d9079351bf5e747b7007d587e4eff0, type: 3}
+  icon: {fileID: 21300000, guid: 0ec681c5ec55c3b49a66ef559ed96cf1, type: 3}
   type: 29
   item_value: 100
   item_size: 1

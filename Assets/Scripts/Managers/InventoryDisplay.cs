@@ -23,6 +23,12 @@ public class InventoryDisplay : MonoBehaviour
     // internal dictionary of all items in the display, including disabled ones
     private Dictionary<ItemType, GameObject> player_items_displayed = new();
     private Dictionary<ItemType, GameObject> station_items_displayed = new();
+    // scroll area update
+    private int player_active_items = 0;
+    private int station_active_items = 0;
+    private RectTransform player_content_area;
+    private RectTransform station_content_area;
+    private float item_ui_height;
 
     void Start()
     {
@@ -32,7 +38,14 @@ public class InventoryDisplay : MonoBehaviour
         // lookup trade areas for player and stations
         player_trade_area = trade_menu.transform.Find("Viewport").Find("PlayerInventoryContent").gameObject;
         station_trade_area = trade_menu.transform.Find("Viewport").Find("s0-InventoryContent").gameObject;
-        
+        // calculate the height of the cargo ui prefab
+        RectTransform cargo_item = item_manager.item_ui_prefab.GetComponent<RectTransform>();
+        player_content_area = player_trade_area.GetComponent<RectTransform>();
+        station_content_area = station_trade_area.GetComponent<RectTransform>();
+        Vector3[] v = new Vector3[4];
+        cargo_item.GetLocalCorners(v);
+        item_ui_height = v[1].y - v[0].y + 5;
+
         // set up the display with all inventory objects, disable the ones with no items
         CreateDisplay(true); // player inventory display
         CreateDisplay(false); // default station inventory display
@@ -72,7 +85,7 @@ public class InventoryDisplay : MonoBehaviour
         {
             if (player_items_displayed.ContainsKey(item))
             {
-                UpdateItemText(item, player_items_displayed[item], player_inventory);
+                UpdateItemText(item, player_items_displayed[item], is_player_display);
             }
             else
             {
@@ -83,7 +96,7 @@ public class InventoryDisplay : MonoBehaviour
         {
             if (station_items_displayed.ContainsKey(item))
             {
-                UpdateItemText(item, station_items_displayed[item], active_inventory);
+                UpdateItemText(item, station_items_displayed[item], is_player_display);
             }
             else
             {
@@ -102,12 +115,24 @@ public class InventoryDisplay : MonoBehaviour
         }
     }
 
-    private void UpdateItemText(ItemType item, GameObject game_object, Inventory inventory)
+    private void UpdateItemText(ItemType item, GameObject game_object, bool is_player_inventory)
     {
-        if (inventory.GetItemAmount(item) == 0) // no item
+        bool test_item_amount = is_player_inventory ? 
+            player_inventory.GetItemAmount(item) == 0 : active_inventory.GetItemAmount(item) == 0;
+
+        if (test_item_amount) // no item
         {
             // don't display this slot
             game_object.SetActive(false);
+            // update active items for scroll area
+            if (is_player_inventory)
+            {
+                player_active_items--;
+            }
+            else
+            {
+                station_active_items--;
+            }
         }
         else // amount != 0
         {
@@ -116,6 +141,15 @@ public class InventoryDisplay : MonoBehaviour
             {
                 // turn item back on if amount isn't 0
                 game_object.SetActive(true);
+                // update active items for scroll area
+                if (is_player_inventory)
+                {
+                    player_active_items++;
+                }
+                else
+                {
+                    station_active_items++;
+                }
             }
             // get all child Components of type TextMeshProUGUI, these are the elements that will be updated
             TextMeshProUGUI[] components_list = game_object.GetComponentsInChildren<TextMeshProUGUI>();
@@ -126,7 +160,9 @@ public class InventoryDisplay : MonoBehaviour
                 // set the amount element
                 if (ugui.name == "ItemAmountText")
                 {
-                    ugui.text = inventory.GetItemAmount(item).ToString("n0");
+                    ugui.text = is_player_inventory ? 
+                        player_inventory.GetItemAmount(item).ToString("n0") :
+                        active_inventory.GetItemAmount(item).ToString("n0");
                 }
                 // set the name element
                 else if (ugui.name == "ItemNameText")
@@ -140,6 +176,21 @@ public class InventoryDisplay : MonoBehaviour
                 }
             }
         }
+        if (is_player_inventory)
+        {
+            // update scroll area size
+            player_content_area.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,
+                item_ui_height * player_active_items);
+            //Debug.Log(cargo_item_height * active_items);
+        }
+        else
+        {
+            // update scroll area size
+            station_content_area.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,
+                item_ui_height * station_active_items);
+            //Debug.Log(cargo_item_height * active_items);
+        }
+
     }
 
     private void AddItemUI(ItemType item, bool is_player_display)
@@ -147,6 +198,15 @@ public class InventoryDisplay : MonoBehaviour
         // add an item ui to the menu
         var obj = Instantiate(item_manager.item_ui_prefab,
             is_player_display ? player_trade_area.transform : station_trade_area.transform);
+        // update active items for scroll area
+        if (is_player_display)
+        {
+            player_active_items++;
+        }
+        else
+        {
+            station_active_items++;
+        }
         // set the inventory state on the button
         obj.GetComponentInChildren<ItemButton>().is_player_inv = is_player_display;
         // update item type
@@ -168,7 +228,7 @@ public class InventoryDisplay : MonoBehaviour
             }
         }
         // update the text
-        UpdateItemText(item, obj, is_player_display ? player_inventory : active_inventory);
+        UpdateItemText(item, obj, is_player_display);
         if (is_player_display)
         {
             player_items_displayed.Add(item, obj);

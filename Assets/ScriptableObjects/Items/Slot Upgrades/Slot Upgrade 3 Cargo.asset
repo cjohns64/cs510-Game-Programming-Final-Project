@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47e8da5167969956b878840e70c921f, type: 3}
   m_Name: Slot Upgrade 3 Cargo
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 12e083ac530b2470c8022241ecaf8fdb, type: 3}
+  icon: {fileID: 21300000, guid: 877261e354494684bb084863d2b31cac, type: 3}
   type: 15
   item_value: 1000
   item_size: 1
