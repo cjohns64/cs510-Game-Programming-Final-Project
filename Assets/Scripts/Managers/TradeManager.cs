@@ -182,7 +182,6 @@ public class TradeManager : MonoBehaviour
         // set the new body's inventory and trade area
         SwitchStations();
         // activate the menu
-        player_menu.SetActive(true);
         tab_manager.ActivateTradeTab();
     }
 

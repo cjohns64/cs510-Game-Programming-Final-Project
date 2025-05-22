@@ -18,13 +18,14 @@ public class PlayerMenuTabManager : MonoBehaviour
     [Header("Default settings")]
     [SerializeField] private string global_scripts = "GlobalScripts";
     // internal references
-    private CargoDisplay cargo_display_script;
+    //private CargoDisplay cargo_display_script;
     private UpgradeManager upgrade_manager;
     private TradeManager trade_manager;
+    private bool is_docked = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        cargo_display_script = cargo_tab.GetComponent<CargoDisplay>();
+        //cargo_display_script = cargo_tab.GetComponent<CargoDisplay>();
         upgrade_manager = GameObject.Find(global_scripts).GetComponent<UpgradeManager>();
         trade_manager = GameObject.Find(global_scripts).GetComponent<TradeManager>();
     }
@@ -35,6 +36,8 @@ public class PlayerMenuTabManager : MonoBehaviour
      */
     private void ClearAllTabStates()
     {
+        // ensure this menu is active
+        this.gameObject.SetActive(true);
         // disable all tabs
         objectives_tab.SetActive(false);
         trade_tab.SetActive(false);
@@ -42,7 +45,7 @@ public class PlayerMenuTabManager : MonoBehaviour
         upgrades_tab.SetActive(false);
         // set all buttons to interactable
         objectives_tab_button.interactable = true;
-        trade_tab_button.interactable = true;
+        trade_tab_button.interactable = is_docked; // trade menu should only be interactable if the player is docked
         cargo_tab_button.interactable = true;
         upgrades_tab_button.interactable = true;
     }
