@@ -11,32 +11,14 @@ public class MainMenu : MonoBehaviour
     private List<AsyncOperation> scenesToLoad = new();
     private float loading_progress = 0f;
 
-    public void StartGame()
+    public void LoadZoneByIndex(int index)
     {
-        HideMenu();
         ShowLoadingScreen();
         scenesToLoad.Clear();
-        scenesToLoad.Add(SceneManager.LoadSceneAsync("Gameplay"));
-        scenesToLoad.Add(SceneManager.LoadSceneAsync("Zone1", LoadSceneMode.Additive));
-    }
-
-    private void HideMenu()
-    {
-        
+        scenesToLoad.Add(SceneManager.LoadSceneAsync("Zone " + index.ToString()));
     }
 
     private void ShowLoadingScreen()
-    {
-
-    }
-
-    public void ShowCredits()
-    {
-
-    }
-
-
-    public void ShowZoneSelectMenu()
     {
 
     }
