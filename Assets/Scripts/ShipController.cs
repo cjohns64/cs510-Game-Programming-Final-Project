@@ -7,6 +7,7 @@ public class ShipController : MonoBehaviour
     public float thrustForceForward = 0.1f;
     public float thrustForceBackward = 0.05f;
     public Animator shipAnimatior;
+    public AudioSource thrustAudio;
 
     private OrbitMoverAnalytic orbitMoverAnalytic;
     private Transform centralBody;
@@ -15,6 +16,9 @@ public class ShipController : MonoBehaviour
     {
         orbitMoverAnalytic = GetComponent<OrbitMoverAnalytic>();
         centralBody = orbitMoverAnalytic.CentralBody;
+
+        if (thrustAudio == null)
+            thrustAudio = gameObject.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -82,11 +86,17 @@ public class ShipController : MonoBehaviour
         if (thrustDirection != Vector3.zero)
         {
             ApplyThrust(thrustDirection * thrustMagnitude);
+
+            if (!thrustAudio.isPlaying)
+                thrustAudio.Play();
         }
         else
         {
             // inform animator
             shipAnimatior.SetBool("isImpulse", false);
+
+            if (thrustAudio.isPlaying)
+                thrustAudio.Stop();
         }
     }
 

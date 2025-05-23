@@ -41,6 +41,11 @@ public class TimeController : MonoBehaviour
         UpdateTimeScale();
     }
 
+    public float GetTimeScale()
+    {
+        return timeScales[currentIndex];
+    }
+
     void OnDestroy()
     {
         // Reset time scale when this component is destroyed

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490aca0634e2f3af287bdf0b534457f5, type: 3}
   m_Name: Engine 4 Warp
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b1d9079351bf5e747b7007d587e4eff0, type: 3}
+  icon: {fileID: 21300000, guid: fe40ef518aff2c84ca072f14b19c24ab, type: 3}
   type: 4
   item_value: 312500
   item_size: 1

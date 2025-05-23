@@ -309,20 +309,55 @@ public class OrbitShape
     }
 
     /// <summary>
-    /// Returns the true anomaly of the orbit at radius.
+    /// Solve r(theta) = a*(1 - e*e) / (1 + e*cos(theta)) == targetRadius.
+    /// Returns all real true anomalies in [0, 2*PI).
     /// </summary>
-    public float? GetTrueAnomalyForRadius(float radius) {
-        float numerator = IsClosedOrbit 
-            ? a * (1 - e * e) - radius 
-            : a * (e * e - 1) - radius;
-        float denominator = e * radius;
+    public float[] GetTrueAnomaliesForRadius(float targetRadius)
+    {
+        const float eps = 1e-6f;
 
-        if (Mathf.Abs(denominator) < 1e-6f) return null;
+        // circular orbit (e == 0)
+        if (Mathf.Abs(e) < eps)
+        {
+            if (Mathf.Abs(targetRadius - Mathf.Abs(a)) < eps)
+                return new[] { 0f, Mathf.PI };
+            return Array.Empty<float>();
+        }
 
-        float cosTheta = numerator / denominator;
-        cosTheta = Mathf.Clamp(cosTheta, -1f, 1f);
+        // parameter for ellipse
+        float l = a * (1f - e * e);
 
-        return Mathf.Acos(cosTheta);
+        // cos(theta)
+        float cosTheta = (l / targetRadius - 1f) / e;
+
+        if (IsClosedOrbit)
+        {
+            if (cosTheta < -1f || cosTheta > 1f)
+                return Array.Empty<float>();
+
+            float t0 = Mathf.Acos(cosTheta);
+            float t1 = 2f * Mathf.PI - t0;
+            return new[] { t0, t1 };
+        }
+        else
+        {
+            // hyperbolic case: solve cosh(F) = (r/a + 1) / e
+            float coshF = (targetRadius / a + 1f) / e;
+            if (coshF < 1f)
+                return Array.Empty<float>();
+
+            // acosh via log
+            float F = (float)Math.Log(coshF + Math.Sqrt(coshF * coshF - 1f));
+
+            // convert F to true anomaly f
+            float factor = Mathf.Sqrt((e + 1f) / (e - 1f));
+            float tanhHalfF = (float)Math.Tanh(F / 2f);
+            float tanHalfF = factor * tanhHalfF;
+            float f0 = 2f * Mathf.Atan(tanHalfF);
+
+            // symmetric branches
+            return new[] { -f0, f0 };
+        }
     }
 }
 
@@ -334,6 +369,7 @@ public class OrbitState
     public float ElapsedTime { get; private set; } = 0f;
     public float theta { get; private set; }
     public float r { get; private set; }
+    public float speed => velocity.magnitude;
 
     public OrbitState(OrbitShape shape) => this.shape = shape;
 
