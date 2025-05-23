@@ -24,6 +24,14 @@ public class UpgradeManager : MonoBehaviour
     // ui data
     [SerializeField] private GameObject upgrade_menu;
     [SerializeField] private GameObject ship;
+
+    [Header("Ship Mesh Organizer Names")]
+    [SerializeField] private string name_mesh_root = "Ship-Model-Final";
+    [SerializeField] private string name_slot_upgrade_tree = "upgrade-components";
+    [SerializeField] private string name_expansion_upgrade_tree = "expansion-components";
+    [SerializeField] private string name_engine_upgrade_tree = "engine-components";
+
+
     private Inventory player_inventory;
     private List<TMP_Dropdown> expansion_dropdowns = new();
     private ItemType[] expansion_types = { ItemType.HullBrace, ItemType.HullExtenderM1,
@@ -53,34 +61,34 @@ public class UpgradeManager : MonoBehaviour
     private List<GameObject> shield_meshes = new();
     private List<GameObject> engine_mesh_parents = new();
     // paper doll image objects
-    private Dictionary<int, List<GameObject>> paper_doll_layers_by_slot = new(); 
+    //private Dictionary<int, List<GameObject>> paper_doll_layers_by_slot = new(); 
 
     void Start()
     {
         // lookup the ship mesh
-        GameObject ship_mesh = ship.transform.Find("ShipModel").gameObject;
+        GameObject ship_mesh = ship.transform.Find(name_mesh_root).gameObject;
         // lookup the player's inventory, it is attached to the parent of the ship mesh
         player_inventory = ship.GetComponent<Inventory>();
         // lookup Viewport
         GameObject ui_parent = upgrade_menu.transform.Find("Viewport").gameObject;
 
         // #### Paper doll Components Lookup ####
-        Transform image_parent = ui_parent.transform.Find("background");
+        //Transform image_parent = ui_parent.transform.Find("background");
         // check all children of the background container
-        for (int i=0; i<image_parent.childCount; i++)
-        {
-            string name = image_parent.GetChild(i).gameObject.name;
-            int key = name[7] - '0';
-            // name will be in the form {layer index}-{component type}-{slot number} as in 01-A-006
-            // add child object to dictionary by its slot number
-            if (!paper_doll_layers_by_slot.ContainsKey(key))
-            {
-                // add key and new list
-                paper_doll_layers_by_slot[(int)(name[7] - '0')] = new List<GameObject>();
-            }
-            // add game object to dictionary
-            paper_doll_layers_by_slot[(int) (name[7] - '0')].Add(image_parent.GetChild(i).gameObject);
-        }
+        //for (int i=0; i<image_parent.childCount; i++)
+        //{
+        //    string name = image_parent.GetChild(i).gameObject.name;
+        //    int key = name[7] - '0';
+        //    // name will be in the form {layer index}-{component type}-{slot number} as in 01-A-006
+        //    // add child object to dictionary by its slot number
+        //    if (!paper_doll_layers_by_slot.ContainsKey(key))
+        //    {
+        //        // add key and new list
+        //        paper_doll_layers_by_slot[(int)(name[7] - '0')] = new List<GameObject>();
+        //    }
+        //    // add game object to dictionary
+        //    paper_doll_layers_by_slot[(int) (name[7] - '0')].Add(image_parent.GetChild(i).gameObject);
+        //}
 
         // #### Dropdown Menu Lookups ####
         // lookup engine dropdown menu
@@ -107,7 +115,7 @@ public class UpgradeManager : MonoBehaviour
 
         // #### Mesh Parts Lookup ####
         // lookup ship expansion mesh sections
-        GameObject exp_parent = ship_mesh.transform.Find("Ship-Expansions").gameObject;
+        GameObject exp_parent = ship_mesh.transform.Find(name_expansion_upgrade_tree).gameObject;
         for (int i=1; i<8; i++)
         {
             // expansion components are organized into empties named E#
@@ -115,7 +123,7 @@ public class UpgradeManager : MonoBehaviour
         }
 
         // lookup ship upgrade slot meshes
-        GameObject slot_parent = ship_mesh.transform.Find("Upgrade-Slots").gameObject;
+        GameObject slot_parent = ship_mesh.transform.Find(name_slot_upgrade_tree).gameObject;
         // armor slots
         for (int i=0; i<8; i++)
         {
@@ -139,7 +147,7 @@ public class UpgradeManager : MonoBehaviour
         // try and lookup tiers 0-5
         for (int i=0; i<6;  i++)
         {
-            Transform tmp = ship_mesh.transform.Find("Engines").Find("T" + i.ToString());
+            Transform tmp = ship_mesh.transform.Find(name_engine_upgrade_tree).Find("T" + i.ToString());
             if (tmp != null)
             {
                 // found tier
@@ -168,71 +176,71 @@ public class UpgradeManager : MonoBehaviour
         });
     }
 
-    private void UpdatePaperDoll()
-    {
-        // check slot 0, since it does not have an expansion
-        int value = slot_dropdowns[0].value;
-        char key;
-        switch (value)
-        {
-            case 0: key = 'E'; break;
-            case 1: key = 'A'; break;
-            case 2: key = 'S'; break;
-            case 3: key = 'C'; break;
-            default: key = 'E'; break; // E will not match anything
-        }
-        for (int x = 0; x < paper_doll_layers_by_slot[0].Count; x++)
-        {
-            if (paper_doll_layers_by_slot[0][x].name[3] != 'H') // skip the base ship
-            {
-                paper_doll_layers_by_slot[0][x].SetActive(key == paper_doll_layers_by_slot[0][x].name[3]);
-            }
-        }
+    //private void UpdatePaperDoll()
+    //{
+    //    //// check slot 0, since it does not have an expansion
+    //    //int value = slot_dropdowns[0].value;
+    //    //char key;
+    //    //switch (value)
+    //    //{
+    //    //    case 0: key = 'E'; break;
+    //    //    case 1: key = 'A'; break;
+    //    //    case 2: key = 'S'; break;
+    //    //    case 3: key = 'C'; break;
+    //    //    default: key = 'E'; break; // E will not match anything
+    //    //}
+    //    //for (int x = 0; x < paper_doll_layers_by_slot[0].Count; x++)
+    //    //{
+    //    //    if (paper_doll_layers_by_slot[0][x].name[3] != 'H') // skip the base ship
+    //    //    {
+    //    //        paper_doll_layers_by_slot[0][x].SetActive(key == paper_doll_layers_by_slot[0][x].name[3]);
+    //    //    }
+    //    //}
 
-        // check the state of all expansions and their slots and update active states
-        for (int i=0; i<expansion_dropdowns.Count; i++)
-        {
-            int slot_num = i + 1;
-            // check if the dropdown is active
-            // and the current value of the dropdown is not 0, meaning it is set to empty
-            if (expansion_dropdowns[i].IsActive() && expansion_dropdowns[i].value != 0)
-            {
-                // expansion slot is active, check its connected slot dropdown value
-                int slot_value = slot_dropdowns[slot_num].value;
-                char slot_key;
-                switch (slot_value)
-                {
-                    case 0:     slot_key = 'E'; break;
-                    case 1:     slot_key = 'A'; break;
-                    case 2:     slot_key = 'S'; break;
-                    case 3:     slot_key = 'C'; break;
-                    default:    slot_key = 'E'; break; // E will not match anything
-                }
-                // enable/disable layers
-                for (int x = 0; x < paper_doll_layers_by_slot[slot_num].Count; x++)
-                {
-                    if (paper_doll_layers_by_slot[slot_num][x].name[3] != 'H')
-                    {
-                        paper_doll_layers_by_slot[slot_num][x].SetActive(slot_key == paper_doll_layers_by_slot[slot_num][x].name[3]);
-                    }
-                    else
-                    {
-                        // enable expansion image
-                        paper_doll_layers_by_slot[slot_num][x].SetActive(true);
-                    }
-                }
-            }
-            else
-            {
-                // disable expansion paper doll and its slots
-                for (int x = 0; x < paper_doll_layers_by_slot[slot_num].Count; x++)
-                {
-                    paper_doll_layers_by_slot[slot_num][x].SetActive(false);
-                }
-            }
-        }
+    //    //// check the state of all expansions and their slots and update active states
+    //    //for (int i=0; i<expansion_dropdowns.Count; i++)
+    //    //{
+    //    //    int slot_num = i + 1;
+    //    //    // check if the dropdown is active
+    //    //    // and the current value of the dropdown is not 0, meaning it is set to empty
+    //    //    if (expansion_dropdowns[i].IsActive() && expansion_dropdowns[i].value != 0)
+    //    //    {
+    //    //        // expansion slot is active, check its connected slot dropdown value
+    //    //        int slot_value = slot_dropdowns[slot_num].value;
+    //    //        char slot_key;
+    //    //        switch (slot_value)
+    //    //        {
+    //    //            case 0:     slot_key = 'E'; break;
+    //    //            case 1:     slot_key = 'A'; break;
+    //    //            case 2:     slot_key = 'S'; break;
+    //    //            case 3:     slot_key = 'C'; break;
+    //    //            default:    slot_key = 'E'; break; // E will not match anything
+    //    //        }
+    //    //        // enable/disable layers
+    //    //        for (int x = 0; x < paper_doll_layers_by_slot[slot_num].Count; x++)
+    //    //        {
+    //    //            if (paper_doll_layers_by_slot[slot_num][x].name[3] != 'H')
+    //    //            {
+    //    //                paper_doll_layers_by_slot[slot_num][x].SetActive(slot_key == paper_doll_layers_by_slot[slot_num][x].name[3]);
+    //    //            }
+    //    //            else
+    //    //            {
+    //    //                // enable expansion image
+    //    //                paper_doll_layers_by_slot[slot_num][x].SetActive(true);
+    //    //            }
+    //    //        }
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        // disable expansion paper doll and its slots
+    //    //        for (int x = 0; x < paper_doll_layers_by_slot[slot_num].Count; x++)
+    //    //        {
+    //    //            paper_doll_layers_by_slot[slot_num][x].SetActive(false);
+    //    //        }
+    //    //    }
+    //    //}
 
-    }
+    //}
 
     /**
      * Checks the given inventory for upgrade items and enables associated options
@@ -246,7 +254,7 @@ public class UpgradeManager : MonoBehaviour
         CheckInventorySlotItems();
         CheckInventoryExpansionItems();
         CheckInventoryEngineItems();
-        UpdatePaperDoll();
+        //UpdatePaperDoll();
     }
 
     /**
@@ -419,7 +427,7 @@ public class UpgradeManager : MonoBehaviour
             // Update mesh
             UpdateExpansionMesh(value, slot_number);
         }
-        UpdatePaperDoll();
+        //UpdatePaperDoll();
     }
 
     private void UpdateEngineMesh(int selection)

@@ -290,6 +290,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4753574499710016246, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753574499710016246, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
+      propertyPath: 'm_Cameras.Array.data[0]'
+      value: 
+      objectReference: {fileID: 829395062}
     - target: {fileID: 5371001844661373860, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -337,6 +345,10 @@ PrefabInstance:
     - target: {fileID: 8788608816492365469, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
       propertyPath: m_Name
       value: Third Person Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8978973229521146824, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -526,6 +538,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8947537851871179430, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
   m_PrefabInstance: {fileID: 824495768}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &829395062 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7758823199065417611, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+  m_PrefabInstance: {fileID: 835747236}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +691,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1978155610678570189, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: shipAnimatior
+      value: 
+      objectReference: {fileID: 835747237}
+    - target: {fileID: 2333166073508278481, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2744475106661511954, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: isSpaceship
       value: 1
@@ -708,7 +733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: defined_default_inv.Array.size
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: defined_default_inv.Array.data[0].item
@@ -759,6 +784,18 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: defined_default_inv.Array.data[12].item
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: defined_default_inv.Array.data[13].item
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: defined_default_inv.Array.data[14].item
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: defined_default_inv.Array.data[0].amount
       value: 1
       objectReference: {fileID: 0}
@@ -805,6 +842,18 @@ PrefabInstance:
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: defined_default_inv.Array.data[11].amount
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: defined_default_inv.Array.data[12].amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: defined_default_inv.Array.data[13].amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: defined_default_inv.Array.data[14].amount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_Size.x
@@ -898,15 +947,19 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Ship
       objectReference: {fileID: 0}
+    - target: {fileID: 7758823199065417611, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 670e56765337d0049bab31095542e18d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -5499990802247065735, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
---- !u!95 &835747238 stripped
+--- !u!95 &835747237 stripped
 Animator:
-  m_CorrespondingSourceObject: {fileID: 4321656017677047103, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3711665243102131293, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
   m_PrefabInstance: {fileID: 835747236}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1026390263 stripped
@@ -1050,6 +1103,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgrade_menu: {fileID: 606943157}
   ship: {fileID: 1026390263}
+  name_mesh_root: Player-Ship-Final
+  name_slot_upgrade_tree: upgrade-components
+  name_expansion_upgrade_tree: expansion-components
+  name_engine_upgrade_tree: engine-components
 --- !u!114 &1391823735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,7 +1123,7 @@ MonoBehaviour:
   tradeMenu: {fileID: 1498344933}
   upgradeMenu: {fileID: 606943157}
   prompt: {fileID: 6014176712897565823}
-  shipAnimator: {fileID: 835747238}
+  shipAnimator: {fileID: 835747237}
   OnUpgradeMenuActive:
     m_PersistentCalls:
       m_Calls:

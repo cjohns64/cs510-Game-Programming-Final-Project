@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490aca0634e2f3af287bdf0b534457f5, type: 3}
   m_Name: Engine 1 Chemical
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 9552aeb92a477b6bba8fd49339fd6b2d, type: 3}
+  icon: {fileID: 21300000, guid: 6dde6d83e5f455c49a453431c306a7f9, type: 3}
   type: 1
   item_value: 2500
   item_size: 1

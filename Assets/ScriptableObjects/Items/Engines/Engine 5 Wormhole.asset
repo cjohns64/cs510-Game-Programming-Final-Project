@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490aca0634e2f3af287bdf0b534457f5, type: 3}
   m_Name: Engine 5 Wormhole
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b1d9079351bf5e747b7007d587e4eff0, type: 3}
+  icon: {fileID: 21300000, guid: fe39529ed3764ec43be0e0b76877caea, type: 3}
   type: 5
   item_value: 1562500
   item_size: 1
