@@ -11,27 +11,31 @@ using UnityEngine.Events;
  */
 public class TradeManager : MonoBehaviour
 {
-    [SerializeField] private InventoryObject playerInventory;
-    [SerializeField] private List<InventoryObject> tradingPosts = new();
+    [SerializeField] private GameObject ship;
     [SerializeField] private GameObject trade_menu; // needed because trade menu starts inactive
-    private List<GameObject> station_trade_areas = new();
+    [SerializeField] private GameObject player_menu;
+    private PlayerMenuTabManager tab_manager;
+    [SerializeField] private string global_scripts = "GlobalScripts";
+    private InventoryDisplay inventoryDisplay;
+    private Inventory current_station_inventory;
+    private Inventory playerInventory;
     private ItemManager itemManager;
     private TextMeshProUGUI playerCreditsText;
     private TextMeshProUGUI stationCreditsText;
+    private TextMeshProUGUI player_cargo_text;
+    private TextMeshProUGUI station_cargo_text;
     private TMP_InputField quantityValueText;
-    private bool is_initialized = false;
-    // the number in station trade area name == active station number
-    private Regex regex = new Regex(@"\d+");
+
     // production cycle event
     public UnityEvent OnProductionCycle;
     public UnityEvent OnTradeFailNotEnoughFunds;
     public UnityEvent OnTradeFailNotEnoughSpace;
+    public event Action<CelestialBody> OnMenuClosed;
     // time delay between production cycles
     private float production_timer = 0.0f;
-    private float production_delay = 5.0f;
+    private float production_delay = 30.0f;
 
-    public OrbitMoverAnalytic playerMover;
-    public event Action<CelestialBody> OnMenuClosed;
+    //private OrbitMoverAnalytic playerMover;
     private CelestialBody currentBody;
 
     private void Awake()
@@ -52,68 +56,47 @@ public class TradeManager : MonoBehaviour
 
     private void Initialize()
     {
+        // lookup tab manager script from player menu
+        tab_manager = player_menu.GetComponent<PlayerMenuTabManager>();
         // lookup all components needed by the trade manager
+        playerInventory = ship.GetComponent<Inventory>();
+        //playerMover = ship.GetComponent<OrbitMoverAnalytic>();
         // lookup item manager
         itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
-        // lookup all station trade areas, the exact number is not known
-        Transform tmp = trade_menu.transform.Find("Viewport").transform.Find("s0-InventoryContent");
-        station_trade_areas.Add(tmp.gameObject);
-        int i = 0;
-        while (tmp != null)
-        {
-            i++;
-            // find the next station
-            tmp = trade_menu.transform.Find("Viewport").transform.Find("s" + i + "-InventoryContent");
-            if (tmp != null)
-            {
-                // set it to inactive
-                tmp.gameObject.SetActive(false);
-                station_trade_areas.Add(tmp.gameObject);
-            }
-        }
+        // lookup the global scripts manager and find the inventory display component
+        inventoryDisplay = GameObject.Find(global_scripts).GetComponent<InventoryDisplay>();
         // lookup player credits text area
         playerCreditsText = trade_menu.transform.Find("CreditsPanel").Find("PlayerCreditsValueText").gameObject.GetComponent<TextMeshProUGUI>();
         //Debug.Log("player credits text=" + playerCreditsText.name);
         // lookup station credits text area
         stationCreditsText = trade_menu.transform.Find("CreditsPanel").Find("StationCreditsValueText").gameObject.GetComponent<TextMeshProUGUI>();
         // Debug.Log("station credits text=" + stationCreditsText.name);
+        // lookup cargo space text areas
+        station_cargo_text = trade_menu.transform.Find("CreditsPanel").Find("StationCargo").gameObject.GetComponent<TextMeshProUGUI>();
+        player_cargo_text = trade_menu.transform.Find("CreditsPanel").Find("PlayerCargo").gameObject.GetComponent<TextMeshProUGUI>();
         // lookup quantity text area
         quantityValueText = trade_menu.transform.Find("QuantityUI").Find("QuantityInputField").gameObject.GetComponent<TMP_InputField>();
-        // Debug.Log("quantity value text=" + quantityValueText.name);
-        is_initialized = true;
-        // subscribe to inventory update events
-        foreach (InventoryObject inv in tradingPosts)
-        {
-            inv.OnInventoryChanged += event_listener_UpdateCreditsText;
-        }
     }
 
-    void UpdateForActivation ()
+    public void SwitchStations()
     {
-        if (!is_initialized)
+        if (current_station_inventory != null)
         {
-            Initialize();
+            // unsubscribe old inventory
+            current_station_inventory.OnInventoryChanged -= event_listener_UpdateCreditsText;
         }
-        // update ui
-        UpdateCreditsText();
-        // update active station trade area
-        foreach (GameObject station in station_trade_areas)
-        {
-            Match match = regex.Match(station.name);
-            if (match.Success)
-            {
-                // set all station trade areas to inactive except the current one
-                station.SetActive(GetCurrentStationIndex() == int.Parse(match.Value));
-            }
-        }
+        // swap inventories
+        current_station_inventory = currentBody.GetComponentInParent<Inventory>();
+        // subscribe new inventory
+        current_station_inventory.OnInventoryChanged += event_listener_UpdateCreditsText;
+        // swap station inventory in inventory display
+        inventoryDisplay.SetNewActiveInventory(current_station_inventory);
+        // update all items in trade area
+        inventoryDisplay.UpdateAllItems(false);
+        inventoryDisplay.UpdateAllItems(true);
     }
 
-    private int GetCurrentStationIndex()
-    {
-        return currentBody != null ? currentBody.inventory_index : 0;
-    }
-
-    float GetItemCost(ItemType item)
+    public float GetItemCost(ItemType item)
     {
         //TODO add supply and demand calculations
         //Debug.Log("" + item==ItemType.Metals + " " + itemManager.name);
@@ -132,13 +115,13 @@ public class TradeManager : MonoBehaviour
         {
             // other inventory is a station inventory
             //Debug.Log("player inventory clicked, quantity = " + quantity);
-            TradeItems(item_type, playerInventory, tradingPosts[GetCurrentStationIndex()], quantity);
+            TradeItems(item_type, playerInventory, current_station_inventory, quantity);
         }
         else
         {
             // other inventory is the player inventory
             //Debug.Log("station inventory clicked, quantity = " + quantity);
-            TradeItems(item_type, tradingPosts[GetCurrentStationIndex()], playerInventory, quantity);
+            TradeItems(item_type, current_station_inventory, playerInventory, quantity);
         }
     }
     public void event_listener_UpdateCreditsText(ItemType x)
@@ -148,13 +131,22 @@ public class TradeManager : MonoBehaviour
 
     public void UpdateCreditsText()
     {
+        if (current_station_inventory != null)
+        {
+            // update station credits text
+            stationCreditsText.text = current_station_inventory.credits.ToString("c2");
+            // update inventory space text
+            station_cargo_text.text = current_station_inventory.GetCurrentCapacity().ToString("n0") +
+                "/" + current_station_inventory.GetCurrentMaxCapacity().ToString("n0");
+        }
         // update player credits text
         playerCreditsText.text = playerInventory.credits.ToString("c2");
-        // update station credits text
-        stationCreditsText.text = tradingPosts[GetCurrentStationIndex()].credits.ToString("c2");
+        // update inventory space text
+        player_cargo_text.text = playerInventory.GetCurrentCapacity().ToString("n0") +
+            "/" + playerInventory.GetCurrentMaxCapacity().ToString("n0");
     }
 
-    public void TradeItems(ItemType item_from, InventoryObject inventory_from, InventoryObject inventory_to, int amount)
+    public void TradeItems(ItemType item_from, Inventory inventory_from, Inventory inventory_to, int amount)
     {
         float credits_buyer = inventory_to.credits;
         float unit_cost = GetItemCost(item_from);
@@ -188,16 +180,16 @@ public class TradeManager : MonoBehaviour
     public void OpenMenu(CelestialBody body) {
         currentBody = body;
         // set the new body's inventory and trade area
-        UpdateForActivation();
+        SwitchStations();
         // activate the menu
-        trade_menu.SetActive(true);
+        tab_manager.ActivateTradeTab();
     }
 
     /// <summary>
     /// Call this from a "Close" or "Done" button in the UI.
     /// </summary>
     public void CloseMenu() {
-        trade_menu.SetActive(false);
+        player_menu.SetActive(false);
         OnMenuClosed?.Invoke(currentBody);
     }
 }

@@ -30,7 +30,7 @@ public class ThirdPersonCameraController : MonoBehaviour
     private float pitch = 20f;
     bool isFocusing = false;
 
-    private Camera camera;
+    private Camera _camera;
 
     // double click logic
     private float lastClickTime = 0f;
@@ -38,7 +38,7 @@ public class ThirdPersonCameraController : MonoBehaviour
 
     void Awake() 
     {
-        camera = Camera.main;
+        _camera = Camera.main;
     }
 
     void Update()
@@ -60,7 +60,7 @@ public class ThirdPersonCameraController : MonoBehaviour
 
         if (timeSinceLastClick > doubleClickThreshold) return;
 
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, focusRayDistance, focusableLayers))
         {
             StopAllCoroutines();

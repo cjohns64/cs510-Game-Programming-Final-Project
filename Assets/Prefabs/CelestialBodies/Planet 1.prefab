@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 2354792944155440946}
   - component: {fileID: 8999109282530646392}
   - component: {fileID: 5565183419363073518}
+  - component: {fileID: 535340346848457754}
   m_Layer: 6
   m_Name: Planet 1
   m_TagString: Untagged
@@ -184,6 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mass: 1
   Radius: 1
+  inventory_index: 0
   SoiRadius: 2
   SoiPrefab: {fileID: 8962762696380920678, guid: 77a23aa63f6b53749b0371dae85f2e6c, type: 3}
 --- !u!114 &3418304652704228701
@@ -202,7 +204,6 @@ MonoBehaviour:
   initializationType: 0
   InitialVelocity: {x: 0, y: 0, z: 0.3}
   TimeMultiplier: 1
-  otherBody: {fileID: 0}
 --- !u!114 &2354792944155440946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,18 +216,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8dd01737b81e784394ecbe9b1e4ec74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSpaceship: 0
   lineScreenWidth: 0.15
   segments: 180
   maxRenderDistance: 100
-  periapsisMarker: {fileID: 0}
-  apoapsisMarker: {fileID: 0}
   StableMaterial: {fileID: 2100000, guid: 555bfe75e16346f43870f0ea50d0aa5f, type: 2}
   CollisionMaterial: {fileID: 2100000, guid: b667dfa335876894bb28da613dbc01a0, type: 2}
   EscapeMaterial: {fileID: 2100000, guid: d927c3e57d115aa47b7fff510f8688e0, type: 2}
   EncounterMaterial: {fileID: 2100000, guid: ae94eb4e49730fb4ab7bf6d75405140c, type: 2}
-  soiExitMarkerPrefab: {fileID: 0}
-  soiEntryMarkerPrefab: {fileID: 0}
+  PeriapsisMarkerPrefab: {fileID: 0}
+  ApoapsisMarkerPrefab: {fileID: 0}
+  SoiExitMarkerPrefab: {fileID: 0}
+  SoiEntryMarkerPrefab: {fileID: 0}
 --- !u!135 &8999109282530646392
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -355,6 +355,24 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &535340346848457754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6150030931648894635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a16f5109d2ba7ff45843dec2265eaf46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defined_default_inv: []
+  produces: []
+  consumes: []
+  inventory_capacity: 500
+  credits: 0
+  production_profit_scale: 0.01
 --- !u!1001 &5382273311706318881
 PrefabInstance:
   m_ObjectHideFlags: 0

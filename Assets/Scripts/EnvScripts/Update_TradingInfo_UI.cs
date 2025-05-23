@@ -3,7 +3,7 @@ using TMPro;
 
 public class Update_TradingInfo_UI : MonoBehaviour
 {
-    [SerializeField] private InventoryObject inventory;
+    private Inventory inventory;
     public string station_name;
     private TextMeshProUGUI name_text;
     private TextMeshProUGUI credits_text;
@@ -11,6 +11,8 @@ public class Update_TradingInfo_UI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // lookup parent of parent's Inventory component
+        inventory = this.GetComponentInParent<Inventory>();
         // lookup child ui elements
         name_text = this.transform.Find("NameText").gameObject.GetComponent<TextMeshProUGUI>();
         name_text.text = station_name;
