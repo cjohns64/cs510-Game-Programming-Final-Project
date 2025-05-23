@@ -1,16 +1,22 @@
 using UnityEngine;
 
+[ExecuteAlways]
 public class CancelRotation : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Quaternion initialLocalRotation;
+
+    void Awake()
     {
-        
+        initialLocalRotation = transform.localRotation;
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        
+        if (transform.parent == null)
+            return;
+
+        Quaternion parentRotation = transform.parent.parent.parent.rotation;
+        // transform.rotation = Quaternion.Inverse(parentRotation) * initialLocalRotation;
+        transform.rotation = Quaternion.Inverse(parentRotation);
     }
 }

@@ -14,9 +14,11 @@ GameObject:
   - component: {fileID: 1978155610678570189}
   - component: {fileID: 4616813932254770500}
   - component: {fileID: 8605495257203014370}
-  m_Layer: 3
+  - component: {fileID: 2925988768996401423}
+  - component: {fileID: 4788779688568179540}
+  m_Layer: 6
   m_Name: Ship
-  m_TagString: Untagged
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,7 +56,6 @@ MonoBehaviour:
   initializationType: 0
   InitialVelocity: {x: 1.5, y: 0, z: 0}
   TimeMultiplier: 1
-  otherBody: {fileID: 0}
 --- !u!114 &2744475106661511954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,18 +68,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8dd01737b81e784394ecbe9b1e4ec74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSpaceship: 0
   lineScreenWidth: 0.2
   segments: 180
   maxRenderDistance: 100
-  periapsisMarker: {fileID: 1968943684699969113, guid: 6665a42374c1ccf4c999f2581254a8a0, type: 3}
-  apoapsisMarker: {fileID: 9087650406825086019, guid: f9306e375f77ff946adbbaa473658fdc, type: 3}
   StableMaterial: {fileID: 2100000, guid: 4a875fc416384ec44a3a7d6fbe453740, type: 2}
   CollisionMaterial: {fileID: 2100000, guid: b667dfa335876894bb28da613dbc01a0, type: 2}
   EscapeMaterial: {fileID: 2100000, guid: d927c3e57d115aa47b7fff510f8688e0, type: 2}
   EncounterMaterial: {fileID: 2100000, guid: ae94eb4e49730fb4ab7bf6d75405140c, type: 2}
-  soiExitMarkerPrefab: {fileID: 1968943684699969113, guid: 8a826ac744ab98b40a29d7f534f628d8, type: 3}
-  soiEntryMarkerPrefab: {fileID: 1968943684699969113, guid: 8a826ac744ab98b40a29d7f534f628d8, type: 3}
+  PeriapsisMarkerPrefab: {fileID: 1968943684699969113, guid: 6665a42374c1ccf4c999f2581254a8a0, type: 3}
+  ApoapsisMarkerPrefab: {fileID: 9087650406825086019, guid: f9306e375f77ff946adbbaa473658fdc, type: 3}
+  SoiExitMarkerPrefab: {fileID: 9087650406825086019, guid: f9306e375f77ff946adbbaa473658fdc, type: 3}
+  SoiEntryMarkerPrefab: {fileID: 1968943684699969113, guid: 8a826ac744ab98b40a29d7f534f628d8, type: 3}
 --- !u!114 &1978155610678570189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +223,59 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!33 &2925988768996401423
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532754105240880961}
+  m_Mesh: {fileID: 0}
+--- !u!23 &4788779688568179540
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532754105240880961}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &9132690210089862020
 GameObject:
   m_ObjectHideFlags: 0

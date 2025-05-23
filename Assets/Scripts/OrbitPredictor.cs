@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-[RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(OrbitMoverAnalytic), typeof(MeshFilter), typeof(MeshRenderer))]
 public class OrbitPredictor : MonoBehaviour
 {
     private bool isSpaceship;
@@ -46,15 +46,16 @@ public class OrbitPredictor : MonoBehaviour
 
     // Private Components
     private OrbitMoverAnalytic mover;
-    private LineRenderer lineRenderer;
     private Transform centralBody;
+    private Mesh orbitMesh;
+    private MeshRenderer meshRenderer;
     private Camera mainCamera;
 
     // Private variable
-    private float trueAnomalySpan;
+    private float trueAnomalySpan = 2 * (float)Math.PI - 0.001f;
 
     // Cached values
-    private Vector3[] points;
+    private Vector3[] orbitPoints;
     private CelestialBody centralCelestialBody;
 
 
@@ -62,14 +63,16 @@ public class OrbitPredictor : MonoBehaviour
     void Awake()
     {
         mover = GetComponent<OrbitMoverAnalytic>();
-        lineRenderer = GetComponent<LineRenderer>();
         centralBody = mover.CentralBody;
         mainCamera = Camera.main;
 
-        lineRenderer.useWorldSpace = true;
-        lineRenderer.positionCount = segments + 1;
+        orbitPoints = new Vector3[segments + 1];
+        orbitMesh = new Mesh();
+        var meshFilter = GetComponent<MeshFilter>();
+        meshFilter.sharedMesh = orbitMesh;
+        meshRenderer = GetComponent<MeshRenderer>();
+        // meshRenderer.material = new Material(Shader.Find("Custom/ConstantWidthLine"));
 
-        points = new Vector3[segments + 2];
         centralCelestialBody = centralBody.GetComponent<CelestialBody>();
 
         isSpaceship = CompareTag("Ship");
@@ -78,44 +81,48 @@ public class OrbitPredictor : MonoBehaviour
     void Start()
     {
         InstantiateMarkers();
+
+        meshRenderer.material = StableMaterial;
     }
 
     void Update()
     {
-        if (mover != null && mover.enabled)
+        if (mover == null || !mover.enabled)
+            return;
+
+        if (isSpaceship)
         {
             CheckFutureSOITransition();
             PlaceMarkers();
-            AdjustLineWidth();
             SwitchMaterial();
-            DrawOrbit();
         }
 
-        // 1a Check For encounter
-        // 1b Check For escape
-        // 1c Determine which is closer and disable further one
-        // 2. Enable/Disable + locate markers.
-        // 3. Switch Orbit Material
-        // 4. Scale the line
-        // 5. Draw the line
+        DrawOrbit();
 
-        /// Thoughts on efficient encounter prediction.
-        /// 1. if ships apsi's ensure that there will be no encounter with planet
-        ///     ,don't check for encounter with plant!
-        ///    **Between total and no speed up depending on the orbit**
-        /// 2. Right now, the ships future positions are recalculated 
-        ///     for EVERY PLANET FOR EVERY FRAME
-        ///     Reuse the same values for the same frame at bare minimum
-        ///     **1.5 ish speed up I guess**
-        /// 3. Cache the ship location list. Its the same size every time!
-        ///     **1.1x speed up (total guess) Garbage collector does half the work it would have**
-        /// 4. Unless there is an impulse or the ship changes SOI, the ships 
-        ///     future position doesn't need to be recalculated between frames
-        ///     Structure the list so that list[0] is the position at theta=0
-        ///     and list[i] = theta at i * period / list.length time after theta=0
-        ///     another var keeps track of how far along the ship is in that list in units of period / list.length
-        /// 5. Don't look for encounters if there is an upcoming encounter and no impulse
-    }
+            // 1a Check For encounter
+            // 1b Check For escape
+            // 1c Determine which is closer and disable further one
+            // 2. Enable/Disable + locate markers.
+            // 3. Switch Orbit Material
+            // 4. Draw the line
+
+            /// Thoughts on efficient encounter prediction.
+            /// 1. if ships apsi's ensure that there will be no encounter with planet
+            ///     ,don't check for encounter with plant!
+            ///    **Between total and no speed up depending on the orbit**
+            /// 2. Right now, the ships future positions are recalculated 
+            ///     for EVERY PLANET FOR EVERY FRAME
+            ///     Reuse the same values for the same frame at bare minimum
+            ///     **1.5 ish speed up I guess**
+            /// 3. Cache the ship location list. Its the same size every time!
+            ///     **1.1x speed up (total guess) Garbage collector does half the work it would have**
+            /// 4. Unless there is an impulse or the ship changes SOI, the ships 
+            ///     future position doesn't need to be recalculated between frames
+            ///     Structure the list so that list[0] is the position at theta=0
+            ///     and list[i] = theta at i * period / list.length time after theta=0
+            ///     another var keeps track of how far along the ship is in that list in units of period / list.length
+            /// 5. Don't look for encounters if there is an upcoming encounter and no impulse
+        }
 
     private void OnEnable()
     {
@@ -167,7 +174,6 @@ public class OrbitPredictor : MonoBehaviour
 
     private void CheckFutureSOITransition()
     {
-        if (!isSpaceship) return;
         CheckFutureSOIExit();
         CheckFutureSOIEntry();
 
@@ -217,15 +223,35 @@ public class OrbitPredictor : MonoBehaviour
 
     private void CheckFutureSOIExit()
     {
-        hasSOIExit = (!mover.shape.IsClosedOrbit) || (mover.shape.IsClosedOrbit && mover.shape.rApoapsis > centralCelestialBody.SoiRadius);
-        
-        if (!hasSOIExit) return;
-        
-        float? theta = mover.shape.GetTrueAnomalyForRadius(centralCelestialBody.SoiRadius);
-        if (theta.HasValue) {
-            soiExitTheta = theta.Value;
-            soiExitPoint = centralBody.position + mover.shape.GetOrbitPoint(soiExitTheta);
+        float soiRadius = centralCelestialBody.SoiRadius;
+        float periapsis = mover.shape.rPeriapsis;
+        float apoapsis = mover.shape.rApoapsis;
+        bool IsClosedOrbit = mover.shape.IsClosedOrbit;
+
+        if (IsClosedOrbit)
+            hasSOIExit = apoapsis > soiRadius;
+        else
+            hasSOIExit = periapsis < soiRadius;
+
+        if (!hasSOIExit)
+            return;
+
+        float[] crossings = mover.shape.GetTrueAnomaliesForRadius(soiRadius);
+        if (crossings.Length > 0)
+        {
+            soiExitTheta = crossings.Where(f => f >= 0f)
+                                          .DefaultIfEmpty(crossings[0])
+                                          .Min();
+            Vector3 exitLocal = mover.shape.GetOrbitPoint(soiExitTheta);
+            soiExitPoint = centralBody.position + exitLocal;
         }
+        else if (hasSOIExit)
+        {
+            Debug.LogWarning(
+                $"[OrbitPredictor] no SOI exit crossing EVEN THOUGH THERE SHOULD BE"
+            );
+        }
+        
     }
 
     private void CheckFutureSOIEntry()
@@ -285,8 +311,6 @@ public class OrbitPredictor : MonoBehaviour
     }
 
     void PlaceMarkers() {
-        if (!isSpaceship) return;
-
         if (hasPeriapsis) {
             periapsisMarker.transform.position = periapsisPoint;
             periapsisMarker.SetActive(true);
@@ -315,132 +339,190 @@ public class OrbitPredictor : MonoBehaviour
 
     void DrawOrbit()
     {
+        GenerateOrbitPoints();
+
+        int vertCount = orbitPoints.Length;
+        Vector3[] verts = new Vector3[vertCount * 2];
+        Vector3[] nexts = new Vector3[vertCount * 2];
+        int[] indices = new int[(vertCount - 1) * 6];
+
+        for (int i = 0; i < vertCount; i++) {
+            Vector3 p0 = orbitPoints[i];
+            Vector3 p1 = orbitPoints[Mathf.Min(i + 1, vertCount - 1)];
+
+            verts[i * 2 + 0] = p0;
+            verts[i * 2 + 1] = p0;
+
+            nexts[i * 2 + 0] = p1;
+            nexts[i * 2 + 1] = p1;
+
+            if (i < vertCount - 1) 
+            {
+                int idx = i * 6;
+                int v = i * 2;
+
+                // two triangles per segment quad
+                indices[idx + 0] = v + 0;
+                indices[idx + 1] = v + 2;
+                indices[idx + 2] = v + 1;
+                indices[idx + 3] = v + 1;
+                indices[idx + 4] = v + 2;
+                indices[idx + 5] = v + 3;
+            }
+        }
+
+        orbitMesh.Clear();
+        orbitMesh.vertices = verts;
+        orbitMesh.SetUVs(0, nexts);
+        orbitMesh.SetIndices(indices, MeshTopology.Lines, 0);
+
         float a = mover.shape.a;
         float e = mover.shape.e;
         Vector3 normal = mover.shape.AngularMomentumVec.normalized;
         Vector3 perigee = mover.shape.EccentricityVec.normalized;
+    }
+
+    void GenerateOrbitPoints()
+    {
+        // Compute common parameters
+        float a = mover.shape.a;
+        float e = mover.shape.e;
+        Vector3 center = centralBody.position;
+        Vector3 normal = mover.shape.AngularMomentumVec.normalized;
+        Vector3 perigee = mover.shape.EccentricityVec.normalized;
+        Quaternion rot = Quaternion.LookRotation(perigee, normal);
 
         if (mover.shape.IsClosedOrbit)
         {
-            DrawEllipse(a, e, normal, perigee);
-        }
-        else
-        {
-            DrawHyperbola(a, e, normal, perigee);
-        }
-    }
-
-    void DrawEllipse(float a, float e, Vector3 normal, Vector3 perigee)
-    {
-        // Parameter validation
-        if (a <= 0 || e < 0 || e >= 1)
-            throw new ArgumentException("Invalid ellipse parameters");
-
-        if (normal == Vector3.zero || perigee == Vector3.zero)
-            throw new ArgumentException("Vectors cannot be zero");
-
-        Quaternion rotation = Quaternion.LookRotation(perigee, normal);
-        //Vector3[] points = new Vector3[hasSOIExit ? segments + 2 : segments + 2]; // +2 for ship position and potential loop closure
-
-        // if (hasSOIExit || hasSOIEntry)
-        // {
-            // Draw from ship to SOI exit (escaping orbit)
-            float thetaShip = mover.state.theta;
-
-            // float exitTheta = hasSOIEntry 
-            //     ? soiEntryTheta
-            //     : CalculateExitThetaForEllipse(a, e);
-            float exitTheta = (trueAnomalySpan + thetaShip - 0.00001f) % (2 * Mathf.PI);
-
-
-            // Ensure we go the "short way" around
-            if (exitTheta < thetaShip) exitTheta += 2 * Mathf.PI;
-
-            points[0] = transform.position; // Exact ship position
+            // Draw from current true anomaly up to span
+            float thetaStart = mover.state.theta;
+            float thetaEnd = thetaStart + trueAnomalySpan;
 
             for (int i = 0; i <= segments; i++)
             {
                 float t = (float)i / segments;
-                float theta = Mathf.Lerp(thetaShip, exitTheta, t);
-                points[i + 1] = CalculateEllipsePoint(a, e, rotation, theta);
+                float theta = Mathf.Lerp(thetaStart, thetaEnd, t);
+                float r = (a * (1 - e * e)) / (1 + e * Mathf.Cos(theta));
+                Vector3 point = center + rot * new Vector3(
+                    r * Mathf.Sin(theta),
+                    0f,
+                    r * Mathf.Cos(theta)
+                );
+                orbitPoints[i] = point;
             }
-        // }
-        // else
-        // {
-        //     // Draw full ellipse (stable orbit)
-        //     for (int i = 0; i <= segments; i++)
-        //     {
-        //         float theta = 2 * Mathf.PI * i / segments;
-        //         points[i] = CalculateEllipsePoint(a, e, rotation, theta);
-        //     }
-        //     points[segments + 1] = points[0]; // Close the loop
-        // }
-
-        lineRenderer.positionCount = points.Length;
-        lineRenderer.SetPositions(points);
-    }
-
-    Vector3 CalculateEllipsePoint(float a, float e, Quaternion rotation, float theta)
-    {
-        float r = (a * (1 - e * e)) / (1 + e * Mathf.Cos(theta));
-        return centralBody.position + rotation * new Vector3(
-            r * Mathf.Sin(theta),
-            0,
-            r * Mathf.Cos(theta)
-        );
-    }
-
-    void DrawHyperbola(float a, float e, Vector3 normal, Vector3 perigee)
-    {
-        Quaternion rotation = Quaternion.LookRotation(perigee, normal);
-        float thetaMax = Mathf.Acos(-1 / e);
-        //List<Vector3> points = new List<Vector3>();
-
-        for (int i = 0; i <= segments; i++)
-        {
-            float t = (float)i / segments;
-            float theta = thetaMax * Mathf.Tan(t * Mathf.PI - Mathf.PI / 2) * 0.9f;
-            theta = Mathf.Clamp(theta, -thetaMax, thetaMax);
-
-            float denominator = 1 + e * Mathf.Cos(theta);
-            if (Mathf.Abs(denominator) < 0.001f) continue;
-
-            float r = (a * (e * e - 1)) / denominator;
-            if (r > maxRenderDistance || float.IsNaN(r)) continue;
-
-            Vector3 point = rotation * new Vector3(
-               -r * Mathf.Sin(theta),
-                0,
-               -r * Mathf.Cos(theta)
-            ) + centralBody.position;
-
-            points[i] = point;
         }
+        else
+        {
+            float thetaStart = mover.state.theta;
+            float thetaEnd = thetaStart + trueAnomalySpan;
 
-        // Clean up artifacts that may appear at the end of the hyperbolic trajectories.
-        //if (points.Count > 1 &&
-        //    Vector3.Distance(points[points.Count - 2], points[points.Count - 1]) > maxRenderDistance / 2)
-        //{
-        //    points.RemoveAt(points.Count - 1);
-        //}
+            for (int i = 0; i <= segments; i++)
+            {
+                float t = (float)i / segments;
+                float theta = Mathf.Lerp(thetaStart, thetaEnd, t);
+                float denom = 1 + e * Mathf.Cos(theta);
+                if (Mathf.Abs(denom) < 1e-3f) { orbitPoints[i] = center; continue; }
+                float r = (a * (e * e - 1)) / denom;
+                Vector3 local = new Vector3(
+                    -r * Mathf.Sin(theta),
+                    0f,
+                    -r * Mathf.Cos(theta)
+                );
+                orbitPoints[i] = center + rot * local;
+            }
 
-        lineRenderer.positionCount = points.Length - 1;
-        lineRenderer.SetPositions(points);
+        }
     }
 
-    void AdjustLineWidth()
-    {
-        if (mainCamera == null) return;
+    // void DrawEllipse(float a, float e, Vector3 normal, Vector3 perigee)
+    // {
+    //     // Parameter validation
+    //     if (a <= 0 || e < 0 || e >= 1)
+    //         throw new ArgumentException("Invalid ellipse parameters");
 
-        float distance = Vector3.Distance(
-            mainCamera.transform.position,
-            centralBody.position
-        );
+    //     if (normal == Vector3.zero || perigee == Vector3.zero)
+    //         throw new ArgumentException("Vectors cannot be zero");
 
-        float worldWidth = lineScreenWidth * distance / mainCamera.fieldOfView;
-        lineRenderer.startWidth = worldWidth;
-        lineRenderer.endWidth = worldWidth;
-    }
+    //     Quaternion rotation = Quaternion.LookRotation(perigee, normal);
+        
+    //     float thetaShip = mover.state.theta;
+    //     float exitTheta = (trueAnomalySpan + thetaShip - 0.00001f) % (2 * Mathf.PI);
+
+    //     if (exitTheta < thetaShip) exitTheta += 2 * Mathf.PI;
+
+    //     orbitPoints[0] = transform.position;
+    //     for (int i = 0; i <= segments; i++)
+    //     {
+    //         float t = (float)i / segments;
+    //         float theta = Mathf.Lerp(thetaShip, exitTheta, t);
+    //         orbitPoints[i + 1] = CalculateEllipsePoint(a, e, rotation, theta);
+    //     }
+
+    //     lineRenderer.positionCount = orbitPoints.Length;
+    //     lineRenderer.SetPositions(orbitPoints);
+    // }
+
+    // Vector3 CalculateEllipsePoint(float a, float e, Quaternion rotation, float theta)
+    // {
+    //     float r = (a * (1 - e * e)) / (1 + e * Mathf.Cos(theta));
+    //     return centralBody.position + rotation * new Vector3(
+    //         r * Mathf.Sin(theta),
+    //         0,
+    //         r * Mathf.Cos(theta)
+    //     );
+    // }
+
+    // void DrawHyperbola(float a, float e, Vector3 normal, Vector3 perigee)
+    // {
+    //     Quaternion rotation = Quaternion.LookRotation(perigee, normal);
+    //     float thetaMax = Mathf.Acos(-1 / e);
+    //     //List<Vector3> points = new List<Vector3>();
+
+    //     for (int i = 0; i <= segments; i++)
+    //     {
+    //         float t = (float)i / segments;
+    //         float theta = thetaMax * Mathf.Tan(t * Mathf.PI - Mathf.PI / 2) * 0.9f;
+    //         theta = Mathf.Clamp(theta, -thetaMax, thetaMax);
+
+    //         float denominator = 1 + e * Mathf.Cos(theta);
+    //         if (Mathf.Abs(denominator) < 0.001f) continue;
+
+    //         float r = (a * (e * e - 1)) / denominator;
+    //         if (r > maxRenderDistance || float.IsNaN(r)) continue;
+
+    //         Vector3 point = rotation * new Vector3(
+    //            -r * Mathf.Sin(theta),
+    //             0,
+    //            -r * Mathf.Cos(theta)
+    //         ) + centralBody.position;
+
+    //         orbitPoints[i] = point;
+    //     }
+
+    //     // Clean up artifacts that may appear at the end of the hyperbolic trajectories.
+    //     //if (points.Count > 1 &&
+    //     //    Vector3.Distance(points[points.Count - 2], points[points.Count - 1]) > maxRenderDistance / 2)
+    //     //{
+    //     //    points.RemoveAt(points.Count - 1);
+    //     //}
+
+    //     lineRenderer.positionCount = orbitPoints.Length - 1;
+    //     lineRenderer.SetPositions(orbitPoints);
+    // }
+
+    // void AdjustLineWidth()
+    // {
+    //     if (mainCamera == null) return;
+
+    //     float distance = Vector3.Distance(
+    //         mainCamera.transform.position,
+    //         centralBody.position
+    //     );
+
+    //     float worldWidth = lineScreenWidth * distance / mainCamera.fieldOfView;
+    //     lineRenderer.startWidth = worldWidth;
+    //     lineRenderer.endWidth = worldWidth;
+    // }
 
     void SwitchMaterial()
     {
@@ -452,29 +534,29 @@ public class OrbitPredictor : MonoBehaviour
 
         if (hasSOIEntry) 
         {
-            lineRenderer.material = EncounterMaterial;
+            meshRenderer.material = EncounterMaterial;
         } 
         else if (hasSOIExit) 
         {
-            lineRenderer.material = EscapeMaterial;
+            meshRenderer.material = EscapeMaterial;
         }
         else if (hasCollision) 
         {
-            lineRenderer.material = CollisionMaterial;
+            meshRenderer.material = CollisionMaterial;
         }
         else // Stable Orbt
         {
-            lineRenderer.material = StableMaterial;
+            meshRenderer.material = StableMaterial;
         }
     }
 
-    float CalculateExitThetaForEllipse(float a, float e)
-    {
-        float soiRadius = centralBody.GetComponent<CelestialBody>().SoiRadius;
-        float numerator = a * (1 - e * e) - soiRadius;
-        float cosTheta = numerator / (e * soiRadius);
-        return Mathf.Acos(Mathf.Clamp(cosTheta, -1f, 1f));
-    }
+    // float CalculateExitThetaForEllipse(float a, float e)
+    // {
+    //     float soiRadius = centralBody.GetComponent<CelestialBody>().SoiRadius;
+    //     float numerator = a * (1 - e * e) - soiRadius;
+    //     float cosTheta = numerator / (e * soiRadius);
+    //     return Mathf.Acos(Mathf.Clamp(cosTheta, -1f, 1f));
+    // }
 }
 
 public static class GravitationalConstants
