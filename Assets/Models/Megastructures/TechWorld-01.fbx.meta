@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 76e7da3fc353af242af7595f6886a9d2
+guid: bd634e426dcd3624db01e082f833dc3e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,18 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Gas Giant Clouds
-    second: {fileID: 2100000, guid: 489f4d0f41024694b94b0732ee55b206, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: GasGiant
-    second: {fileID: 2100000, guid: 5de13fb5b5fa3d047b470d899c92368f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Rings
-    second: {fileID: 2100000, guid: 56a504fc43f071e4cae46472250b9850, type: 2}
+      name: TechWorld
+    second: {fileID: 2100000, guid: 14a83057030111f4c90992498db887f1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -44,36 +34,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Cloud Rotation
-      takeName: Cloud Rotation
-      internalID: -8204105701273295955
-      firstFrame: 0
-      lastFrame: 4796
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 0
   meshes:
     lODScreenPercentages: []
