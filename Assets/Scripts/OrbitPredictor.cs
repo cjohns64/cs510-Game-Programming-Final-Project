@@ -43,6 +43,7 @@ public class OrbitPredictor : MonoBehaviour
     private bool hasSOIEntry = false;
     private Vector3 soiEntryPoint;
     private float soiEntryTheta;
+    public AudioSource soiEntryAudio;
 
     // Private Components
     private OrbitMoverAnalytic mover;
@@ -299,6 +300,10 @@ public class OrbitPredictor : MonoBehaviour
             soiEntryPoint = centralBody.position + mover.shape.GetOrbitPoint(soiEntryTheta);
 
             nearestBody.SOIVisEnabled(true);
+
+            if (soiEntryAudio && soiEntryAudio.isPlaying)
+                soiEntryAudio.Play();
+
             return;
         }
         

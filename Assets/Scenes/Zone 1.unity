@@ -1913,7 +1913,7 @@ GameObject:
   - component: {fileID: 2006085611}
   m_Layer: 0
   m_Name: Time Controller
-  m_TagString: Untagged
+  m_TagString: TimeController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2056,6 +2056,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2096871725}
     m_Modifications:
+    - target: {fileID: 1026740198025161507, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_text
+      value: 99.99 u/sec
+      objectReference: {fileID: 0}
     - target: {fileID: 2760511119530601204, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2135,6 +2139,50 @@ PrefabInstance:
     - target: {fileID: 2760511119530601204, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813610107972196125, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813610107972196125, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813610107972196125, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2006085611}
+    - target: {fileID: 5813610107972196125, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813610107972196125, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DecreaseTimeScale
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813610107972196125, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TimeController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813610107972196125, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081506278441416011, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2006085611}
+    - target: {fileID: 8081506278441416011, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseTimeScale
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081506278441416011, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TimeController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081506278441416011, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8900476232586390376, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
