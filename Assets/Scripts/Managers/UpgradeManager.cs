@@ -62,6 +62,46 @@ public class UpgradeManager : MonoBehaviour
     private List<GameObject> shield_meshes = new();
     private List<GameObject> engine_mesh_parents = new();
 
+    /**
+     * Saves the current dropdown values
+     */
+    public List<int> SaveDropdownSettings()
+    {
+        List<int> settings = new List<int>();
+        // add engine dropdown value
+        settings.Add(engine_dropdown.value);
+        // add expansion dropdown values
+        foreach (TMP_Dropdown dropdown in expansion_dropdowns)
+        {
+            settings.Add(dropdown.value);
+        }
+        // add slot dropdown values
+        foreach (TMP_Dropdown dropdown in slot_dropdowns)
+        {
+            settings.Add(dropdown.value);
+        }
+        return settings;
+    }
+
+    /**
+     * Sets the Dropdowns to the loaded values
+     */
+    public void LoadDropdownSettings(List<int> settings)
+    {
+        // engine is first element
+        engine_dropdown.value = settings[0];
+        // expansion dropdowns are elements 1-8
+        for (int i = 0; i < expansion_dropdowns.Count; i++)
+        {
+            expansion_dropdowns[i].value = settings[i + 1]; // +1 for engine
+        }
+        int x = expansion_dropdowns.Count + 1; // final value of expansion dropdown assignment
+        // slot dropdowns are elements 9-end
+        for (int i = 0; i < slot_dropdowns.Count; i++)
+        {
+            slot_dropdowns[i].value = settings[x + i]; // x is where the last loop ended
+        }
+    }
 
     void Start()
     {

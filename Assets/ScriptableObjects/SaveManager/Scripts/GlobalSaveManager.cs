@@ -8,20 +8,21 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "GlobalSaveManager", menuName = "Scriptable Objects/GlobalSaveManager")]
 public class GlobalSaveManager : ScriptableObject
 {
-    [SerializeField] private Dictionary<string, int> dropdown_values;
-    [SerializeField] private Dictionary<string, bool> ship_mesh_active_state;
-    [SerializeField] private Dictionary<ItemType, int> player_inventory_items;
+    [Header("Script Settings")]
+    public bool contains_saved_data = false;
 
-    public void SaveDropdownValue(string key, int value)
+    private List<int> dropdown_values;
+    private Dictionary<string, bool> ship_mesh_active_state;
+    private Dictionary<ItemType, int> player_inventory_items;
+
+    public void SaveDropdownValues(List<int> settings)
     {
-        if (dropdown_values.ContainsKey(key))
-        {
-            dropdown_values[key] = value;
-        }
-        else
-        {
-            dropdown_values.Add(key, value);
-        }
+        dropdown_values = settings;
+    }
+
+    public List<int> LoadDropdownValues()
+    {
+        return dropdown_values;
     }
 
     public void SaveMeshActiveState(string key, bool value)

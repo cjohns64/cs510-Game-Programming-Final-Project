@@ -2661,6 +2661,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenu: {fileID: 2143731642}
+  global_save_manager: {fileID: 11400000, guid: 3102df080010bdc468939758c11ba712, type: 2}
+  local_save_managers:
+  - {fileID: 11400000, guid: 7c3140cf39d893d4298f7070eb61c584, type: 2}
 --- !u!224 &1848492446 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4967121393216938491, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
