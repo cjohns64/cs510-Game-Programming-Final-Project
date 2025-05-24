@@ -32,6 +32,25 @@ public class Inventory : MonoBehaviour
     {
         InitInventory();
     }
+
+    /**
+     * Loads inventory with given values
+     */
+    public void SetInventory(Dictionary<ItemType, int> inventory_state)
+    {
+        foreach (ItemType item in inventory_state.Keys)
+        {
+            if (this.items.ContainsKey(item))
+            {
+                this.items[item] = inventory_state[item];
+            }
+            else
+            {
+                this.AddItem(item, inventory_state[item]);
+            }
+        }
+    }
+
     /**
      * Sets up the inventory with the values defined in the inspector.
      * Unless the items dictionary already has values.

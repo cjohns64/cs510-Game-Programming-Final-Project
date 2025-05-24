@@ -25,11 +25,11 @@ public class MainMenu : MonoBehaviour
 
     public void PlayTutorial()
     {
-
+        LoadZoneByIndex(0);
     }
 
     public void ExitGame()
     {
-
+        Application.Quit();
     }
 }
