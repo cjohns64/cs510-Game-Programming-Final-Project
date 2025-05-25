@@ -14,7 +14,7 @@ public class LocalSceneSaveManager : ScriptableObject
     [Header("Script Settings")]
     public bool contains_local_saved_data = false;
 
-    private List<Dictionary<ItemType, int>> saved_inventories;
+    private List<Dictionary<ItemType, int>> saved_inventories = new();
     // load data from global save manager
     public void LoadData(UpgradeManager upgrade_manager,
                         GameObject player_ship,
@@ -78,8 +78,9 @@ public class LocalSceneSaveManager : ScriptableObject
 
     public void SaveItem(int inventory_index, ItemType item, int quantity)
     {
+        //Debug.Log(item.ToString() + " " + inventory_index.ToString() + " " + quantity.ToString());
         // check if list contains an entry for the index
-        if (saved_inventories.Count <  inventory_index)
+        if (saved_inventories.Count <=  inventory_index)
         {
             // no entry, add new dictionary, assumes indexes are sorted
             saved_inventories.Add(new Dictionary<ItemType, int> { { item, quantity } });

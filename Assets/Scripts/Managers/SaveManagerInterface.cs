@@ -20,10 +20,19 @@ public class SaveManagerInterface : MonoBehaviour
     // upgrade menu dropdown settings
     [SerializeField] private Inventory[] planet_inventories;
 
+    private List<AsyncOperation> scenesToLoad = new();
+
     //https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
     private void Start()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    public void SceneTransitionByIndex(int index)
+    {
+        //SaveSceneData();
+        //scenesToLoad.Clear();
+        scenesToLoad.Add(SceneManager.LoadSceneAsync("Zone " + index.ToString()));
     }
 
     // trigger data loading once the scene has finished loading
@@ -35,10 +44,12 @@ public class SaveManagerInterface : MonoBehaviour
     public void SaveSceneData()
     {
         save_manager.SaveData(upgrade_manager, player_ship, player_inventory, planet_inventories);
+        Debug.Log("Scene Data Saved");
     }
 
-    private void LoadSceneData()
+    public void LoadSceneData()
     {
         save_manager.LoadData(upgrade_manager, player_ship, player_inventory, planet_inventories);
+        Debug.Log("Scene Data Loaded");
     }
 }

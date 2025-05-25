@@ -11,9 +11,9 @@ public class GlobalSaveManager : ScriptableObject
     [Header("Script Settings")]
     public bool contains_saved_data = false;
 
-    private List<int> dropdown_values;
-    private Dictionary<string, bool> ship_mesh_active_state;
-    private Dictionary<ItemType, int> player_inventory_items;
+    private List<int> dropdown_values = new();
+    private Dictionary<string, bool> ship_mesh_active_state = new();
+    private Dictionary<ItemType, int> player_inventory_items = new();
 
     public void SaveDropdownValues(List<int> settings)
     {

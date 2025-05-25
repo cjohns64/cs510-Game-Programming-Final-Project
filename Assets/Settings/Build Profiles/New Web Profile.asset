@@ -27,6 +27,10 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/Zone 2.unity
   - m_enabled: 1
+    m_path: Assets/Scenes/Zone 3.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Zone 4.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/Zone 5.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
