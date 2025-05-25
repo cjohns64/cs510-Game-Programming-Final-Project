@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6150030931648894635, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: m_Name
-      value: Gas Giant
+      value: Gas Giant 1
       objectReference: {fileID: 0}
     - target: {fileID: 7179260443949820215, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: speed
@@ -172,12 +172,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7038237026023983813, guid: f87a1c07edc390043b471a0d6260d9d6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae851bd22c5c9a74fb0bd293f637d5fd, type: 2}
+    - target: {fileID: -6446787451746425020, guid: f87a1c07edc390043b471a0d6260d9d6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a08bd570b51f324ea89bffe879faddf, type: 2}
+    - target: {fileID: -5174060518799735625, guid: f87a1c07edc390043b471a0d6260d9d6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a08bd570b51f324ea89bffe879faddf, type: 2}
     - target: {fileID: 919132149155446097, guid: f87a1c07edc390043b471a0d6260d9d6, type: 3}
       propertyPath: m_Name
       value: GasGiant_Root
       objectReference: {fileID: 0}
+    - target: {fileID: 1174935925127302098, guid: f87a1c07edc390043b471a0d6260d9d6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a08bd570b51f324ea89bffe879faddf, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3982486219131330239, guid: f87a1c07edc390043b471a0d6260d9d6, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -4670847048666469688, guid: f87a1c07edc390043b471a0d6260d9d6, type: 3}

@@ -1167,7 +1167,8 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -5105528214308218835, guid: 511ef3cdc16c1f14baefd4ec0a41f53b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 511ef3cdc16c1f14baefd4ec0a41f53b, type: 3}
@@ -1308,6 +1309,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gas Giant
       objectReference: {fileID: 0}
+    - target: {fileID: 7933273844770956440, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 59dd31efaa95853dc9ed0139345506f3, type: 3}
     - target: {fileID: 8302084728442024023, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -1389,7 +1394,8 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3567514766409890886, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
