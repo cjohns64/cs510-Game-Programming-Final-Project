@@ -44,6 +44,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrestrial World
       objectReference: {fileID: 0}
+    - target: {fileID: 7429903661203585788, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8518122
+      objectReference: {fileID: 0}
+    - target: {fileID: 7429903661203585788, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8518122
+      objectReference: {fileID: 0}
+    - target: {fileID: 7429903661203585788, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8518122
+      objectReference: {fileID: 0}
     - target: {fileID: 7441145518050613387, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -89,17 +101,105 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5075773240364709232, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+    - {fileID: 6716411915192819620, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 95505953900006498, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
-      insertIndex: 0
+      insertIndex: -1
       addedObject: {fileID: 4713522418862564552}
+    - targetCorrespondingSourceObject: {fileID: 95505953900006498, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5831459985804661347}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
 --- !u!4 &1522747008974841022 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 95505953900006498, guid: 12092fcf83968c04ab0a5f4c8a56c598, type: 3}
   m_PrefabInstance: {fileID: 1473429687427328220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6298064763108193672
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1522747008974841022}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      propertyPath: m_Name
+      value: TerrestrialWorld_Root
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5357890452941331707, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3919619972204630375}
+  m_SourcePrefab: {fileID: 100100000, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+--- !u!1 &2106616391417309555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5357890452941331707, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+  m_PrefabInstance: {fileID: 6298064763108193672}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3919619972204630375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106616391417309555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35511f9f6d702e8448ba6a5b3c61660e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+--- !u!4 &5831459985804661347 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 026589deaabeeed4586395151e1b8a5c, type: 3}
+  m_PrefabInstance: {fileID: 6298064763108193672}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7414297162646976514
 PrefabInstance:

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490aca0634e2f3af287bdf0b534457f5, type: 3}
   m_Name: Engine 2 Ion
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 178ecb810ad93a51f91bb734464b5572, type: 3}
+  icon: {fileID: 21300000, guid: 0b347accd288ddb468f6f5607e6034fa, type: 3}
   type: 2
   item_value: 12500
   item_size: 1
