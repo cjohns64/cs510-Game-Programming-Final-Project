@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class ThirdPersonCameraController : MonoBehaviour
 {
-    [Header("Follow Target (ship or planet")]
-    public Transform target;
+    [Header("Starting Follow Target (ship or planet)")]
+    public Transform startingTarget;
+    private Transform _target;
 
     [Header("Click-to-Focus Settings")]
     [Tooltip("Which tags count as focusable (e.g. your Ship & Planet layers)")]
@@ -36,9 +37,14 @@ public class ThirdPersonCameraController : MonoBehaviour
     private float lastClickTime = 0f;
     private const float doubleClickThreshold = 0.3f;
 
-    void Awake() 
+    void Awake()
     {
         _camera = Camera.main;
+    }
+
+    void Start()
+    {
+        _target = startingTarget;
     }
 
     void Update()
@@ -70,7 +76,7 @@ public class ThirdPersonCameraController : MonoBehaviour
 
     IEnumerator FocusRoutine(Transform newTarget)
     {
-        if (newTarget == target) yield break;
+        if (newTarget == _target) yield break;
 
         isFocusing = true;
 
@@ -99,7 +105,7 @@ public class ThirdPersonCameraController : MonoBehaviour
 
         transform.position = endPos;
         transform.rotation = endRot;
-        target = newTarget;
+        _target = newTarget;
         tempMinDistance = newTarget.GetComponent<CelestialBody>()?.Radius + Camera.main.nearClipPlane * 1.1f ?? -1f;
 
         Vector3 eulers = transform.rotation.eulerAngles;
@@ -112,14 +118,20 @@ public class ThirdPersonCameraController : MonoBehaviour
     // Immediate focus
     public void FocusOn(Transform newTarget)
     {
-        if (newTarget == target) return;
+        if (newTarget == _target) return;
 
         StopAllCoroutines();
-        target = newTarget;
-        Vector3 dir = (target.position - transform.position).normalized;
+        _target = newTarget;
+        Vector3 dir = (_target.position - transform.position).normalized;
         yaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
         pitch = Mathf.Asin(dir.y) * Mathf.Rad2Deg;
         ApplyTransform();
+    }
+
+    public void ResetTarget()
+    {
+        StopAllCoroutines();
+        StartCoroutine(FocusRoutine(startingTarget));
     }
 
     void HandleZoom()
@@ -141,13 +153,18 @@ public class ThirdPersonCameraController : MonoBehaviour
 
     void ApplyTransform()
     {
-        if (target == null) return;
+        if (_target == null) return;
 
         // Compute camera position & orientation
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
         Vector3 offset = rotation * new Vector3(0, 0, -distance);
-        transform.position = target.position + offset;
-        transform.LookAt(target);
+        transform.position = _target.position + offset;
+        transform.LookAt(_target);
+    }
+
+    public bool AtMainTarget()
+    {
+        return _target == startingTarget;
     }
 }
 

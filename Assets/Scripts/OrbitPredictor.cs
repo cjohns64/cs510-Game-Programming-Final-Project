@@ -303,7 +303,7 @@ public class OrbitPredictor : MonoBehaviour
 
             if (soiEntryAudio && !soiEntryAudio.isPlaying)
             {
-                soiEntryAudio.Play();
+                // soiEntryAudio.Play();
             }
             return;
         }
