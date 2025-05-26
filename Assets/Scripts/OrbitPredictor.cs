@@ -301,9 +301,10 @@ public class OrbitPredictor : MonoBehaviour
 
             nearestBody.SOIVisEnabled(true);
 
-            if (soiEntryAudio && soiEntryAudio.isPlaying)
+            if (soiEntryAudio && !soiEntryAudio.isPlaying)
+            {
                 soiEntryAudio.Play();
-
+            }
             return;
         }
         
