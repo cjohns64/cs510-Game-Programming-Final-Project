@@ -21,24 +21,66 @@ public class SaveManagerInterface : MonoBehaviour
     [SerializeField] private Inventory[] planet_inventories;
 
     private List<AsyncOperation> scenesToLoad = new();
+    private float timer = 0f;
+    private float maxTime = 3f;
+    private bool hasfired = false;
+    private bool counting = false;
 
     //https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
     private void Start()
     {
         //SceneManager.sceneLoaded += OnSceneLoaded;
+        LoadSceneData();
     }
 
     public void SceneTransitionByIndex(int index)
     {
-        //SaveSceneData();
-        //scenesToLoad.Clear();
-        scenesToLoad.Add(SceneManager.LoadSceneAsync("Zone " + index.ToString()));
+        StartCoroutine(LoadByIndex(index));
+    }
+
+    private IEnumerator LoadByIndex(int index)
+    {
+        yield return null;
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Zone " + index.ToString());
+        asyncOperation.allowSceneActivation = false;
+        // wait until save is done to load next scene
+        SaveSceneData();
+        while (!asyncOperation.isDone)
+        {
+            if (asyncOperation.progress >= 0.9f)
+            {
+                asyncOperation.allowSceneActivation = true;
+            }
+            yield return null;
+        }
     }
 
     // trigger data loading once the scene has finished loading
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    hasfired = true;
+    //    //LoadSceneData();
+    //}
+
+    private void Update()
     {
-        LoadSceneData();
+        // delay LoadSceneData by maxTime
+        if (hasfired)
+        {
+            counting = true;
+            Debug.Log("Started Counting");
+        }
+        if (counting)
+        {
+            timer += Time.deltaTime;
+        }
+        if (timer > maxTime)
+        {
+            Debug.Log("Done Counting");
+            hasfired = false;
+            counting = false;
+            LoadSceneData();
+        }
     }
 
     public void SaveSceneData()
