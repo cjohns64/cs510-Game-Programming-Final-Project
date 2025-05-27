@@ -220,6 +220,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1147357723}
+    - target: {fileID: 5620128613431530046, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
+      propertyPath: startingTarget
+      value: 
+      objectReference: {fileID: 1147357723}
     - target: {fileID: 8788608816492365469, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
       propertyPath: m_Name
       value: Third Person Camera
@@ -277,7 +281,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mass: 399.6
   Radius: 23.8
-  inventory_index: 0
   SoiRadius: 129.81
   SoiPrefab: {fileID: 0}
 --- !u!64 &390544969
