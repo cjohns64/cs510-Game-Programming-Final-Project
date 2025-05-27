@@ -6,56 +6,104 @@ using TMPro;
 using System;
 
 /**
- * Inventory Display handles managing the user interface of a single inventory.
- * It is placed on the window the items are placed in.
+ * Cargo Display manages the content of a single inventory display
  */
 public class CargoDisplay : MonoBehaviour
 {
-    // this is the inventory managed by this Inventory Display
-    [SerializeField] private Inventory player_inventory;
+    // this is the inventory managed by this script
+    [SerializeField] private Inventory displayed_inventory;
+    // this is the prefab that represents an item, it will be instanced for each item in the inventory
     [SerializeField] private GameObject cargo_ui_prefab;
+    // this is the text object that displays the current inventory space
     [SerializeField] private TextMeshProUGUI cargo_space_text;
     // The item manager that can translate the ItemType enum to the associated ItemObject.
     private ItemManager item_manager;
-    private GameObject player_cargo_area;
+    private GameObject cargo_area;
     private RectTransform content_area;
     private float cargo_item_height;
     // internal dictionary of all items in the display, including disabled ones
-    private Dictionary<ItemType, GameObject> player_items_displayed = new();
+    private Dictionary<ItemType, GameObject> items_displayed = new();
     private int active_items = 0;
+    private bool init = false;
 
-    void Start()
+    private void Start()
+    {
+        if (!init)
+        {
+            Initialize();
+        }
+    }
+
+    private void Initialize()
     {
         // lookup the item manager
         item_manager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
-        //Debug.Log("Item manager :: " +  item_manager);
-        // lookup cargo area for player
-        player_cargo_area = this.transform.Find("Scroll View").Find("Viewport").Find("Content").gameObject;
-        
+        // lookup cargo area for this object
+        cargo_area = this.transform.Find("Scroll View").Find("Viewport").Find("Content").gameObject;
+        Debug.Log(cargo_area.name);
+
         // calculate the height of the cargo ui prefab
         RectTransform cargo_item = cargo_ui_prefab.GetComponent<RectTransform>();
-        content_area = player_cargo_area.GetComponent<RectTransform>();
+        content_area = cargo_area.GetComponent<RectTransform>();
         Vector3[] v = new Vector3[4];
         cargo_item.GetLocalCorners(v);
         cargo_item_height = v[1].y - v[0].y + 5;
 
         // set up the display with all inventory objects, disable the ones with no items
         CreateDisplay();
-        // subscribe to the OnInventoryChanged Event for the player inventory
-        player_inventory.OnInventoryChanged += (ItemType item) => { UpdateDisplay(item); };
-        player_inventory.OnInventoryChanged += (ItemType item) => { UpdateCargoSpaceUI(); };
+        SubscribeToEvents();
+        init = true;
+    }
+
+    public void SwapInventories(Inventory inventory)
+    {
+        if (!init)
+        {
+            Initialize();
+        }
+        UnsubscribeFromEvents();
+        displayed_inventory = inventory;
+        SubscribeToEvents();
+        active_items = CountActiveItems();
+        UpdateAllItems();
+    }
+
+    private void InventoryChangedListener(ItemType item)
+    {
+        UpdateDisplay(item);
+        UpdateCargoSpaceUI();
+    }
+
+    private void SubscribeToEvents()
+    {
+        // subscribe to the OnInventoryChanged Event for the displayed inventory
+        displayed_inventory.OnInventoryChanged += InventoryChangedListener;
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        // subscribe to the OnInventoryChanged Event for the displayed inventory
+        displayed_inventory.OnInventoryChanged -= InventoryChangedListener;
     }
 
     public void UpdateDisplay(ItemType item)
     {
         // updates a single item in the display, call from an event
-        if (player_items_displayed.ContainsKey(item))
+        if (items_displayed.ContainsKey(item))
         {
-            UpdateItemText(item, player_items_displayed[item], player_inventory);
+            UpdateItemText(item, items_displayed[item], displayed_inventory);
         }
         else
         {
             AddItemUI(item);
+        }
+    }
+
+    private void UpdateAllItems()
+    {
+        foreach (ItemType item in Enum.GetValues(typeof(ItemType)))
+        {
+            UpdateDisplay(item);
         }
     }
 
@@ -67,6 +115,19 @@ public class CargoDisplay : MonoBehaviour
             AddItemUI(item);
         }
         UpdateCargoSpaceUI();
+    }
+
+    private int CountActiveItems()
+    {
+        int count = 0;
+        foreach (ItemType item in Enum.GetValues(typeof(ItemType)))
+        {
+            if (items_displayed.ContainsKey(item))
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     private void UpdateItemText(ItemType item, GameObject game_object, Inventory inventory)
@@ -121,17 +182,21 @@ public class CargoDisplay : MonoBehaviour
 
     private void UpdateCargoSpaceUI()
     {
-        cargo_space_text.text = player_inventory.GetCurrentCapacity().ToString("n0") +
-                        "/" + player_inventory.GetCurrentMaxCapacity().ToString("n0");
+        cargo_space_text.text = displayed_inventory.GetCurrentCapacity().ToString("n0") +
+                        "/" + displayed_inventory.GetCurrentMaxCapacity().ToString("n0");
     }
 
     private void AddItemUI(ItemType item)
     {
         // add an item ui to the menu
-        var obj = Instantiate(cargo_ui_prefab, player_cargo_area.transform);
+        var obj = Instantiate(cargo_ui_prefab, cargo_area.transform);
         active_items++;
         // update item icon
         Image[] imageResults = obj.GetComponentsInChildren<Image>();
+        // update item type
+        var button_script = obj.GetComponentInChildren<ItemButton>();
+        //Debug.Log("before " + button_script.thisItem);
+        button_script.thisItem = item;
         // find the icon
         foreach (Image img in imageResults)
         {
@@ -144,9 +209,14 @@ public class CargoDisplay : MonoBehaviour
             }
         }
         // update the text
-        UpdateItemText(item, obj, player_inventory);
-        player_items_displayed.Add(item, obj);
+        UpdateItemText(item, obj, displayed_inventory);
+        items_displayed.Add(item, obj);
         //Debug.Log("Player Display Add: " + item);
+    }
+
+    public Inventory GetInventoryForTrading()
+    {
+        return displayed_inventory;
     }
 }
     

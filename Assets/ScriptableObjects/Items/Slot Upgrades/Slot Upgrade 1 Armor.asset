@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: a1440d1d9f58103489d0db595224ff90, type: 3}
   type: 13
   item_value: 1000
-  item_size: 1
+  item_size: 0
   item_name: Armor Module
   description: '[can be installed in any upgrade slot]'
   hull_bonus: 0

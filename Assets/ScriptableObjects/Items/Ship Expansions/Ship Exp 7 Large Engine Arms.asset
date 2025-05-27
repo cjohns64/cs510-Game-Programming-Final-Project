@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: d03184f6d7a1c1c4ca34f5b4b5b460d2, type: 3}
   type: 12
   item_value: 76000
-  item_size: 1
+  item_size: 0
   item_name: Large Engine Expanders
   description: '[only one can be installed at a time]'
   hull_bonus: 0

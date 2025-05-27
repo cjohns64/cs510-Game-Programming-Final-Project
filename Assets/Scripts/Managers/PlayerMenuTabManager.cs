@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class PlayerMenuTabManager : MonoBehaviour
 {
+    [SerializeField] private TimeController timeController;
+
     [Header("Tab control buttons")]
     [SerializeField] private Button objectives_tab_button;
     [SerializeField] private Button trade_tab_button;
@@ -18,16 +20,19 @@ public class PlayerMenuTabManager : MonoBehaviour
     [Header("Default settings")]
     [SerializeField] private string global_scripts = "GlobalScripts";
     // internal references
-    //private CargoDisplay cargo_display_script;
-    private UpgradeManager upgrade_manager;
     private TradeManager trade_manager;
+    private UpgradeManager upgrade_manager;
     private bool is_docked = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //cargo_display_script = cargo_tab.GetComponent<CargoDisplay>();
         upgrade_manager = GameObject.Find(global_scripts).GetComponent<UpgradeManager>();
         trade_manager = GameObject.Find(global_scripts).GetComponent<TradeManager>();
+    }
+
+    public bool IsDocked()
+    {
+        return is_docked;
     }
 
     /**
@@ -60,7 +65,7 @@ public class PlayerMenuTabManager : MonoBehaviour
     public void ActivateTradeTab()
     {
         ClearAllTabStates();
-        //TODO block if the ship is not currently docked
+        is_docked = true;
         trade_tab.SetActive(true);
         trade_tab_button.interactable = false;
         
@@ -71,7 +76,6 @@ public class PlayerMenuTabManager : MonoBehaviour
         ClearAllTabStates();
         cargo_tab.SetActive(true);
         cargo_tab_button.interactable = false;
-        trade_manager.UpdateCreditsText();
     }
 
     public void ActivateUpgradeTab()
@@ -80,5 +84,28 @@ public class PlayerMenuTabManager : MonoBehaviour
         upgrades_tab.SetActive(true);
         upgrades_tab_button.interactable = false;
         upgrade_manager.CheckInventory();
+    }
+
+    public void OpenMenu()
+    {
+        ActivateObjectivesTab();
+        // Pause time
+        Time.timeScale = 0f;
+    }
+
+    /// <summary>
+    /// Call this from a "Close" or "Done" button in the UI.
+    /// </summary>
+    public void CloseMenu()
+    {
+        if (is_docked)
+        {
+            // undock
+            trade_manager.InvokeOnMenuClosedForCurrentBody(); // call from here so CloseMenu can be setup from within the prefab
+            is_docked = false;
+        }
+        // resume time
+        timeController.SetTimeScale();
+        this.gameObject.SetActive(false);
     }
 }

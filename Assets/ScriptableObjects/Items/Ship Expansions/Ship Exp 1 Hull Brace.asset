@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 900780158c93b9e4490fe2bb46467267, type: 3}
   type: 6
   item_value: 1200
-  item_size: 1
+  item_size: 0
   item_name: Hull Brace Expansion
   description: '[only one can be installed at a time]'
   hull_bonus: 50

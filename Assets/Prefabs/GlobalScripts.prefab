@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5387701039829331848
+--- !u!1 &6204515312581899934
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7714023661678683872}
-  - component: {fileID: 2473903447233561150}
-  - component: {fileID: 8236709335739217103}
-  - component: {fileID: 3507877544315056467}
+  - component: {fileID: 2181506866250098969}
+  - component: {fileID: 5556863443914010727}
+  - component: {fileID: 8868827157266544725}
+  - component: {fileID: 6450339934682246305}
+  - component: {fileID: 2249061038820929978}
+  - component: {fileID: 6383461518859074727}
   m_Layer: 0
   m_Name: GlobalScripts
   m_TagString: Untagged
@@ -19,93 +21,190 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7714023661678683872
+--- !u!4 &2181506866250098969
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5387701039829331848}
+  m_GameObject: {fileID: 6204515312581899934}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.71502197, y: -0, z: -0, w: 0.69910204}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2473903447233561150
+--- !u!114 &5556863443914010727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5387701039829331848}
+  m_GameObject: {fileID: 6204515312581899934}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b53e7865d69030f1b64126428a1bfa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventory: {fileID: 11400000, guid: 90bf215cec9fbecdaa6e1751fac0795a, type: 2}
-  stationTESTInventory: {fileID: 11400000, guid: 8877b87778bbf74b1b9a4f1f10c4640f, type: 2}
-  playerTradeArea: {fileID: 0}
-  stationTradeArea: {fileID: 0}
-  playerCreditsText: {fileID: 0}
-  stationCreditsText: {fileID: 0}
-  quantityValueText: {fileID: 0}
---- !u!114 &8236709335739217103
+  ship: {fileID: 0}
+  trade_menu: {fileID: 0}
+  player_menu: {fileID: 0}
+  global_scripts: GlobalScripts
+  OnProductionCycle:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTradeFailNotEnoughFunds:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6450339934682246305}
+        m_TargetAssemblyTypeName: TradeEventNotifications, Assembly-CSharp
+        m_MethodName: NoFundsEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTradeFailNotEnoughSpace:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6450339934682246305}
+        m_TargetAssemblyTypeName: TradeEventNotifications, Assembly-CSharp
+        m_MethodName: NoSpaceEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8868827157266544725
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5387701039829331848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dab721ce9bf62e8438ed4b176e06a0d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wait_time: 0.1
-  tradeMenu: {fileID: 0}
-  upgradeMenu: {fileID: 0}
-  prompt: {fileID: 0}
---- !u!114 &3507877544315056467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5387701039829331848}
+  m_GameObject: {fileID: 6204515312581899934}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50d548c432c53a166bb2addb653d4a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slot1: {fileID: 0}
-  slot2: {fileID: 0}
-  slot3: {fileID: 0}
-  slot4: {fileID: 0}
-  slot5: {fileID: 0}
-  slot6: {fileID: 0}
-  engineSlot: {fileID: 0}
-  slot1_Armor_Mesh: {fileID: 0}
-  slot1_Shield_Mesh: {fileID: 0}
-  slot1_Cargo_Mesh: {fileID: 0}
-  slot2_Armor_Mesh: {fileID: 0}
-  slot2_Shield_Mesh: {fileID: 0}
-  slot2_Cargo_Mesh: {fileID: 0}
-  slot3_Armor_Mesh: {fileID: 0}
-  slot3_Shield_Mesh: {fileID: 0}
-  slot3_Cargo_Mesh: {fileID: 0}
-  slot4_Armor_Mesh: {fileID: 0}
-  slot4_Shield_Mesh: {fileID: 0}
-  slot4_Cargo_Mesh: {fileID: 0}
-  slot5_Armor_Mesh: {fileID: 0}
-  slot5_Shield_Mesh: {fileID: 0}
-  slot5_Cargo_Mesh: {fileID: 0}
-  slot6_Armor_Mesh: {fileID: 0}
-  slot6_Shield_Mesh: {fileID: 0}
-  slot6_Cargo_Mesh: {fileID: 0}
-  engineSlot_tier0: {fileID: 0}
-  engineSlot_tier1: {fileID: 0}
-  engineSlot_tier2: {fileID: 0}
+  upgrade_menu: {fileID: 0}
+  ship: {fileID: 0}
+  name_mesh_root: Player-Ship-Final
+  name_slot_upgrade_tree: upgrade-components
+  name_expansion_upgrade_tree: expansion-components
+  name_engine_upgrade_tree: engine-components
+--- !u!114 &6450339934682246305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6204515312581899934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f2a7cdeef6d534785cd5421dd012b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2249061038820929978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6204515312581899934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 840dc9ccfefc28742a26d3110000db6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipMover: {fileID: 0}
+  tradeManager: {fileID: 5556863443914010727}
+  timeController: {fileID: 0}
+  docking_time_interval: 10
+--- !u!114 &6383461518859074727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6204515312581899934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c6093a7267a164998871e12ed8f1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  save_manager: {fileID: 11400000, guid: 7c3140cf39d893d4298f7070eb61c584, type: 2}
+  player_ship: {fileID: 0}
+  player_inventory: {fileID: 0}
+  upgrade_manager: {fileID: 8868827157266544725}
+  planet_inventories: []

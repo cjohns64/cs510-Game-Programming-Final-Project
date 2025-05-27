@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: f9f2558d8a7e211dc91497f430a2505c, type: 3}
   type: 0
   item_value: 500
-  item_size: 1
+  item_size: 0
   item_name: Solar Sails
   description: 
   engine_speed: 50
