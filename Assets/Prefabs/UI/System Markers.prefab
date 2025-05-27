@@ -45,5 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCelestialBody: {fileID: 0}
-  systemMarkerPrefab: {fileID: 1968943684699969113, guid: 8a826ac744ab98b40a29d7f534f628d8, type: 3}
+  systemMarkerPrefab: {fileID: 2264769500065271043, guid: 0a5ff813c5e0c094a93156b81e1f47f1, type: 3}
+  systemTravelTriggerPrefab: {fileID: 8572947198409750024, guid: 4ba8feb5b4dbd1643888f24410d62877, type: 3}
   markerDistanceFactor: 1.1
+  markerSize: 8
+  triggerSize: 25

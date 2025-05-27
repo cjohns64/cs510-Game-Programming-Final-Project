@@ -678,6 +678,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: System Markers
       objectReference: {fileID: 0}
+    - target: {fileID: 8715965434565698801, guid: 6e6eeb29c7591bc449cd1b7472c0c3e7, type: 3}
+      propertyPath: mainCelestialBody
+      value: 
+      objectReference: {fileID: 2008917512}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -753,6 +757,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8291471250143631948, guid: 1db1b34a603d3ed408e79deb68c4181e, type: 3}
   m_PrefabInstance: {fileID: 1188814677}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2008917512 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2771216775643312709, guid: 1db1b34a603d3ed408e79deb68c4181e, type: 3}
+  m_PrefabInstance: {fileID: 1188814677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4ee9d34c05f7b42ac4d24c3e78359d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2138663415
 PrefabInstance:
   m_ObjectHideFlags: 0

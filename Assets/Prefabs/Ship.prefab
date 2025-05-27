@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 4788779688568179540}
   - component: {fileID: 5551579019853670703}
   - component: {fileID: 5438038695976243445}
+  - component: {fileID: 5084631895367979988}
   m_Layer: 6
   m_Name: Ship
   m_TagString: Ship
@@ -227,7 +228,7 @@ MonoBehaviour:
   turnSpeedDegPerSec: 70
   thrustForceForward: 0.1
   thrustForceBackward: 0.02
-  shipAnimatior: {fileID: 0}
+  shipAnimatior: {fileID: 3711665243102131293}
   thrustAudio: {fileID: 5551579019853670703}
 --- !u!65 &4616813932254770500
 BoxCollider:
@@ -623,6 +624,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &5084631895367979988
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532754105240880961}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &9132690210089862020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,6 +1770,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a4a30bcd3ba00428c98eea2e25d634, type: 3}
+--- !u!95 &3711665243102131293 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8826187216751890846, guid: 76a4a30bcd3ba00428c98eea2e25d634, type: 3}
+  m_PrefabInstance: {fileID: 5331858838474925507}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8375254118694339154 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4450805898020153233, guid: 76a4a30bcd3ba00428c98eea2e25d634, type: 3}
