@@ -363,6 +363,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: 97f696946c0f690438803343b7591e61, type: 3}
+      propertyPath: station_name
+      value: Milu
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 97f696946c0f690438803343b7591e61, type: 3}
       propertyPath: m_Name
       value: RingWorld
@@ -423,6 +427,10 @@ PrefabInstance:
       propertyPath: Radius
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3792892305714495698, guid: 97f696946c0f690438803343b7591e61, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0a808da12240919419408f8454f8fe40, type: 3}
     - target: {fileID: 5306626537332439180, guid: 97f696946c0f690438803343b7591e61, type: 3}
       propertyPath: consumes.Array.size
       value: 3
@@ -619,11 +627,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6780861874993743584, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_text
-      value: System Alpha
+      value: Parthalos Alpha
       objectReference: {fileID: 0}
     - target: {fileID: 6780861874993743584, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_fontSize
-      value: 21.75
+      value: 18.75
       objectReference: {fileID: 0}
     - target: {fileID: 8947537851871179430, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_Pivot.x
@@ -1159,6 +1167,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: c13a1f77f0e720549ac92428b56ae0ce, type: 3}
+      propertyPath: station_name
+      value: Parthalos Beta
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: c13a1f77f0e720549ac92428b56ae0ce, type: 3}
       propertyPath: m_Name
       value: DysonSphere
@@ -1207,6 +1219,10 @@ PrefabInstance:
       propertyPath: Mass
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 3792892305714495698, guid: c13a1f77f0e720549ac92428b56ae0ce, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ea9c63d08633fa346b61138126cda76b, type: 3}
     - target: {fileID: 5306626537332439180, guid: c13a1f77f0e720549ac92428b56ae0ce, type: 3}
       propertyPath: consumes.Array.size
       value: 3
@@ -1346,6 +1362,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
+      propertyPath: station_name
+      value: Tran-Parthalos
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: m_Name
       value: Station01
@@ -1454,6 +1474,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: c13a1f77f0e720549ac92428b56ae0ce, type: 3}
+      propertyPath: station_name
+      value: Parthalos Gamma
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: c13a1f77f0e720549ac92428b56ae0ce, type: 3}
       propertyPath: m_Name
       value: DysonSphere (1)
@@ -1518,6 +1542,10 @@ PrefabInstance:
       propertyPath: Radius
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3792892305714495698, guid: c13a1f77f0e720549ac92428b56ae0ce, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a968e95cf0a85114a995396e5520a744, type: 3}
     - target: {fileID: 4628143050375372290, guid: c13a1f77f0e720549ac92428b56ae0ce, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -1659,6 +1687,10 @@ PrefabInstance:
       propertyPath: initializationType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4354683307814692281, guid: 5d9cfae6b0dbb7849890a1d63f1ad115, type: 3}
+      propertyPath: m_text
+      value: Serrat
+      objectReference: {fileID: 0}
     - target: {fileID: 4696094369907097207, guid: 5d9cfae6b0dbb7849890a1d63f1ad115, type: 3}
       propertyPath: m_Name
       value: Gas Giant 1
@@ -1771,6 +1803,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: 97f696946c0f690438803343b7591e61, type: 3}
+      propertyPath: station_name
+      value: Hyfa
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 97f696946c0f690438803343b7591e61, type: 3}
       propertyPath: m_Name
       value: RingWorld (1)
@@ -1815,6 +1851,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3792892305714495698, guid: 97f696946c0f690438803343b7591e61, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b67eea1d7ee49db49867648b35318bc6, type: 3}
     - target: {fileID: 5306626537332439180, guid: 97f696946c0f690438803343b7591e61, type: 3}
       propertyPath: consumes.Array.size
       value: 4
@@ -2369,7 +2409,7 @@ PrefabInstance:
       objectReference: {fileID: 7740432871229656107}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -2390,7 +2430,7 @@ PrefabInstance:
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1067695973}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ProduceItems
@@ -2405,6 +2445,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: ProduceItems
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: ProduceItems
       objectReference: {fileID: 0}
     - target: {fileID: 6204515312581899934, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
@@ -2425,7 +2469,7 @@ PrefabInstance:
       objectReference: {fileID: 1474436736}
     - target: {fileID: 6383461518859074727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: planet_inventories.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6383461518859074727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: 'planet_inventories.Array.data[0]'
@@ -2446,7 +2490,7 @@ PrefabInstance:
     - target: {fileID: 6383461518859074727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: 'planet_inventories.Array.data[4]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1067695973}
     - target: {fileID: 8868827157266544725, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: ship
       value: 

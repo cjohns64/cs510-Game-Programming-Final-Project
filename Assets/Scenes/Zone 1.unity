@@ -435,11 +435,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6780861874993743584, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_text
-      value: System Alpha
+      value: Solus Alpha
       objectReference: {fileID: 0}
     - target: {fileID: 6780861874993743584, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_fontSize
-      value: 21.75
+      value: 22.55
       objectReference: {fileID: 0}
     - target: {fileID: 8947537851871179430, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_Pivot.x
@@ -988,6 +988,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1881932659669910806, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
+      propertyPath: station_name
+      value: Tran-Solus
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: m_Name
       value: Station01
@@ -1170,6 +1174,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: 511ef3cdc16c1f14baefd4ec0a41f53b, type: 3}
+      propertyPath: station_name
+      value: Gerth
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 511ef3cdc16c1f14baefd4ec0a41f53b, type: 3}
       propertyPath: m_Name
       value: Lava World
@@ -1286,6 +1294,10 @@ PrefabInstance:
     - target: {fileID: 4252222162236001665, guid: d78232369b7b36b41beb859b68c02d26, type: 3}
       propertyPath: initializationType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658514472606916956, guid: d78232369b7b36b41beb859b68c02d26, type: 3}
+      propertyPath: station_name
+      value: Ravi
       objectReference: {fileID: 0}
     - target: {fileID: 4696094369907097207, guid: d78232369b7b36b41beb859b68c02d26, type: 3}
       propertyPath: m_Name
@@ -1449,6 +1461,10 @@ PrefabInstance:
     - target: {fileID: 4252222162236001665, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
       propertyPath: initializationType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658514472606916956, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
+      propertyPath: station_name
+      value: Kumaran
       objectReference: {fileID: 0}
     - target: {fileID: 4696094369907097207, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
       propertyPath: m_Name
@@ -1626,6 +1642,10 @@ PrefabInstance:
     - target: {fileID: 4284996643416029661, guid: 5cdd879dd87ad0a439219e9f17b12b4a, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658514472606916956, guid: 5cdd879dd87ad0a439219e9f17b12b4a, type: 3}
+      propertyPath: station_name
+      value: Eden
       objectReference: {fileID: 0}
     - target: {fileID: 4696094369907097207, guid: 5cdd879dd87ad0a439219e9f17b12b4a, type: 3}
       propertyPath: m_Name

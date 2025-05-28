@@ -159,6 +159,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: 340ed9e43b58f9044a4447053ba3076f, type: 3}
+      propertyPath: station_name
+      value: Argala
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 340ed9e43b58f9044a4447053ba3076f, type: 3}
       propertyPath: m_Name
       value: TechWorld (1)
@@ -203,6 +207,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3792892305714495698, guid: 340ed9e43b58f9044a4447053ba3076f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0ec681c5ec55c3b49a66ef559ed96cf1, type: 3}
     - target: {fileID: 5306626537332439180, guid: 340ed9e43b58f9044a4447053ba3076f, type: 3}
       propertyPath: consumes.Array.size
       value: 3
@@ -332,6 +340,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: 511ef3cdc16c1f14baefd4ec0a41f53b, type: 3}
+      propertyPath: station_name
+      value: Arada
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 511ef3cdc16c1f14baefd4ec0a41f53b, type: 3}
       propertyPath: m_Name
       value: Lava World
@@ -376,6 +388,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3792892305714495698, guid: 511ef3cdc16c1f14baefd4ec0a41f53b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5cee64ae4426d1b49a90563325644295, type: 3}
     - target: {fileID: 5306626537332439180, guid: 511ef3cdc16c1f14baefd4ec0a41f53b, type: 3}
       propertyPath: consumes.Array.size
       value: 5
@@ -739,11 +755,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6780861874993743584, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_text
-      value: System Alpha
+      value: Divarti Alpha
       objectReference: {fileID: 0}
     - target: {fileID: 6780861874993743584, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_fontSize
-      value: 21.75
+      value: 22.55
       objectReference: {fileID: 0}
     - target: {fileID: 8947537851871179430, guid: 50899ad3be1d24845b63e9e184c15ba7, type: 3}
       propertyPath: m_Pivot.x
@@ -1443,6 +1459,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
+      propertyPath: station_name
+      value: Tran-Divarti
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: m_Name
       value: Station01
@@ -1551,6 +1571,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881932659669910806, guid: 340ed9e43b58f9044a4447053ba3076f, type: 3}
+      propertyPath: station_name
+      value: Mihira
+      objectReference: {fileID: 0}
     - target: {fileID: 1986167706865539645, guid: 340ed9e43b58f9044a4447053ba3076f, type: 3}
       propertyPath: m_Name
       value: TechWorld
@@ -1595,6 +1619,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3792892305714495698, guid: 340ed9e43b58f9044a4447053ba3076f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: eedad0736017b734aacf16077904f96f, type: 3}
     - target: {fileID: 5306626537332439180, guid: 340ed9e43b58f9044a4447053ba3076f, type: 3}
       propertyPath: consumes.Array.size
       value: 4
@@ -2077,7 +2105,7 @@ PrefabInstance:
       objectReference: {fileID: 7740432871229656107}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -2094,7 +2122,7 @@ PrefabInstance:
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1935582223}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
@@ -2109,6 +2137,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: ProduceItems
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
       value: ProduceItems
       objectReference: {fileID: 0}
     - target: {fileID: 6204515312581899934, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
@@ -2129,7 +2161,7 @@ PrefabInstance:
       objectReference: {fileID: 1474436736}
     - target: {fileID: 6383461518859074727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: planet_inventories.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6383461518859074727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: 'planet_inventories.Array.data[0]'
@@ -2146,7 +2178,7 @@ PrefabInstance:
     - target: {fileID: 6383461518859074727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: 'planet_inventories.Array.data[3]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1935582223}
     - target: {fileID: 6383461518859074727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: 'planet_inventories.Array.data[4]'
       value: 

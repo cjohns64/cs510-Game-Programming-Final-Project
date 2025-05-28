@@ -746,7 +746,16 @@ MonoBehaviour:
     - Orbital
     Trajectory System
 
+    - Celestial Body System
+
     - Player Controller
+
+    -
+    Camera Controller
+
+    - Zone Transition Arrows
+
+    - HUD
 
 '
   m_isRightToLeft: 0
@@ -897,6 +906,13 @@ MonoBehaviour:
 
     - Upgrade System
 
+    - Objective
+    Log
+
+    - Delivery System
+
+    - Main Menu
+
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1035,7 +1051,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Other
 
-    - Black Hole Shader from'
+    - Planet, Star, & System Names from "The Murderbot Diaries"
+    by Martha Wells'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1376,9 +1393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_text
-      value: 'Zone 5
-
-'
+      value: Umro
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_fontSize
@@ -2053,7 +2068,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_text
-      value: Zone 1
+      value: Solus Prime
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_fontSize
@@ -2311,7 +2326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_text
-      value: Zone 3
+      value: Divarti Cluster
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_fontSize
@@ -2453,7 +2468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_text
-      value: Zone 4
+      value: Parthalos
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_fontSize
@@ -3247,7 +3262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_text
-      value: Zone 2
+      value: Adjat Nebula
       objectReference: {fileID: 0}
     - target: {fileID: 8755246796024175190, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_fontSize
@@ -3458,6 +3473,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1222020550}
     m_Modifications:
+    - target: {fileID: 1839431840206444128, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1839431840206444128, guid: 0e9a21802e58a1346ad234fd1d52f56a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
