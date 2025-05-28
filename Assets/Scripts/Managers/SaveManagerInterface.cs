@@ -20,16 +20,10 @@ public class SaveManagerInterface : MonoBehaviour
     // upgrade menu dropdown settings
     [SerializeField] private Inventory[] planet_inventories;
 
-    private List<AsyncOperation> scenesToLoad = new();
-    private float timer = 0f;
-    private float maxTime = 3f;
-    private bool hasfired = false;
-    private bool counting = false;
-
     //https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
     private void Start()
     {
-        //SceneManager.sceneLoaded += OnSceneLoaded;
+        // load data from previous scene
         LoadSceneData();
     }
 
@@ -52,34 +46,6 @@ public class SaveManagerInterface : MonoBehaviour
                 asyncOperation.allowSceneActivation = true;
             }
             yield return null;
-        }
-    }
-
-    // trigger data loading once the scene has finished loading
-    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    //{
-    //    hasfired = true;
-    //    //LoadSceneData();
-    //}
-
-    private void Update()
-    {
-        // delay LoadSceneData by maxTime
-        if (hasfired)
-        {
-            counting = true;
-            Debug.Log("Started Counting");
-        }
-        if (counting)
-        {
-            timer += Time.deltaTime;
-        }
-        if (timer > maxTime)
-        {
-            Debug.Log("Done Counting");
-            hasfired = false;
-            counting = false;
-            LoadSceneData();
         }
     }
 
