@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52f17a44f7bd13c4c934b187f1370bc0, type: 3}
   m_Name: System 5
   m_EditorClassIdentifier: 
-  systemName: Zone 5
+  systemName: Umro
   galacticPosition: {x: 833, y: 0, z: 974}
+  system_index: 5

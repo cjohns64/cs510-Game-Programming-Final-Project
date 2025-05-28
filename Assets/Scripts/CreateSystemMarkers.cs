@@ -7,6 +7,7 @@ public class CreateSystemMarkers : MonoBehaviour
     [SerializeField] private CelestialBody mainCelestialBody;
     [SerializeField] private GameObject systemMarkerPrefab;
     [SerializeField] private GameObject systemTravelTriggerPrefab;
+    [SerializeField] private string currentSceneName;
 
     [SerializeField] private float markerDistanceFactor = 1.1f;
     [SerializeField] private float markerSize = 5f;
@@ -23,7 +24,7 @@ public class CreateSystemMarkers : MonoBehaviour
             return;
         }
 
-        string currentSceneName = SceneManager.GetActiveScene().name;
+        //string currentSceneName = SceneManager.GetActiveScene().name;
         SolarSystemData currentSystem = _galaxyDatabase.GetSystemByName(currentSceneName);
         if (currentSystem == null)
         {
@@ -63,6 +64,7 @@ public class CreateSystemMarkers : MonoBehaviour
             GameObject trigger = Instantiate(systemTravelTriggerPrefab, triggerPosition, Quaternion.identity, this.transform);
             trigger.name = $"{targetSystem.systemName} Travel Trigger";
             trigger.transform.localScale = Vector3.one * triggerSize;
+            trigger.GetComponent<InterstellarTravel>().target_system_name = targetSystem.systemName;
         }
     }
 

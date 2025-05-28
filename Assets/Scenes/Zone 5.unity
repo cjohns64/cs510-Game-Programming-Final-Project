@@ -204,6 +204,10 @@ PrefabInstance:
       value: System Markers
       objectReference: {fileID: 0}
     - target: {fileID: 8715965434565698801, guid: 6e6eeb29c7591bc449cd1b7472c0c3e7, type: 3}
+      propertyPath: currentSceneName
+      value: Umro
+      objectReference: {fileID: 0}
+    - target: {fileID: 8715965434565698801, guid: 6e6eeb29c7591bc449cd1b7472c0c3e7, type: 3}
       propertyPath: mainCelestialBody
       value: 
       objectReference: {fileID: 1902692670}
@@ -558,6 +562,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5620128613431530046, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
       propertyPath: target
+      value: 
+      objectReference: {fileID: 522030047}
+    - target: {fileID: 5620128613431530046, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}
+      propertyPath: startingTarget
       value: 
       objectReference: {fileID: 522030047}
     - target: {fileID: 8788608816492365469, guid: a1e0997a7714bb9448a493cf8fac4091, type: 3}

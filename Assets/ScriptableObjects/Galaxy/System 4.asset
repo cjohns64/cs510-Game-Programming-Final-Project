@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52f17a44f7bd13c4c934b187f1370bc0, type: 3}
   m_Name: System 4
   m_EditorClassIdentifier: 
-  systemName: Zone 4
+  systemName: Parthalos
   galacticPosition: {x: 447, y: 0, z: 501}
+  system_index: 4

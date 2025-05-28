@@ -5,4 +5,5 @@ public class SolarSystemData : ScriptableObject
 {
     public string systemName;
     public Vector3 galacticPosition;
+    public int system_index;
 }
