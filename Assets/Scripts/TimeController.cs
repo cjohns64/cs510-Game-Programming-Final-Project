@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TimeController : MonoBehaviour
 {
-    private readonly float[] timeScales = { 1f, 5f, 10f, 50f, 100f };
+    private readonly float[] timeScales = { 1f, 5f, 10f };
     private int currentIndex = 0;
 
     void Update()

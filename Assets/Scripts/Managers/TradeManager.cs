@@ -59,8 +59,11 @@ public class TradeManager : MonoBehaviour
 
     public void SwitchStations()
     {
-        // swap inventories
-        docked_cargo_display.SwapInventories(currentBody.GetComponentInParent<Inventory>());
+        if (docked_cargo_display != null && currentBody != null && currentBody.GetComponentInParent<Inventory>() != null)
+        {
+            // swap inventories
+            docked_cargo_display.SwapInventories(currentBody.GetComponentInParent<Inventory>());
+        }
     }
 
     public float GetItemCost(ItemType item)

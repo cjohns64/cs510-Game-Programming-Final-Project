@@ -32,12 +32,16 @@ public class GameManager : MonoBehaviour
     {
         if (docking_timer > docking_time_interval)
         {
-            // 1) Pause time
-            previousTimeScale = Time.timeScale;
-            Time.timeScale = 0f;
+            // don't open the trade manager if there is no inventory
+            if (newBody != null && newBody.gameObject.GetComponent<Inventory>() != null)
+            {
+                // 1) Pause time
+                previousTimeScale = Time.timeScale;
+                Time.timeScale = 0f;
 
-            // 2) Show trade UI
-            tradeManager.OpenMenu(newBody);
+                // 2) Show trade UI
+                tradeManager.OpenMenu(newBody);
+            }
         }
         
     }
