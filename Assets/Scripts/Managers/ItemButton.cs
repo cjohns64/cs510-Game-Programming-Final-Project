@@ -7,14 +7,15 @@ public class ItemButton : MonoBehaviour
     public bool is_player_inv = false;
     [SerializeField] private string global_scripts = "GlobalScripts";
     private TradeManager tradeManager;
-    [SerializeField] private Button btn = null;
+    private Button btn;
 
     // some code from https://stackoverflow.com/questions/69259615/how-to-detect-if-button-is-clicked-unity
     private void Awake()
     {
         // get a reference to the Trade Manager in the Global Scripts GameObject
         tradeManager = GameObject.Find(global_scripts).GetComponent<TradeManager>();
-        
+        // this script is always attached to the button object
+        btn = this.gameObject.GetComponent<Button>();
         // adding a delegate with no parameters
         btn.onClick.AddListener(OnClick);
     }

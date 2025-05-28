@@ -6,7 +6,6 @@ public class Update_TradingInfo_UI : MonoBehaviour
     private Inventory inventory;
     public string station_name;
     private TextMeshProUGUI name_text;
-    private TextMeshProUGUI credits_text;
     private TextMeshProUGUI cargo_text;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,7 +15,6 @@ public class Update_TradingInfo_UI : MonoBehaviour
         // lookup child ui elements
         name_text = this.transform.Find("NameText").gameObject.GetComponent<TextMeshProUGUI>();
         name_text.text = station_name;
-        credits_text = this.transform.Find("CreditsText").gameObject.GetComponent<TextMeshProUGUI>();
         cargo_text = this.transform.Find("CargoText").gameObject.GetComponent<TextMeshProUGUI>();
 
         UpdateUI(ItemType.AntiGravGenerator); // update ui, parameter is not used
@@ -27,7 +25,6 @@ public class Update_TradingInfo_UI : MonoBehaviour
     {
         if (inventory != null)
         {
-            credits_text.text = inventory.credits.ToString("C2");
             cargo_text.text = inventory.GetCurrentCapacity().ToString() + "/" + inventory.GetCurrentMaxCapacity().ToString();
         }
     }

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 79c6093a7267a164998871e12ed8f1e8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - global_save_manager: {fileID: 11400000, guid: 3102df080010bdc468939758c11ba712,
+      type: 2}
+  - player_ship: {instanceID: 0}
+  - player_inventory: {instanceID: 0}
+  - upgrade_manager: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

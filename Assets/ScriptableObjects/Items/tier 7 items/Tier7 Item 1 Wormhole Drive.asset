@@ -15,6 +15,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: a69971e81516c884ab31587f918d9e3a, type: 3}
   type: 38
   item_value: 100
-  item_size: 1
+  item_size: 50
   item_name: Wormhole Drive
   description: 

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
@@ -17,21 +19,36 @@ public class Inventory : MonoBehaviour
     [SerializeField] private InventorySlot[] consumes;
 
     [Header("Trading Metadata")]
-    public int trade_max_capacity = 500; // trade until this number
-    public int production_max_capacity = 500; // build until this number
-    private int trade_current_capacity = 0;
-    private int production_current_capacity = 0;
-
-    public float credits = 0.0f;
-    private float production_profit = 10.0f;
-    public float production_profit_scale = 0.01f;
+    public int inventory_max_capacity = 1000;
+    public int inventory_current_capacity = 0;
 
     public event Action<ItemType> OnInventoryChanged;
+    private ItemManager item_manager;
 
     private void Start()
     {
+        item_manager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
         InitInventory();
     }
+
+    /**
+     * Loads inventory with given values
+     */
+    public void SetInventory(Dictionary<ItemType, int> inventory_state)
+    {
+        foreach (ItemType item in inventory_state.Keys)
+        {
+            if (this.items.ContainsKey(item))
+            {
+                this.items[item] = inventory_state[item];
+            }
+            else
+            {
+                this.AddItem(item, inventory_state[item]);
+            }
+        }
+    }
+
     /**
      * Sets up the inventory with the values defined in the inspector.
      * Unless the items dictionary already has values.
@@ -46,56 +63,37 @@ public class Inventory : MonoBehaviour
             {
                 // add item to actual inventory
                 AddItem(defined_default_inv[i].item, defined_default_inv[i].amount);
-                trade_current_capacity += defined_default_inv[i].amount;
+                inventory_current_capacity += defined_default_inv[i].amount * 
+                    item_manager.GetItem(defined_default_inv[i].item).item_size;
             }
         }
-        // calculate production profit
-        // lookup item manager
-        ItemManager itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
-        float production_cost = 0.0f;
-        float production_return = 0.0f;
-        foreach (InventorySlot cslot in consumes)
-        {
-            production_cost += cslot.amount * itemManager.GetItem(cslot.item).item_value;
-        }
-        foreach (InventorySlot pslot in produces)
-        {
-            production_return += pslot.amount * itemManager.GetItem(pslot.item).item_value;
-        }
-        production_profit = (production_return - (production_cost / 2)) * production_profit_scale;
     }
 
     // checks if inventory has space for new items
     public bool HasCapacity(int add_amount)
     {
-        return trade_current_capacity + add_amount <= trade_max_capacity;
+        return inventory_current_capacity + add_amount <= inventory_max_capacity;
     }
 
     public int GetCurrentCapacity()
     {
-        return trade_current_capacity + production_current_capacity;
+        return inventory_current_capacity;
     }
     public int GetCurrentMaxCapacity()
     {
-        return trade_max_capacity + production_max_capacity;
+        return inventory_max_capacity;
     }
 
     /**
      * Add items to inventory
      */
-    public void AddItem(ItemType item, int amount, bool is_production = false)
+    public void AddItem(ItemType item, int amount)
     {
         if (items.ContainsKey(item))
         {
             items[item] += amount; // add amount
-            if (is_production)
-            {
-                production_current_capacity += amount;
-            }
-            else
-            {
-                trade_current_capacity += amount;
-            }
+            inventory_current_capacity += amount *
+                    item_manager.GetItem(item).item_size;
 
             OnInventoryChanged?.Invoke(item);
             return;
@@ -111,13 +109,15 @@ public class Inventory : MonoBehaviour
     private void GrowInventory(ItemType item, int amount)
     {
         items.Add(item, amount);
+        inventory_current_capacity += amount *
+                    item_manager.GetItem(item).item_size;
         OnInventoryChanged?.Invoke(item);
     }
 
     /**
      * RemoveItem returns the amount that was removed from the inventory, 0 if the item was not in the inventory.
      */
-    public int RemoveItem(ItemType item, int amount, bool is_production=false)
+    public int RemoveItem(ItemType item, int amount)
     {
         // check if item is in inventory
         if (items.ContainsKey(item))
@@ -128,18 +128,15 @@ public class Inventory : MonoBehaviour
                 // amount is negative, calculate the difference and adjust amount removed
                 int remove_amount = amount + items[item];
                 items[item] = 0;
-                if (is_production)
-                {
-                    production_current_capacity -= remove_amount;
-                }
-                else
-                {
-                    trade_current_capacity -= remove_amount;
-                }
-                
+                inventory_current_capacity -= remove_amount *
+                    item_manager.GetItem(item).item_size;
+
                 OnInventoryChanged?.Invoke(item);
                 return remove_amount;
             }
+            inventory_current_capacity -= amount *
+                    item_manager.GetItem(item).item_size;
+
             OnInventoryChanged?.Invoke(item);
             // on success return the amount we removed
             return amount;
@@ -174,26 +171,27 @@ public class Inventory : MonoBehaviour
                 can_produce = false;
                 break;
             }
-            inventory_required -= cslot.amount; // these items get removed
+            inventory_required -= cslot.amount *
+                    item_manager.GetItem(cslot.item).item_size; // these items get removed
         }
         foreach (InventorySlot pslot in produces)
         {
-            inventory_required += pslot.amount; // these items get added
+            inventory_required += pslot.amount *
+                    item_manager.GetItem(pslot.item).item_size; // these items get added
         }
-        if (can_produce && inventory_required + production_current_capacity <= production_max_capacity)
+        if (can_produce && inventory_required + inventory_current_capacity <= inventory_max_capacity)
         {
-            credits += production_profit;
             // reduce items in inventory in quantity defined in consume set
             foreach (InventorySlot cslot in consumes)
             {
                 // it costs amount items to produce X
-                RemoveItem(cslot.item, cslot.amount, true);
+                RemoveItem(cslot.item, cslot.amount);
             }
             // add items to inventory in quantity defined in produce set
             foreach (InventorySlot pslot in produces)
             {
                 // produce X items, where X is amount in produces
-                AddItem(pslot.item, pslot.amount, true);
+                AddItem(pslot.item, pslot.amount);
             }
         }
     }
@@ -206,7 +204,7 @@ public class Inventory : MonoBehaviour
 public class InventorySlot
 {
     public ItemType item;
-    public int amount;
+    public int amount; // quantity of items
 
     public InventorySlot(ItemType _item, int _amount)
     {

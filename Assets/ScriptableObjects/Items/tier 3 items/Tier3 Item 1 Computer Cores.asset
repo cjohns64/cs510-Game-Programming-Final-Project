@@ -15,6 +15,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: eedad0736017b734aacf16077904f96f, type: 3}
   type: 28
   item_value: 100
-  item_size: 1
+  item_size: 10
   item_name: Computer Cores
   description: 

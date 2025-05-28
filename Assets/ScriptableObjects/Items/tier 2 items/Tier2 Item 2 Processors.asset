@@ -15,6 +15,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 5618742b138dc3f4ba0461cbc415e9d7, type: 3}
   type: 26
   item_value: 100
-  item_size: 1
+  item_size: 5
   item_name: Processors
   description: 

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e25eb6780d13f9c4db7342665423bff9, type: 3}
+  m_Name: Zone 1 Save Manager
+  m_EditorClassIdentifier: 
+  global_save_manager: {fileID: 11400000, guid: 3102df080010bdc468939758c11ba712, type: 2}
+  player_ship: {fileID: 0}
+  resident_inventories: []
+  saved_bodies: []
+  player_inventory: {fileID: 0}
+  upgrade_manager: {fileID: 0}
