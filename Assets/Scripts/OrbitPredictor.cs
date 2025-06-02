@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-[RequireComponent(typeof(OrbitMoverAnalytic), typeof(MeshFilter), typeof(MeshRenderer))]
+[RequireComponent(typeof(OrbitMoverAnalytic), typeof(LineRenderer))]
 public class OrbitPredictor : MonoBehaviour
 {
     private bool isSpaceship;
@@ -12,6 +12,7 @@ public class OrbitPredictor : MonoBehaviour
     public float lineScreenWidth = 0.2f;
     public int segments = 180;
     public float maxRenderDistance = 100f;
+    private LineRenderer lineRenderer;
 
     [Header("Orbit Materials")]
     public Material StableMaterial;
@@ -48,8 +49,8 @@ public class OrbitPredictor : MonoBehaviour
     // Private Components
     private OrbitMoverAnalytic mover;
     private Transform centralBody;
-    private Mesh orbitMesh;
-    private MeshRenderer meshRenderer;
+    // private Mesh orbitMesh;
+    // private MeshRenderer meshRenderer;
     private Camera mainCamera;
 
     // Private variable
@@ -67,11 +68,21 @@ public class OrbitPredictor : MonoBehaviour
         centralBody = mover.CentralBody;
         mainCamera = Camera.main;
 
+        lineRenderer = GetComponent<LineRenderer>();
+        if (lineRenderer == null)
+        {
+            gameObject.AddComponent<LineRenderer>();
+        }
+        lineRenderer.startWidth = lineScreenWidth;
+        lineRenderer.endWidth = lineScreenWidth;
+        lineRenderer.material = StableMaterial;
+        lineRenderer.useWorldSpace = true;
+
         orbitPoints = new Vector3[segments + 1];
-        orbitMesh = new Mesh();
-        var meshFilter = GetComponent<MeshFilter>();
-        meshFilter.sharedMesh = orbitMesh;
-        meshRenderer = GetComponent<MeshRenderer>();
+        // orbitMesh = new Mesh();
+        // var meshFilter = GetComponent<MeshFilter>();
+        // meshFilter.sharedMesh = orbitMesh;
+        // meshRenderer = GetComponent<MeshRenderer>();
         // meshRenderer.material = new Material(Shader.Find("Custom/ConstantWidthLine"));
 
         centralCelestialBody = centralBody.GetComponent<CelestialBody>();
@@ -83,7 +94,7 @@ public class OrbitPredictor : MonoBehaviour
     {
         InstantiateMarkers();
 
-        meshRenderer.material = StableMaterial;
+        // meshRenderer.material = StableMaterial;
     }
 
     void Update()
@@ -347,45 +358,49 @@ public class OrbitPredictor : MonoBehaviour
     {
         GenerateOrbitPoints();
 
-        int vertCount = orbitPoints.Length;
-        Vector3[] verts = new Vector3[vertCount * 2];
-        Vector3[] nexts = new Vector3[vertCount * 2];
-        int[] indices = new int[(vertCount - 1) * 6];
+        lineRenderer.positionCount = orbitPoints.Length;
+        lineRenderer.SetPositions(orbitPoints);
 
-        for (int i = 0; i < vertCount; i++) {
-            Vector3 p0 = orbitPoints[i];
-            Vector3 p1 = orbitPoints[Mathf.Min(i + 1, vertCount - 1)];
 
-            verts[i * 2 + 0] = p0;
-            verts[i * 2 + 1] = p0;
+        // int vertCount = orbitPoints.Length;
+        // Vector3[] verts = new Vector3[vertCount * 2];
+        // Vector3[] nexts = new Vector3[vertCount * 2];
+        // int[] indices = new int[(vertCount - 1) * 6];
 
-            nexts[i * 2 + 0] = p1;
-            nexts[i * 2 + 1] = p1;
+        // for (int i = 0; i < vertCount; i++) {
+        //     Vector3 p0 = orbitPoints[i];
+        //     Vector3 p1 = orbitPoints[Mathf.Min(i + 1, vertCount - 1)];
 
-            if (i < vertCount - 1) 
-            {
-                int idx = i * 6;
-                int v = i * 2;
+        //     verts[i * 2 + 0] = p0;
+        //     verts[i * 2 + 1] = p0;
 
-                // two triangles per segment quad
-                indices[idx + 0] = v + 0;
-                indices[idx + 1] = v + 2;
-                indices[idx + 2] = v + 1;
-                indices[idx + 3] = v + 1;
-                indices[idx + 4] = v + 2;
-                indices[idx + 5] = v + 3;
-            }
-        }
+        //     nexts[i * 2 + 0] = p1;
+        //     nexts[i * 2 + 1] = p1;
 
-        orbitMesh.Clear();
-        orbitMesh.vertices = verts;
-        orbitMesh.SetUVs(0, nexts);
-        orbitMesh.SetIndices(indices, MeshTopology.Lines, 0);
+        //     if (i < vertCount - 1) 
+        //     {
+        //         int idx = i * 6;
+        //         int v = i * 2;
 
-        float a = mover.shape.a;
-        float e = mover.shape.e;
-        Vector3 normal = mover.shape.AngularMomentumVec.normalized;
-        Vector3 perigee = mover.shape.EccentricityVec.normalized;
+        //         // two triangles per segment quad
+        //         indices[idx + 0] = v + 0;
+        //         indices[idx + 1] = v + 2;
+        //         indices[idx + 2] = v + 1;
+        //         indices[idx + 3] = v + 1;
+        //         indices[idx + 4] = v + 2;
+        //         indices[idx + 5] = v + 3;
+        //     }
+        // }
+
+        // orbitMesh.Clear();
+        // orbitMesh.vertices = verts;
+        // orbitMesh.SetUVs(0, nexts);
+        // orbitMesh.SetIndices(indices, MeshTopology.Lines, 0);
+
+        // float a = mover.shape.a;
+        // float e = mover.shape.e;
+        // Vector3 normal = mover.shape.AngularMomentumVec.normalized;
+        // Vector3 perigee = mover.shape.EccentricityVec.normalized;
     }
 
     void GenerateOrbitPoints()
@@ -540,19 +555,19 @@ public class OrbitPredictor : MonoBehaviour
 
         if (hasSOIEntry) 
         {
-            meshRenderer.material = EncounterMaterial;
+            lineRenderer.material = EncounterMaterial;
         } 
         else if (hasSOIExit) 
         {
-            meshRenderer.material = EscapeMaterial;
+            lineRenderer.material = EscapeMaterial;
         }
         else if (hasCollision) 
         {
-            meshRenderer.material = CollisionMaterial;
+            lineRenderer.material = CollisionMaterial;
         }
         else // Stable Orbt
         {
-            meshRenderer.material = StableMaterial;
+            lineRenderer.material = StableMaterial;
         }
     }
 
