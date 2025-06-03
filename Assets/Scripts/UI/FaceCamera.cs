@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class FaceCamera : MonoBehaviour
 {
-    public Transform camera;
+    public Transform _camera;
 
     void Start()
     {
-        if (camera == null)
+        if (_camera == null)
         {
-            camera = Camera.main.transform;
+            _camera = Camera.main.transform;
         }
     }
 
     void Update()
     {
-        transform.LookAt(camera);
+        transform.LookAt(_camera);
         transform.Rotate(new Vector3(1, 0, 0), 90);
     }
 }

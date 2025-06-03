@@ -79,8 +79,7 @@ public class TradeManager : MonoBehaviour
     public void ClickedOn(ItemType item_type, bool is_player_inv)
     {
         // only allow item trading if docked
-        // AND item has a non-zero size. Items with 0 size are upgrades and rewards that shouldn't be removed.
-        if (tab_manager.IsDocked() && itemManager.GetItem(item_type).item_size > 0) 
+        if (tab_manager.IsDocked()) 
         {
             // get the amount
             int quantity = int.Parse(is_player_inv ? player_quantity_text.text : station_quantity_text.text);
