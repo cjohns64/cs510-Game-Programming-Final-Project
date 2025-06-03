@@ -1,26 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenu;
-    private List<AsyncOperation> scenesToLoad = new();
-    //private float loading_progress = 0f;
+    public GameObject loadingScreen;
+    private Slider loading_bar;
 
     [Header("Save Managers")]
     public GlobalSaveManager global_save_manager;
     public LocalSceneSaveManager[] local_save_managers;
 
+    private void Start()
+    {
+        global_save_manager.tutorial_enabled = false;
+        loading_bar = loadingScreen.GetComponentInChildren<Slider>();
+    }
     public void LoadZoneByIndex(int index)
     {
         InvalidateSaves();
-        ShowLoadingScreen();
-        scenesToLoad.Clear();
-        scenesToLoad.Add(SceneManager.LoadSceneAsync("Zone " + index.ToString()));
+        StartCoroutine(LoadAsync("Zone " + index.ToString()));
     }
 
     private void InvalidateSaves()
@@ -32,14 +35,22 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    private void ShowLoadingScreen()
+    IEnumerator LoadAsync(string level)
     {
-
+        AsyncOperation operation = SceneManager.LoadSceneAsync(level);
+        loadingScreen.SetActive(true);
+        while (!operation.isDone)
+        {
+            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            loading_bar.value = progress;
+            yield return null;
+        }
     }
 
     public void PlayTutorial()
     {
-        LoadZoneByIndex(0);
+        global_save_manager.tutorial_enabled = true;
+        LoadZoneByIndex(1);
     }
 
     public void ExitGame()
