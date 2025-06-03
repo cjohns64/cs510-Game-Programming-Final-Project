@@ -1,21 +1,44 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShipController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float turnSpeedDegPerSec = 89.9f;
-    public float thrustForceForward = 0.1f;
-    public float thrustForceBackward = 0.05f;
+    private float thrustForceBackwardScale = 0.5f; // half of forward
+    private float thrustScaleFactor = 0.1f;
+    private const float inv_50 = 1.0f / 50.0f;
+    private float thrust_mag;
+
+    [Header("Resources")]
+    public Slider thrust_slider;
+    private TMP_Text thrust_text;
     public Animator shipAnimatior;
     public AudioSource thrustAudio;
 
     private OrbitMoverAnalytic orbitMoverAnalytic;
     private Transform centralBody;
 
+    float GetThrustMagnitude()
+    {
+        return thrust_slider.value * thrustScaleFactor * inv_50;
+    }
+
+    void ThrustChange()
+    {
+        thrust_mag = GetThrustMagnitude();
+        thrust_text.text = (thrust_mag / (thrustScaleFactor * inv_50)).ToString("0.##");
+    }
+
     void Start()
     {
         orbitMoverAnalytic = GetComponent<OrbitMoverAnalytic>();
         centralBody = orbitMoverAnalytic.CentralBody;
+        // setup thrust
+        thrust_mag = GetThrustMagnitude();
+        thrust_slider.onValueChanged.AddListener(delegate { ThrustChange(); });
+        thrust_text = thrust_slider.gameObject.transform.Find("current_thrust").gameObject.GetComponent<TMP_Text>();
 
         if (thrustAudio == null)
             thrustAudio = gameObject.GetComponent<AudioSource>();
@@ -74,11 +97,11 @@ public class ShipController : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             thrustDirection = transform.forward;
-            thrustMagnitude = thrustForceForward;
+            thrustMagnitude = GetThrustMagnitude();
         } else if (Input.GetKey(KeyCode.S))
         {
             thrustDirection = -transform.forward;
-            thrustMagnitude = thrustForceBackward;
+            thrustMagnitude = GetThrustMagnitude() * thrustForceBackwardScale;
         }
 
         thrustMagnitude *= multiplierCheat;

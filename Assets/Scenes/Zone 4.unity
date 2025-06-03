@@ -907,6 +907,10 @@ PrefabInstance:
       propertyPath: shipAnimatior
       value: 
       objectReference: {fileID: 835747237}
+    - target: {fileID: 1978155610678570189, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: thrust_slider
+      value: 
+      objectReference: {fileID: 6014176712897565823}
     - target: {fileID: 2333166073508278481, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -2562,6 +2566,10 @@ PrefabInstance:
       propertyPath: upgrade_menu
       value: 
       objectReference: {fileID: 606943157}
+    - target: {fileID: 8868827157266544725, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: thrust_slider
+      value: 
+      objectReference: {fileID: 6014176712897565823}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2764,6 +2772,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2760511119530601204, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
   m_PrefabInstance: {fileID: 6014176712897565821}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6014176712897565823 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8583927467470818762, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+  m_PrefabInstance: {fileID: 6014176712897565821}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7740432871229656105
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3572,6 +3591,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0.120930254
       objectReference: {fileID: 0}
+    - target: {fileID: 1414694756473188504, guid: b3fa2a7243d446c4ba45cd6b6732e480, type: 3}
+      propertyPath: player_inventory
+      value: 
+      objectReference: {fileID: 1474436736}
     - target: {fileID: 1421122611047564151, guid: b3fa2a7243d446c4ba45cd6b6732e480, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

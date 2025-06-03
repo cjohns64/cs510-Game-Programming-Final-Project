@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 using TMPro;
 using System.Linq;
-using Unity.VisualScripting;
 
 public enum DropdownSelector {
     EngineSelector,
@@ -24,7 +22,9 @@ public class UpgradeManager : MonoBehaviour
 {
     // ui data
     [SerializeField] private GameObject upgrade_menu;
+    private ItemManager item_manager;
     [SerializeField] private GameObject ship;
+    [SerializeField] private Slider thrust_slider;
 
     [Header("Ship Mesh Organizer Names")]
     [SerializeField] private string name_mesh_root = "Ship-Model-Final";
@@ -105,6 +105,8 @@ public class UpgradeManager : MonoBehaviour
 
     void Start()
     {
+        // lookup the item manager
+        item_manager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
         // lookup the ship mesh
         GameObject ship_mesh = ship.transform.Find(name_mesh_root).gameObject;
         // lookup the player's inventory, it is attached to the parent of the ship mesh
@@ -186,6 +188,7 @@ public class UpgradeManager : MonoBehaviour
             d.onValueChanged.AddListener(delegate {
                 SelectionTriggeredShipUpdate(d);
             });
+            d.onValueChanged.AddListener(delegate { UpdateThrustSlider(); });
         }
         foreach (TMP_Dropdown d in slot_dropdowns)
         {
@@ -196,6 +199,7 @@ public class UpgradeManager : MonoBehaviour
         engine_dropdown.onValueChanged.AddListener(delegate {
             SelectionTriggeredShipUpdate(engine_dropdown);
         });
+        engine_dropdown.onValueChanged.AddListener(delegate { UpdateThrustSlider(); });
     }
 
     /**
@@ -414,6 +418,34 @@ public class UpgradeManager : MonoBehaviour
             }
         }
     }
+
+    private void UpdateThrustSlider()
+    {
+        float new_slider_value = 0f;
+        // add engine value
+        EngineUpgrade obj = (EngineUpgrade) item_manager.GetItem(engine_types[engine_dropdown.value]);
+        if (obj != null)
+        {
+            new_slider_value += obj.engine_speed;
+        }
+        
+        // add expansion value
+        for (int i=0; i<expansion_dropdowns.Count; i++)
+        {
+            if (expansion_dropdowns[i].value == 1)
+            {
+                // add speed bonus
+                ExpansionUpgrade exobj = (ExpansionUpgrade)item_manager.GetItem(expansion_types[i]);
+                if (exobj != null)
+                {
+                    new_slider_value += exobj.speed_bonus;
+                }
+            }
+        }
+        // set max slider value to new value
+        thrust_slider.maxValue = new_slider_value;
+    }
+
     private void UpdateSlotMesh(int selection, int slot)
     {
         armor_meshes[slot].SetActive(selection == 1);
