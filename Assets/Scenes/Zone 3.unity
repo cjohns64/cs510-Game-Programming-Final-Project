@@ -1451,9 +1451,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c4ee9d34c05f7b42ac4d24c3e78359d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mass: 50
+  Mass: 55
   Radius: 40
-  SoiRadius: 150
+  SoiRadius: 250
   SoiPrefab: {fileID: 0}
 --- !u!1001 &1935582222
 PrefabInstance:

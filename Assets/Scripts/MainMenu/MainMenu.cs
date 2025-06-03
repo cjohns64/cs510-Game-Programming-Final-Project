@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenu;
     private List<AsyncOperation> scenesToLoad = new();
-    private float loading_progress = 0f;
+    //private float loading_progress = 0f;
 
     [Header("Save Managers")]
     public GlobalSaveManager global_save_manager;
