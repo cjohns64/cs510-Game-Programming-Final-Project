@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Asteroid-03
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d16f46abb9c7d1447a7c3e2ce25be1be, type: 3}
+      propertyPath: m_TagString
+      value: Asteroid
+      objectReference: {fileID: 0}
     - target: {fileID: 4742473837712756890, guid: d16f46abb9c7d1447a7c3e2ce25be1be, type: 3}
       propertyPath: m_FadeMode
       value: 1
@@ -79,6 +83,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d16f46abb9c7d1447a7c3e2ce25be1be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8184104926156616448}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d16f46abb9c7d1447a7c3e2ce25be1be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5194452757168112590}
   m_SourcePrefab: {fileID: 100100000, guid: d16f46abb9c7d1447a7c3e2ce25be1be, type: 3}
 --- !u!1 &644677001235676555 stripped
 GameObject:
@@ -98,3 +105,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spin_intensity: 20
+--- !u!135 &5194452757168112590
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644677001235676555}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.14
+  m_Center: {x: 0, y: 0, z: 0}

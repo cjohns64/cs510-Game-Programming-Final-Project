@@ -25,6 +25,7 @@ public class UpgradeManager : MonoBehaviour
     private ItemManager item_manager;
     [SerializeField] private GameObject ship;
     [SerializeField] private Slider thrust_slider;
+    private StatManager stat_manager;
 
     [Header("Ship Mesh Organizer Names")]
     [SerializeField] private string name_mesh_root = "Ship-Model-Final";
@@ -105,6 +106,8 @@ public class UpgradeManager : MonoBehaviour
 
     void Start()
     {
+        // lookup the stat manager
+        stat_manager = gameObject.GetComponent<StatManager>();
         // lookup the item manager
         item_manager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
         // lookup the ship mesh
@@ -189,12 +192,14 @@ public class UpgradeManager : MonoBehaviour
                 SelectionTriggeredShipUpdate(d);
             });
             d.onValueChanged.AddListener(delegate { UpdateThrustSlider(); });
+            d.onValueChanged.AddListener(delegate { UpdateSlotBonuses(); });
         }
         foreach (TMP_Dropdown d in slot_dropdowns)
         {
             d.onValueChanged.AddListener(delegate {
                 SelectionTriggeredShipUpdate(d);
             });
+            d.onValueChanged.AddListener(delegate { UpdateSlotBonuses(); });
         }
         engine_dropdown.onValueChanged.AddListener(delegate {
             SelectionTriggeredShipUpdate(engine_dropdown);
@@ -417,6 +422,53 @@ public class UpgradeManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void UpdateSlotBonuses()
+    {
+        float new_max_hull = 0f;
+        float new_max_armor = 0f;
+        float new_max_shield = 0f;
+        int cargo_addition = 0;
+        float slot_armor = ((SlotUpgrade)item_manager.GetItem(ItemType.ArmorModule)).armor_bonus;
+        float slot_shield = ((SlotUpgrade)item_manager.GetItem(ItemType.ShieldingModule)).shield_bonus;
+        int slot_cargo = ((SlotUpgrade)item_manager.GetItem(ItemType.CargoModule)).cargo_bonus;
+        for (int i = 0; i < slot_dropdowns.Count; i++)
+        {
+            switch (slot_dropdowns[i].value)
+            {
+                case 0: // None
+                    break;
+                case 1: // Armor
+                    new_max_armor += slot_armor;
+                    break;
+                case 2: // Shield
+                    new_max_shield += slot_shield;
+                    break;
+                case 3: // Cargo
+                    cargo_addition += slot_cargo;
+                    break;
+                default: // None
+                    break;
+            }
+        }
+        // check expansions
+        for (int i = 0; i< expansion_dropdowns.Count; i++)
+        {
+            if (expansion_dropdowns[i].value == 1)
+            {
+                ExpansionUpgrade tmp = ((ExpansionUpgrade)item_manager.GetItem(expansion_types[i]));
+                new_max_hull += tmp.hull_bonus;
+                new_max_armor += tmp.armor_bonus;
+                new_max_shield += tmp.shield_bonus;
+                cargo_addition += tmp.cargo_bonus;
+            }
+        }
+        // update sliders
+        player_inventory.inventory_bonus = cargo_addition;
+        stat_manager.SetMaxHull(new_max_hull);
+        stat_manager.SetMaxShields(new_max_shield);
+        stat_manager.SetArmor(new_max_armor);
     }
 
     private void UpdateThrustSlider()

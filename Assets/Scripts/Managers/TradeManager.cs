@@ -21,6 +21,7 @@ public class TradeManager : MonoBehaviour
     // resolved resources, these will be looked up during initialization
     private PlayerMenuTabManager tab_manager;
     private ItemManager itemManager;
+    private StatManager statManager;
 
     // production cycle events
     public UnityEvent OnProductionCycle;
@@ -55,6 +56,7 @@ public class TradeManager : MonoBehaviour
         tab_manager = player_menu.GetComponent<PlayerMenuTabManager>();
         // lookup item manager
         itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
+        statManager = gameObject.GetComponent<StatManager>();
     }
 
     public void SwitchStations()
@@ -127,6 +129,7 @@ public class TradeManager : MonoBehaviour
         SwitchStations();
         // activate the menu
         tab_manager.ActivateTradeTab();
+        statManager.RepairHull();
     }
 
     

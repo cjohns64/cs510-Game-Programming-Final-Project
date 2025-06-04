@@ -8,6 +8,7 @@ TagManager:
   - Focusable
   - Ship
   - TimeController
+  - Star
   layers:
   - Default
   - TransparentFX
