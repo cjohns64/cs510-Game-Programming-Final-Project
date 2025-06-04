@@ -61,6 +61,7 @@ public class OrbitPredictor : MonoBehaviour
     private CelestialBody centralCelestialBody;
 
 
+    public float fallbackTheta = 1f;
 
     void Awake()
     {
@@ -259,9 +260,10 @@ public class OrbitPredictor : MonoBehaviour
         }
         else if (hasSOIExit)
         {
-            Debug.LogWarning(
-                $"[OrbitPredictor] no SOI exit crossing EVEN THOUGH THERE SHOULD BE"
-            );
+            
+            soiExitTheta = fallbackTheta;
+            Vector3 exitLocal = mover.shape.GetOrbitPoint(soiExitTheta);
+            soiExitPoint = centralBody.position + exitLocal;
         }
         
     }

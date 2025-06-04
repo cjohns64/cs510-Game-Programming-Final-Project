@@ -342,11 +342,12 @@ public class OrbitShape
         else
         {
             // hyperbolic case: solve cosh(F) = (r/a + 1) / e
-            float coshF = (targetRadius / a + 1f) / e;
+            float coshF = (1f - targetRadius / a) / e;
             if (coshF < 1f)
+            {
                 return Array.Empty<float>();
+            }
 
-            // acosh via log
             float F = (float)Math.Log(coshF + Math.Sqrt(coshF * coshF - 1f));
 
             // convert F to true anomaly f
