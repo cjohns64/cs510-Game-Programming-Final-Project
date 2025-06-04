@@ -2346,6 +2346,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: HullHitpoints
       objectReference: {fileID: 0}
+    - target: {fileID: 6342148355294467235, guid: f9c83d70e2528fe45b079ede25752c71, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6342148355294467235, guid: f9c83d70e2528fe45b079ede25752c71, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6342148355294467235, guid: f9c83d70e2528fe45b079ede25752c71, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6342148355294467235, guid: f9c83d70e2528fe45b079ede25752c71, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8807127365891784479, guid: f9c83d70e2528fe45b079ede25752c71, type: 3}
       propertyPath: m_Pivot.x
       value: 0
