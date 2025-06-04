@@ -1055,7 +1055,12 @@ MonoBehaviour:
   m_text: 'Other
 
     - Planet, Star, & System Names from "The Murderbot Diaries"
-    by Martha Wells'
+    by Martha Wells
+
+    - All Sounds from Freesound.org
+
+    - Future Impact.wav
+    by CadereSounds -- https://freesound.org/s/259437/ -- License: Attribution 3.0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

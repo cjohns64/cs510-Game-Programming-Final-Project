@@ -17,5 +17,6 @@ MonoBehaviour:
   item_value: 2500
   item_size: 0
   item_name: Chemical Engine
-  description: 
+  description: Engines increase the maximum thrust power. Chemical Engines are twice
+    as fast as Solar Sails and are much less bulky.
   engine_speed: 100

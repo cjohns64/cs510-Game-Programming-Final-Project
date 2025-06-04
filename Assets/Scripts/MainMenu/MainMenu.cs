@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
     }
     public void LoadZoneByIndex(int index)
     {
-        loadingScreen.SetActive(true);
+        //loadingScreen.SetActive(true);
         InvalidateSaves();
         StartCoroutine(LoadAsync("Zone " + index.ToString()));
     }

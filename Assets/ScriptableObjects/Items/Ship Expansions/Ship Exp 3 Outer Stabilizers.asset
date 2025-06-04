@@ -20,7 +20,7 @@ MonoBehaviour:
   description: '[only one can be installed at a time]'
   hull_bonus: 0
   shield_bonus: 0
-  armor_bonus: 20
+  armor_bonus: 5
   cargo_bonus: 0
   speed_bonus: 0
   unlock_slot_number: 4

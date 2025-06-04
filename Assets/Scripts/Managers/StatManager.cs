@@ -75,6 +75,11 @@ public class StatManager : MonoBehaviour
         hull_slider.maxValue = hull;
     }
 
+    public bool IsShielded()
+    {
+        return shields > 0;
+    }
+
     public void SetMaxShields(float shields)
     {
         this.max_shields = shields;

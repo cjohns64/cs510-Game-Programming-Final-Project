@@ -17,7 +17,8 @@ MonoBehaviour:
   item_value: 1000
   item_size: 0
   item_name: Cargo Module
-  description: '[can be installed in any upgrade slot]'
+  description: Installed cargo modules increase the amout of things the ship can
+    carry [can be installed in any upgrade slot].
   hull_bonus: 0
   shield_bonus: 0
   armor_bonus: 0

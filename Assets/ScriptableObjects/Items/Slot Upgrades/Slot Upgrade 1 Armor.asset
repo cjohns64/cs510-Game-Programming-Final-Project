@@ -17,7 +17,8 @@ MonoBehaviour:
   item_value: 1000
   item_size: 0
   item_name: Armor Module
-  description: '[can be installed in any upgrade slot]'
+  description: Armor increases damage reduction against most damage sources However,
+    it is of no use when crashing into a star [can be installed in any upgrade slot].
   hull_bonus: 0
   shield_bonus: 0
   armor_bonus: 10

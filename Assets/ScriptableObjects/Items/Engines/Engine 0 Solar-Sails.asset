@@ -17,5 +17,6 @@ MonoBehaviour:
   item_value: 500
   item_size: 0
   item_name: Solar Sails
-  description: 
+  description: Engines increase the maximum thrust power. Solar Sails are the slowest
+    form of transportation.
   engine_speed: 50

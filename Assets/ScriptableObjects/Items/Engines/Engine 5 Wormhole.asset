@@ -17,5 +17,6 @@ MonoBehaviour:
   item_value: 1562500
   item_size: 0
   item_name: Wormhole Engine
-  description: 
+  description: Engines increase the maximum thrust power. An exotic form of propulsion
+    used to navigate through wormholes. No one knows how they work.
   engine_speed: 700

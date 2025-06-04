@@ -5,6 +5,9 @@ public class DamageManager : MonoBehaviour
     private StatManager statManager;
     [SerializeField] private float danger_radius;
     [SerializeField] private float danger_max_damage = 100f;
+    [SerializeField] private AudioSource sun_damage_audio;
+    [SerializeField] private AudioSource asteriod_impact_audio;
+    [SerializeField] private AudioSource shield_impact_audio;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,6 +22,15 @@ public class DamageManager : MonoBehaviour
         {
             // central bodies are at the origin
             statManager.Damage(danger_max_damage / ( dot + 0.1f), DamageType.Energy); // more damage at lower radii
+            if (!sun_damage_audio.isPlaying )
+            {
+                sun_damage_audio.Play();
+                sun_damage_audio.volume = (danger_radius / (dot + 0.1f)) * 0.1f;
+            }
+        }
+        else if (sun_damage_audio.isPlaying)
+        {
+            sun_damage_audio.Stop();
         }
     }
 
@@ -26,8 +38,10 @@ public class DamageManager : MonoBehaviour
     {
         if (other.gameObject.tag == "Asteroid")
         {
-            statManager.Damage(25f, DamageType.Impact);
+            statManager.Damage(Random.Range(10f, 50f), DamageType.Impact);
             Destroy(other.gameObject);
+            asteriod_impact_audio.Play();
+            shield_impact_audio.Play();
         }
         else if (other.gameObject.tag == "Star")
         {
