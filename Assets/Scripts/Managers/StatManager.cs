@@ -111,15 +111,15 @@ public class StatManager : MonoBehaviour
         }
         else if (type == DamageType.Impact)
         {
-            float reduced_damage = damage - armor;
-            if (reduced_damage < 0)
-            {
-                reduced_damage = 0f;
-            }
-            shields -= reduced_damage;
+            shields -= damage;
             if (shields < 0)
             {
-                hull += shields; // subtract the difference
+                float reduced_damage = (-shields) - armor; //shields is negative
+                if (reduced_damage < 0)
+                {
+                    reduced_damage = 0f;
+                }
+                hull -= reduced_damage; // subtract the difference
                 if (hull < 0)
                 {
                     ShipDestroyed?.Invoke();
