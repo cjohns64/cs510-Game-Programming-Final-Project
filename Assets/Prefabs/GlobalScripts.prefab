@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6450339934682246305}
   - component: {fileID: 2249061038820929978}
   - component: {fileID: 6383461518859074727}
+  - component: {fileID: 5032399678460467488}
   m_Layer: 0
   m_Name: GlobalScripts
   m_TagString: Untagged
@@ -48,10 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b53e7865d69030f1b64126428a1bfa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ship: {fileID: 0}
-  trade_menu: {fileID: 0}
   player_menu: {fileID: 0}
-  global_scripts: GlobalScripts
+  player_cargo_display: {fileID: 0}
+  docked_cargo_display: {fileID: 0}
+  player_quantity_text: {fileID: 0}
+  station_quantity_text: {fileID: 0}
   OnProductionCycle:
     m_PersistentCalls:
       m_Calls:
@@ -115,21 +117,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnTradeFailNotEnoughFunds:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6450339934682246305}
-        m_TargetAssemblyTypeName: TradeEventNotifications, Assembly-CSharp
-        m_MethodName: NoFundsEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   OnTradeFailNotEnoughSpace:
     m_PersistentCalls:
       m_Calls:
@@ -159,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgrade_menu: {fileID: 0}
   ship: {fileID: 0}
+  thrust_slider: {fileID: 0}
   name_mesh_root: Player-Ship-Final
   name_slot_upgrade_tree: upgrade-components
   name_expansion_upgrade_tree: expansion-components
@@ -208,3 +196,22 @@ MonoBehaviour:
   player_inventory: {fileID: 0}
   upgrade_manager: {fileID: 8868827157266544725}
   planet_inventories: []
+--- !u!114 &5032399678460467488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6204515312581899934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 439c0d9e385279b46af16941faf6b8bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hull_slider: {fileID: 0}
+  shield_slider: {fileID: 0}
+  ShipDestroyed:
+    m_PersistentCalls:
+      m_Calls: []
+  shield_recharge_delay: 5
+  shield_recharge_speed: 1

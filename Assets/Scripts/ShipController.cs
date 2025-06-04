@@ -39,7 +39,7 @@ public class ShipController : MonoBehaviour
         thrust_mag = GetThrustMagnitude();
         thrust_slider.onValueChanged.AddListener(delegate { ThrustChange(); });
         thrust_text = thrust_slider.gameObject.transform.Find("current_thrust").gameObject.GetComponent<TMP_Text>();
-
+        ThrustChange();
         if (thrustAudio == null)
             thrustAudio = gameObject.GetComponent<AudioSource>();
     }

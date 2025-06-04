@@ -17,5 +17,6 @@ MonoBehaviour:
   item_value: 12500
   item_size: 0
   item_name: Ion Engines
-  description: 
+  description: Engines increase the maximum thrust power. Ion Engines are the first
+    truly fast Engines, doubling the speed of Chemical Engines.
   engine_speed: 200

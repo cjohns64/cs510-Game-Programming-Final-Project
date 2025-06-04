@@ -934,6 +934,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1781990166063371873, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: danger_radius
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1781990166063371873, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: danger_max_damage
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1978155610678570189, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: shipAnimatior
       value: 
@@ -980,7 +988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: inventory_max_capacity
-      value: 500
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: defined_default_inv.Array.size
@@ -1105,18 +1113,6 @@ PrefabInstance:
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: defined_default_inv.Array.data[14].amount
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
-      propertyPath: m_Size.x
-      value: 1.71
-      objectReference: {fileID: 0}
-    - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
-      propertyPath: m_Size.y
-      value: 1.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 4616813932254770500, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
-      propertyPath: m_Size.z
-      value: 2.61
       objectReference: {fileID: 0}
     - target: {fileID: 4672132530331064166, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2285,7 +2281,7 @@ GameObject:
   - component: {fileID: 1902692673}
   m_Layer: 6
   m_Name: Black Hole
-  m_TagString: Untagged
+  m_TagString: Star
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2305,7 +2301,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -2877,6 +2873,14 @@ PrefabInstance:
       propertyPath: player_inventory
       value: 
       objectReference: {fileID: 1474436736}
+    - target: {fileID: 5032399678460467488, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: hull_slider
+      value: 
+      objectReference: {fileID: 6014176712897565825}
+    - target: {fileID: 5032399678460467488, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: shield_slider
+      value: 
+      objectReference: {fileID: 6014176712897565824}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: ship
       value: 
@@ -3241,6 +3245,28 @@ RectTransform:
 --- !u!114 &6014176712897565823 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8583927467470818762, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+  m_PrefabInstance: {fileID: 6014176712897565821}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6014176712897565824 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3898449061809118261, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
+  m_PrefabInstance: {fileID: 6014176712897565821}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6014176712897565825 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2255462830662271486, guid: 82b58c43008a556f2a19464aec98e872, type: 3}
   m_PrefabInstance: {fileID: 6014176712897565821}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

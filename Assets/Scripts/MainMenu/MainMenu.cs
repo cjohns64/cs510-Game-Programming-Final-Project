@@ -22,6 +22,7 @@ public class MainMenu : MonoBehaviour
     }
     public void LoadZoneByIndex(int index)
     {
+        //loadingScreen.SetActive(true);
         InvalidateSaves();
         StartCoroutine(LoadAsync("Zone " + index.ToString()));
     }
@@ -37,12 +38,10 @@ public class MainMenu : MonoBehaviour
 
     IEnumerator LoadAsync(string level)
     {
-        loadingScreen.SetActive(true);
         AsyncOperation operation = SceneManager.LoadSceneAsync(level);
-      
         while (!operation.isDone)
         {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            float progress = operation.progress;
             loading_bar.value = progress;
             yield return null;
         }

@@ -18,8 +18,9 @@ public class Inventory : MonoBehaviour
     [SerializeField] private InventorySlot[] consumes;
 
     [Header("Trading Metadata")]
-    public int inventory_max_capacity = 1000;
-    public int inventory_current_capacity = 0;
+    [SerializeField] private int inventory_max_capacity = 1000;
+    public int inventory_bonus = 0;
+    [SerializeField] private int inventory_current_capacity = 0;
 
     public event Action<ItemType> OnInventoryChanged;
     private ItemManager item_manager;
@@ -71,7 +72,7 @@ public class Inventory : MonoBehaviour
     // checks if inventory has space for new items
     public bool HasCapacity(int add_amount)
     {
-        return inventory_current_capacity + add_amount <= inventory_max_capacity;
+        return GetCurrentCapacity() + add_amount <= GetCurrentMaxCapacity();
     }
 
     public int GetCurrentCapacity()
@@ -80,7 +81,7 @@ public class Inventory : MonoBehaviour
     }
     public int GetCurrentMaxCapacity()
     {
-        return inventory_max_capacity;
+        return inventory_max_capacity + inventory_bonus;
     }
 
     /**
@@ -178,7 +179,7 @@ public class Inventory : MonoBehaviour
             inventory_required += pslot.amount *
                     item_manager.GetItem(pslot.item).item_size; // these items get added
         }
-        if (can_produce && inventory_required + inventory_current_capacity <= inventory_max_capacity)
+        if (can_produce && inventory_required + GetCurrentCapacity() <= GetCurrentMaxCapacity())
         {
             // reduce items in inventory in quantity defined in consume set
             foreach (InventorySlot cslot in consumes)

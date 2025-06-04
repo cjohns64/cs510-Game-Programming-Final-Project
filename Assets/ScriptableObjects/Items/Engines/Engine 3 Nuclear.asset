@@ -17,5 +17,7 @@ MonoBehaviour:
   item_value: 62500
   item_size: 0
   item_name: Nuclear Thermal Engine
-  description: 
+  description: Engines increase the maximum thrust power. Twice as fast as Ion Engines,
+    Nuclear Thermal Engines use a fission reactor to both provide power to the ship
+    and superheat the fuel to provide for more efficient thrust.
   engine_speed: 400

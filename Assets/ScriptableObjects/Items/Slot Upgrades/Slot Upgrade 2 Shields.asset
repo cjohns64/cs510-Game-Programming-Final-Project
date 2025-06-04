@@ -17,7 +17,9 @@ MonoBehaviour:
   item_value: 1000
   item_size: 0
   item_name: Shielding Module
-  description: '[can be installed in any upgrade slot]'
+  description: Shielding provides an extra layer of protection against asteroids,
+    but it does nothing for passing too close to a star [can be installed in any
+    upgrade slot].
   hull_bonus: 0
   shield_bonus: 100
   armor_bonus: 0

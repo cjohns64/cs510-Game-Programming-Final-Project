@@ -17,5 +17,8 @@ MonoBehaviour:
   item_value: 312500
   item_size: 0
   item_name: Warp Engine
-  description: 
+  description: Engines increase the maximum thrust power. Warp Engines improve on
+    all previous designs by warping the space around the ship instead of propelling
+    the ship through space. Thus, the ship can travel great distances without moving
+    at all.
   engine_speed: 600
