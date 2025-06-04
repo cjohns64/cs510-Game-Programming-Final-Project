@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6941895777017190699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6558024261365851246}
+  - component: {fileID: 834251257981462209}
+  m_Layer: 0
+  m_Name: Asteroid_Builder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6558024261365851246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6941895777017190699}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &834251257981462209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6941895777017190699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01bcc14e553d2434e8fd5e93160a918b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  belt_radius: 75
+  belt_scale: 8
+  belt_height: 2.5
+  belt_density: 0.8
+  orbital_velocity: 10
+  hole_count: 0
+  asteroids:
+  - {fileID: 8347853861435912005, guid: 6f25ac777746e924a8eda52ab7296b2d, type: 3}
+  - {fileID: 4697984442770986157, guid: 222a5b1f70706994ca17ad35b499fe89, type: 3}
+  - {fileID: 644677001235676555, guid: 45676f2325411174693462f59ef18b27, type: 3}
+  - {fileID: 7934471118930253295, guid: cd90a580dd4c82c4a947d8a34debddd5, type: 3}
+  - {fileID: 8464702186189165480, guid: a732fe18518929a49acd7e67c322f231, type: 3}
