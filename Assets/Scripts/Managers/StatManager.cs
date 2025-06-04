@@ -15,6 +15,7 @@ public class StatManager : MonoBehaviour
 {
     [SerializeField] private Slider hull_slider;
     private TMP_Text hull_text;
+    private TMP_Text armor_text;
     [SerializeField] private Slider shield_slider;
     private TMP_Text shield_text;
 
@@ -26,13 +27,14 @@ public class StatManager : MonoBehaviour
     private float min_hull = 100f;
     private float hull_bonus = 0f;
     [SerializeField] private float shield_recharge_delay = 5f;
-    [SerializeField] private float shield_recharge_speed = 1.0f;
+    [SerializeField] private float shield_recharge_speed = 0.1f;
     private float shield_timer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // lookup health and shields text
         hull_text = hull_slider.gameObject.transform.Find("current").gameObject.GetComponent<TMP_Text>();
+        armor_text = hull_slider.gameObject.transform.Find("armor").gameObject.GetComponent<TMP_Text>();
         shield_text = shield_slider.gameObject.transform.Find("current").gameObject.GetComponent<TMP_Text>();
         SetSliderValues();
         ShipDestroyed.AddListener(OnShipDestroyed);
@@ -62,6 +64,7 @@ public class StatManager : MonoBehaviour
     {
         hull_slider.value = hull;
         hull_text.text = hull.ToString("0.##") + "/" + (min_hull + hull_bonus).ToString("0.##");
+        armor_text.text = armor.ToString() + "AR";
         shield_slider.value = shields;
         shield_text.text = shields.ToString("0.##") + "/" + max_shields.ToString("0.##");
     }

@@ -929,6 +929,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1781990166063371873, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
+      propertyPath: danger_radius
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1781990166063371873, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: danger_max_damage
       value: 100
       objectReference: {fileID: 0}
@@ -978,7 +982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: inventory_max_capacity
-      value: 500
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3454473838020469502, guid: b14cc9a6d2bb43e40aa2dd58acb504cc, type: 3}
       propertyPath: defined_default_inv.Array.size

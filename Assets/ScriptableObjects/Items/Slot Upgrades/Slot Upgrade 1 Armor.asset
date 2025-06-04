@@ -20,6 +20,6 @@ MonoBehaviour:
   description: '[can be installed in any upgrade slot]'
   hull_bonus: 0
   shield_bonus: 0
-  armor_bonus: 100
+  armor_bonus: 10
   cargo_bonus: 0
   speed_bonus: 0

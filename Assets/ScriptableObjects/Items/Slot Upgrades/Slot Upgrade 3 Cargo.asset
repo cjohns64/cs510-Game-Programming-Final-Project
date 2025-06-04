@@ -21,5 +21,5 @@ MonoBehaviour:
   hull_bonus: 0
   shield_bonus: 0
   armor_bonus: 0
-  cargo_bonus: 100
+  cargo_bonus: 200
   speed_bonus: 0
