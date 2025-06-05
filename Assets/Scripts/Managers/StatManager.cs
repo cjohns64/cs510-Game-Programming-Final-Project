@@ -18,6 +18,9 @@ public class StatManager : MonoBehaviour
     private TMP_Text armor_text;
     [SerializeField] private Slider shield_slider;
     private TMP_Text shield_text;
+    [SerializeField] private Slider cargo_slider;
+    private TMP_Text cargo_text;
+    [SerializeField] private Inventory player_inv;
 
     private float armor = 0f;
     private float shields = 0f;
@@ -36,6 +39,7 @@ public class StatManager : MonoBehaviour
         hull_text = hull_slider.gameObject.transform.Find("current").gameObject.GetComponent<TMP_Text>();
         armor_text = hull_slider.gameObject.transform.Find("armor").gameObject.GetComponent<TMP_Text>();
         shield_text = shield_slider.gameObject.transform.Find("current").gameObject.GetComponent<TMP_Text>();
+        cargo_text = cargo_slider.gameObject.transform.Find("current").gameObject.GetComponent<TMP_Text>();
         SetSliderValues();
         ShipDestroyed.AddListener(OnShipDestroyed);
     }
@@ -78,6 +82,9 @@ public class StatManager : MonoBehaviour
         armor_text.text = armor.ToString() + "AR";
         shield_slider.value = shields;
         shield_text.text = shields.ToString("0.##") + "/" + max_shields.ToString("0.##");
+        cargo_slider.maxValue = player_inv.GetCurrentMaxCapacity();
+        cargo_slider.value = player_inv.GetCurrentCapacity();
+        cargo_text.text = player_inv.GetCurrentCapacity().ToString() + "/" + player_inv.GetCurrentMaxCapacity().ToString();
     }
 
     public void SetMaxHull(float hull)

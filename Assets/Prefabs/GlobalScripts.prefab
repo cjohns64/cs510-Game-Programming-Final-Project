@@ -211,8 +211,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hull_slider: {fileID: 0}
   shield_slider: {fileID: 0}
+  cargo_slider: {fileID: 0}
+  player_inv: {fileID: 0}
   ShipDestroyed:
     m_PersistentCalls:
       m_Calls: []
-  shield_recharge_delay: 5
-  shield_recharge_speed: 1
+  shield_recharge_delay: 15
+  shield_recharge_speed: 0.5
