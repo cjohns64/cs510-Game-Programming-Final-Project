@@ -9,6 +9,7 @@ TagManager:
   - Ship
   - TimeController
   - Star
+  - ScenePreload
   layers:
   - Default
   - TransparentFX

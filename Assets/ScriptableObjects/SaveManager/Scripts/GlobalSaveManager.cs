@@ -15,6 +15,17 @@ public class GlobalSaveManager : ScriptableObject
     private List<int> dropdown_values = new();
     private Dictionary<string, bool> ship_mesh_active_state = new();
     private Dictionary<ItemType, int> player_inventory_items = new();
+    private float player_current_health;
+
+    public void SaveHealth(float health)
+    {
+        player_current_health = health;
+    }
+
+    public float GetHealth()
+    {
+        return player_current_health;
+    }
 
     public void SaveDropdownValues(List<int> settings)
     {

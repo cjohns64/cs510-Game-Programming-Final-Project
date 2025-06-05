@@ -41,11 +41,12 @@ public class DamageManager : MonoBehaviour
             statManager.Damage(Random.Range(10f, 50f), DamageType.Impact);
             Destroy(other.gameObject);
             asteriod_impact_audio.Play();
-            shield_impact_audio.Play();
+            if (statManager.IsShielded())
+                shield_impact_audio.Play();
         }
         else if (other.gameObject.tag == "Star")
         {
-            // lots of damge for colliding with a star
+            // lots of damage for colliding with a star
             statManager.Damage(5 * danger_max_damage, DamageType.Raw);
         }
     }

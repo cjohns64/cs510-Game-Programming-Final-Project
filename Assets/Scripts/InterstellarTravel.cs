@@ -6,6 +6,7 @@ public class InterstellarTravel : MonoBehaviour
     private SaveManagerInterface saveManager;
     private GalaxyDatabase _galaxyDatabase;
     public string target_system_name;
+    public bool is_preloader = false;
 
     [Header("Default settings")]
     [SerializeField] private string global_scripts = "GlobalScripts";
@@ -24,12 +25,18 @@ public class InterstellarTravel : MonoBehaviour
     {
         if (!other.CompareTag("Ship")) return;
 
-        //string[] words = gameObject.name.Split(' ');
-        //string systemName = words.Length > 1
-        //    ? string.Join(" ", words, 0, words.Length - 1)
-        //    : gameObject.name;
-        Debug.Log($"Entering interstellar tunnel to {target_system_name}");
-        // load other scene
-        saveManager.SceneTransitionByIndex(_galaxyDatabase.GetSystemByName(target_system_name).system_index);
+        if (!is_preloader)
+        {
+            Debug.Log($"Entering interstellar tunnel to {target_system_name}");
+            // load other scene
+            saveManager.PreloadActivate();
+            
+        }
+        if (is_preloader)
+        {
+            Debug.Log($"Preparing interstellar tunnel to {target_system_name}");
+            // start loading scene
+            saveManager.ScenePreloadByIndex(_galaxyDatabase.GetSystemByName(target_system_name).system_index);
+        }
     }
 }

@@ -55,6 +55,17 @@ public class StatManager : MonoBehaviour
         }
     }
 
+    public void LoadHealth( float health )
+    {
+        hull = health;
+        SetSliderValues();
+    }
+
+    public float SaveHealth()
+    {
+        return hull;
+    }
+
     public void OnShipDestroyed()
     {
         SceneManager.LoadSceneAsync("MainMenu");

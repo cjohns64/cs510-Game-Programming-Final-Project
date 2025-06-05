@@ -375,6 +375,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4517e8c20c9348d408216b28ff6521b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &723320252 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8158924411640378034, guid: b3fa2a7243d446c4ba45cd6b6732e480, type: 3}
+  m_PrefabInstance: {fileID: 7740432871229656105}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &775372002
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1056,6 +1061,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3210647664348128636, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
+      propertyPath: SoiRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210647664348128636, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: inventory_index
       value: 4
       objectReference: {fileID: 0}
@@ -1125,19 +1134,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5306626537332439180, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: produces.Array.data[0].amount
-      value: 20
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5306626537332439180, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: produces.Array.data[1].amount
-      value: 20
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5306626537332439180, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: produces.Array.data[2].amount
-      value: 15
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 5306626537332439180, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: produces.Array.data[3].amount
-      value: 15
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 5306626537332439180, guid: 8a443890e7c5cf44398de40430ab5aa0, type: 3}
       propertyPath: produces.Array.data[4].amount
@@ -1603,7 +1612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8517761520962945334, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
       propertyPath: SoiRadius
-      value: 20.08
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8517761520962945334, guid: 5bdfc775624bd3345837cd81a91fc418, type: 3}
       propertyPath: inventory_index
@@ -2382,6 +2391,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnTradeFailNotEnoughSpace.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1534401351}
@@ -2420,6 +2433,34 @@ PrefabInstance:
     - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: OnProductionCycle.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: ProduceItems
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnTradeFailNotEnoughSpace.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnTradeFailNotEnoughSpace.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 723320252}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnTradeFailNotEnoughSpace.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnTradeFailNotEnoughSpace.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnTradeFailNotEnoughSpace.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnTradeFailNotEnoughSpace.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556863443914010727, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
+      propertyPath: OnTradeFailNotEnoughSpace.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6204515312581899934, guid: 67eee03d0e6b8d24b9a75f04cdb0ae5b, type: 3}
       propertyPath: m_Name

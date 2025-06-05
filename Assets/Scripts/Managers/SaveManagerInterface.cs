@@ -19,6 +19,8 @@ public class SaveManagerInterface : MonoBehaviour
     [SerializeField] private UpgradeManager upgrade_manager;
     // upgrade menu dropdown settings
     [SerializeField] private Inventory[] planet_inventories;
+    [SerializeField] private StatManager player_stats;
+    private bool preload_wait = false;
 
     //https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
     private void Start()
@@ -32,6 +34,17 @@ public class SaveManagerInterface : MonoBehaviour
         StartCoroutine(LoadByIndex(index));
     }
 
+    public void ScenePreloadByIndex(int index)
+    {
+        preload_wait = true;
+        StartCoroutine(LoadByIndex(index));
+    }
+
+    public void PreloadActivate()
+    {
+        preload_wait = false;
+    }
+
     private IEnumerator LoadByIndex(int index)
     {
         yield return null;
@@ -41,7 +54,7 @@ public class SaveManagerInterface : MonoBehaviour
         SaveSceneData();
         while (!asyncOperation.isDone)
         {
-            if (asyncOperation.progress >= 0.9f)
+            if (asyncOperation.progress >= 0.9f && !preload_wait)
             {
                 asyncOperation.allowSceneActivation = true;
             }
@@ -51,13 +64,14 @@ public class SaveManagerInterface : MonoBehaviour
 
     public void SaveSceneData()
     {
-        save_manager.SaveData(upgrade_manager, player_ship, player_inventory, planet_inventories);
+        save_manager.SaveData(upgrade_manager, player_ship, player_inventory, planet_inventories, player_stats.SaveHealth());
         Debug.Log("Scene Data Saved");
     }
 
     public void LoadSceneData()
     {
         save_manager.LoadData(upgrade_manager, player_ship, player_inventory, planet_inventories);
+        player_stats.LoadHealth(save_manager.LoadHealth());
         Debug.Log("Scene Data Loaded");
     }
 }

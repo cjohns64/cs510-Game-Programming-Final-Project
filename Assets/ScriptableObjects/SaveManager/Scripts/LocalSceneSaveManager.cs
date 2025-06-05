@@ -47,9 +47,12 @@ public class LocalSceneSaveManager : ScriptableObject
     public void SaveData(UpgradeManager upgrade_manager,
                         GameObject player_ship,
                         Inventory player_inventory,
-                        Inventory[] planet_inventories)
+                        Inventory[] planet_inventories,
+                        float current_hull)
     {
         // TODO Orbit data
+        // ship health
+        global_save_manager.SaveHealth(current_hull);
         // upgrade menu dropdown values
         global_save_manager.SaveDropdownValues(upgrade_manager.SaveDropdownSettings());
         // player ship mesh active state
@@ -140,5 +143,14 @@ public class LocalSceneSaveManager : ScriptableObject
                 SaveMeshState(current_child, path + current_child.name);
             }
         }
+    }
+
+    public float LoadHealth()
+    {
+        if (global_save_manager.contains_saved_data)
+        {
+            return global_save_manager.GetHealth();
+        }
+        return 100;
     }
 }

@@ -15,6 +15,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 623c27ed512b46f49960510af99e5c18, type: 3}
   type: 37
   item_value: 100
-  item_size: 40
+  item_size: 15
   item_name: Fusion Reactor
   description: 

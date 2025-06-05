@@ -60,11 +60,18 @@ public class CreateSystemMarkers : MonoBehaviour
             }
 
             // Make the travel trigger
-            Vector3 triggerPosition = mainCelestialBody.transform.position + direction * mainCelestialBody.SoiRadius * 1f;
+            Vector3 triggerPosition = mainCelestialBody.transform.position + direction * mainCelestialBody.SoiRadius * markerDistanceFactor;
             GameObject trigger = Instantiate(systemTravelTriggerPrefab, triggerPosition, Quaternion.identity, this.transform);
             trigger.name = $"{targetSystem.systemName} Travel Trigger";
             trigger.transform.localScale = Vector3.one * triggerSize;
             trigger.GetComponent<InterstellarTravel>().target_system_name = targetSystem.systemName;
+            // Make the travel trigger preloader
+            Vector3 preloaderPosition = mainCelestialBody.transform.position + direction * mainCelestialBody.SoiRadius * markerDistanceFactor;
+            GameObject preloader = Instantiate(systemTravelTriggerPrefab, preloaderPosition, Quaternion.identity, this.transform);
+            preloader.name = $"{targetSystem.systemName} Travel Trigger";
+            preloader.transform.localScale = Vector3.one * 2 * triggerSize;
+            preloader.GetComponent<InterstellarTravel>().is_preloader = true ;
+            preloader.GetComponent<InterstellarTravel>().target_system_name = targetSystem.systemName;
         }
     }
 

@@ -196,6 +196,7 @@ MonoBehaviour:
   player_inventory: {fileID: 0}
   upgrade_manager: {fileID: 8868827157266544725}
   planet_inventories: []
+  player_stats: {fileID: 5032399678460467488}
 --- !u!114 &5032399678460467488
 MonoBehaviour:
   m_ObjectHideFlags: 0
