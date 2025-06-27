@@ -1,21 +1,21 @@
 ## Project Responsibilities
 Cory:
-Scene streaming
-Main Menu
-Player Menu
-Made the art assets (3D models, sprites, skyboxes, and textures)
-UI assets
-Upgrade system.
-Inventory system.
+- Scene streaming
+- Main Menu
+- Player Menu
+- Made the art assets (3D models, sprites, skyboxes, and textures)
+- UI assets
+- Upgrade system.
+- Inventory system.
 
 Kai:
-Orbit system
-Encounter prediction and visualization.
-HUD
-Scene transition arrows
-Galactic coordinates system for scene transition arrows
-Music sourcing
-Sounds
+- Orbit system
+- Encounter prediction and visualization.
+- HUD
+- Scene transition arrows
+- Galactic coordinates system for scene transition arrows
+- Music sourcing
+- Sounds
 
 ## Game Overview
 In this game the player navigates to different planets and star systems in order to deliver supplies and acquire ship upgrades. Navigation is done via a physically-based analytical orbit solver, and the player must intelligently adjust their orbit in order to intercept with planets. The systems and planets are represented by at a toy-scale with movement constrained to a 2D plane.
