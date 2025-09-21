@@ -18,9 +18,13 @@ Kai:
 - Sounds
 
 ## Game Overview
-In this game the player navigates to different planets and star systems in order to deliver supplies and acquire ship upgrades. Navigation is done via a physically-based analytical orbit solver, and the player must intelligently adjust their orbit in order to intercept with planets. The systems and planets are represented by at a toy-scale with movement constrained to a 2D plane.
+This game was made for the final project of CS 510 Game Programming. It is very rough and has a lot of bugs that interfere with game play and balancing was ignored almost completely. The Web version has a shader compatibility issue with some computers that results in the game having a blue filter over everything. This is not known to happen in the desktop builds of the game.
 
-Once the player successfully delivers supplies to the space station for the system, they will be rewarded with several ship upgrades. This upgrades come in three varieties: engine upgrades, ship expansions, and slot upgrades. Engine upgrades increase the maximum ship thrust limit. Ship expansions add a new module on to the ship allowing an additional slot upgrade to be installed. Slot upgrades can be place in any of the ships available upgrade slots and come in three varieties: shields, armor, or cargo modules. These upgrades help the player survive the environmental hazards of each system, such as asteroids, stars, and a black hole.
+In this game the player navigates to different planets and star systems in order to deliver supplies and acquire ship upgrades. Navigation is done via a physically-based analytical orbit solver, and the player must intelligently adjust their orbit in order to intercept with planets. The systems and planets are represented at a toy-scale with movement constrained to a 2D plane.
+
+Once the player successfully delivers supplies to the space station for the system, they will be rewarded with several ship upgrades. These upgrades come in three varieties: engine upgrades, ship expansions, and slot upgrades. Engine upgrades increase the maximum ship thrust limit. Ship expansions add a new module on to the ship allowing an additional slot upgrade to be installed. Slot upgrades can be place in any of the ships available upgrade slots and come in three varieties: shields, armor, or cargo modules. These upgrades help the player survive the environmental hazards of each system, such as asteroids, stars, and a black hole.
+
+The debug menu was left in the game since it is extremely hard to finish the game without it.
 
 ![Main menu](figures/figure-01.jpg)
 ![Starter System, planets can be navigated to by adjusting the player's orbit](figures/figure-02.jpg)
